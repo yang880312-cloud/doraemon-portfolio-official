@@ -1,0 +1,44 @@
+[
+  {
+    "id": 1,
+    "title": "Neon Dreams",
+    "category": "UI Design",
+    "image": "https://images.unsplash.com/photo-1550751827-4bd374c3f58b?q=80&w=2070&auto=format&fit=crop",
+    "mood": "Cyberpunk"
+  },
+  {
+    "id": 2,
+    "title": "Zen Garden",
+    "category": "Experience",
+    "image": "https://images.unsplash.com/photo-1599422314077-f4dfdaa4cd09?q=80&w=1974&auto=format&fit=crop",
+    "mood": "Calm"
+  },
+  {
+    "id": 3,
+    "title": "Abstract Flow",
+    "category": "Motion",
+    "image": "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=1964&auto=format&fit=crop",
+    "mood": "Dynamic"
+  },
+  {
+    "id": 4,
+    "title": "Typography",
+    "category": "Print",
+    "image": "https://images.unsplash.com/photo-1614730341194-75c60740929f?q=80&w=1974&auto=format&fit=crop",
+    "mood": "Bold"
+  },
+  {
+    "id": 5,
+    "title": "Glass World",
+    "category": "3D Art",
+    "image": "https://images.unsplash.com/photo-1506259091721-347f798196d4?q=80&w=2069&auto=format&fit=crop",
+    "mood": "Ethereal"
+  },
+  {
+    "id": 6,
+    "title": "Future Tech",
+    "category": "Concept",
+    "image": "https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?q=80&w=2070&auto=format&fit=crop",
+    "mood": "Hitech"
+  }
+]

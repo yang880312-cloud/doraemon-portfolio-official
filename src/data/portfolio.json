@@ -1,0 +1,58 @@
+[
+  {
+    "id": 1,
+    "title": "Quantum CRM",
+    "category": "B2B SaaS",
+    "pm_metrics": {
+      "users": "10k+",
+      "retention": "85%",
+      "growth": "+120%"
+    },
+    "design_mood": "Cyberpunk",
+    "description": "A CRM system that feels like a spaceship console.",
+    "thumbnail": "https://placehold.co/600x400/1e90ff/ffffff?text=CRM",
+    "tags": ["Vue 3", "Dashboard", "Data Vis"]
+  },
+  {
+    "id": 2,
+    "title": "Forest Sleep App",
+    "category": "B2C Mobile",
+    "pm_metrics": {
+      "users": "500k",
+      "rating": "4.9",
+      "revenue": "$50k/mo"
+    },
+    "design_mood": "Zen / Nature",
+    "description": "Sleep tracking with generative forest soundscapes.",
+    "thumbnail": "https://placehold.co/600x400/228b22/ffffff?text=Sleep",
+    "tags": ["React Native", "Audio", "Health"]
+  },
+  {
+    "id": 3,
+    "title": "Neo-Tokyo E-com",
+    "category": "E-commerce",
+    "pm_metrics": {
+      "conversion": "3.2%",
+      "cart_size": "$120",
+      "uptime": "99.99%"
+    },
+    "design_mood": "Neon / Glitch",
+    "description": "High-fashion streetwear store with 3D product view.",
+    "thumbnail": "https://placehold.co/600x400/9400d3/ffffff?text=E-com",
+    "tags": ["Next.js", "Three.js", "Stripe"]
+  },
+  {
+    "id": 4,
+    "title": "AI Writing Assistant",
+    "category": "GenAI Tool",
+    "pm_metrics": {
+      "mau": "25k",
+      "latency": "<200ms",
+      "nps": "72"
+    },
+    "design_mood": "Minimalist",
+    "description": "Distraction-free writing environment powered by LLMs.",
+    "thumbnail": "https://placehold.co/600x400/000000/ffffff?text=AI",
+    "tags": ["Python", "NLP", "Clean UI"]
+  }
+]

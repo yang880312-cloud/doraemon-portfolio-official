@@ -1,0 +1,41 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --app-bg: #050505;
+  --text-primary: #ffffff;
+}
+
+body {
+  background-color: var(--app-bg);
+  color: var(--text-primary);
+  margin: 0;
+  overflow: hidden; /* Hide scrollbars for the immersive 3D feel */
+  font-family: 'Inter', sans-serif;
+  user-select: none; /* Prevent selection during physics interactions */
+}
+
+#app {
+  width: 100vw;
+  height: 100vh;
+  position: relative;
+}
+
+/* Glassmorphism Utilities */
+.glass-panel {
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.clickable {
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+
+.clickable:active {
+  transform: scale(0.95);
+}
