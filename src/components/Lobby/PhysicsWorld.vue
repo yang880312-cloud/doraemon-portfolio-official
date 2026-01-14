@@ -40,12 +40,12 @@ onMounted(() => {
   // 4. Create Props with visual identifiers (using internal type for rendering)
   const props = []
   
-  // Flashlight 🔦
-  const flashlight = Matter.Bodies.rectangle(width * 0.3, 0, 40, 80, {
-    chamfer: { radius: 10 },
-    render: { fillStyle: 'transparent' },
-    label: '🔦'
-  })
+  // Flashlight 🔦 (REMOVED as per user request)
+  // const flashlight = Matter.Bodies.rectangle(width * 0.3, 0, 40, 80, {
+  //   chamfer: { radius: 10 },
+  //   render: { fillStyle: 'transparent' },
+  //   label: '🔦'
+  // })
   
   // Camera 📷
   const camera = Matter.Bodies.rectangle(width * 0.7, -200, 60, 60, {
@@ -61,7 +61,7 @@ onMounted(() => {
     label: '⏳'
   })
 
-  props.push(flashlight, camera, hourglass)
+  props.push(camera, hourglass)
   Matter.World.add(world, props)
 
   // 5. Mouse Interaction
