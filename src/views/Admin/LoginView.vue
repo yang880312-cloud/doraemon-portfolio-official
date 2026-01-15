@@ -43,9 +43,9 @@ async function handleLogin() {
       <div class="absolute top-0 left-0 w-8 h-8 border-l-2 border-t-2 border-cyan-500/50"></div>
       <div class="absolute bottom-0 right-0 w-8 h-8 border-r-2 border-b-2 border-cyan-500/50"></div>
 
-      <div class="text-center mb-10">
-        <h1 class="text-3xl font-bold text-white tracking-widest mb-2 font-mono">
-          DORAEMON<br />C.M.S.
+      <div class="w-full max-w-md p-8 glass-panel animate-enter">
+        <h1 class="mb-6 text-3xl font-light tracking-wider text-center text-white">
+          DORAEMON C.M.S. <span class="text-xs text-green-400 opacity-70">(System Live)</span>
         </h1>
         <p class="text-[10px] text-cyan-500/50 tracking-[0.5em] uppercase">
           Confidential Management System
