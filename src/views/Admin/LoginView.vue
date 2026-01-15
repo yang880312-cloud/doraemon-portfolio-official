@@ -6,6 +6,7 @@ import { useAuthStore } from '@/stores/auth'
 const router = useRouter()
 const authStore = useAuthStore()
 
+const email = ref('')
 const password = ref('')
 const error = ref('')
 const isLoading = ref(false)
@@ -14,15 +15,14 @@ async function handleLogin() {
   isLoading.value = true
   error.value = ''
 
-  // Fake network delay for effect
-  await new Promise((resolve) => setTimeout(resolve, 1500))
-
-  if (authStore.login(password.value)) {
+  try {
+    await authStore.login(email.value, password.value)
     router.push('/admin')
-  } else {
-    error.value = 'ACCESS DENIED: Invalid Security Clearance'
+  } catch (err) {
+    error.value = err.message || 'Login failed'
+  } finally {
+    isLoading.value = false
   }
-  isLoading.value = false
 }
 </script>
 
@@ -55,14 +55,26 @@ async function handleLogin() {
       <form @submit.prevent="handleLogin" class="space-y-6">
         <div>
           <label class="text-[10px] text-cyan-500 font-mono tracking-widest block mb-2"
+            >EMAIL IDENTITY</label
+          >
+          <input
+            v-model="email"
+            type="email"
+            class="w-full bg-black/50 border border-cyan-900 text-cyan-400 font-mono p-3 focus:outline-none focus:border-cyan-500 transition-colors placeholder-cyan-900/30"
+            placeholder="admin@doraemon.future"
+            autofocus
+          />
+        </div>
+
+        <div>
+          <label class="text-[10px] text-cyan-500 font-mono tracking-widest block mb-2"
             >SECURITY CODE</label
           >
           <input
             v-model="password"
             type="password"
-            class="w-full bg-black/50 border border-cyan-900 text-cyan-400 font-mono text-center p-3 focus:outline-none focus:border-cyan-500 transition-colors tracking-[0.5em] placeholder-cyan-900/30"
+            class="w-full bg-black/50 border border-cyan-900 text-cyan-400 font-mono p-3 focus:outline-none focus:border-cyan-500 transition-colors placeholder-cyan-900/30"
             placeholder="••••••••"
-            autofocus
           />
         </div>
 

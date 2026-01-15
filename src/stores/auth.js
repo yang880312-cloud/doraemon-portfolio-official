@@ -1,24 +1,48 @@
+;```javascript
 import { ref } from 'vue'
 import { defineStore } from 'pinia'
-import { useRouter } from 'vue-router'
+import { supabase } from '@/supabase'
 
 export const useAuthStore = defineStore('auth', () => {
-  const router = useRouter()
-  const isAuthenticated = ref(false)
+  const user = ref(null)
+  const isLoggedIn = ref(false)
 
-  function login(password) {
-    // MOCK LOGIN: Hardcoded password for now
-    if (password === 'doraemon') {
-      isAuthenticated.value = true
-      return true
+  // Initialize: Check active session
+  async function checkUser() {
+    const { data } = await supabase.auth.getSession()
+    if (data.session?.user) {
+      user.value = data.session.user
+      isLoggedIn.value = true
     }
-    return false
+
+    // Listen for auth changes
+    supabase.auth.onAuthStateChange((_event, session) => {
+      user.value = session?.user || null
+      isLoggedIn.value = !!session
+    })
   }
 
-  function logout() {
-    isAuthenticated.value = false
-    // We typically handle redirect in the component, but state is cleared here
+  async function login(email, password) {
+    const { data, error } = await supabase.auth.signInWithPassword({
+      email,
+      password,
+    })
+    if (error) throw error
+    return true
   }
 
-  return { isAuthenticated, login, logout }
+  async function logout() {
+    await supabase.auth.signOut()
+    user.value = null
+    isLoggedIn.value = false
+  }
+
+  return {
+    user,
+    isLoggedIn,
+    login,
+    logout,
+    checkUser
+  }
 })
+```

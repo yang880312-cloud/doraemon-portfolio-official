@@ -9,6 +9,11 @@ import { ref } from 'vue'
 const loading = ref(true)
 const dimensionStore = useDimensionStore()
 const { currentDimension } = storeToRefs(dimensionStore)
+
+// Initialize Auth
+import { useAuthStore } from '@/stores/auth'
+const authStore = useAuthStore()
+authStore.checkUser()
 </script>
 
 <template>

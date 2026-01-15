@@ -70,7 +70,7 @@ router.beforeEach((to, from, next) => {
 
   // 2. Auth Guard
   const authStore = useAuthStore()
-  if (to.meta.requiresAuth && !authStore.isAuthenticated) {
+  if (to.meta.requiresAuth && !authStore.isLoggedIn) {
     next('/admin/login')
   } else {
     next()
