@@ -5,13 +5,13 @@ import { storeToRefs } from 'pinia'
 import NavigationDock from '@/components/Global/NavigationDock.vue'
 import WelcomeLoader from '@/components/Global/WelcomeLoader.vue'
 import { ref } from 'vue'
+import { useAuthStore } from '@/stores/auth'
 
 const loading = ref(true)
 const dimensionStore = useDimensionStore()
 const { currentDimension } = storeToRefs(dimensionStore)
 
 // Initialize Auth
-import { useAuthStore } from '@/stores/auth'
 const authStore = useAuthStore()
 authStore.checkUser()
 </script>
