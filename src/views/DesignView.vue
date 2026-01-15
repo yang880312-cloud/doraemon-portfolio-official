@@ -1,7 +1,30 @@
 <script setup>
+import { ref, computed, onMounted } from 'vue'
+import { useDataStore } from '@/stores/dataStore'
 import FluidCursor from '@/components/Design/FluidCursor.vue'
-import InfiniteMenu from '@/components/Design/InfiniteMenu.vue'
-import designData from '@/data/design_data.json'
+import BrickWall from '@/components/Design/BrickWall.vue'
+import DesignProjectModal from '@/components/Design/DesignProjectModal.vue'
+
+const store = useDataStore()
+const selectedProject = ref(null)
+const isModalOpen = ref(false)
+
+// Fetch Data
+onMounted(async () => {
+  if (store.projects.length === 0) {
+    await store.fetchProjects()
+  }
+})
+
+// Filter Design Projects
+const designProjects = computed(() => {
+  return store.projects.filter((p) => p.type === 'DESIGN')
+})
+
+function openProject(project) {
+  selectedProject.value = project
+  isModalOpen.value = true
+}
 </script>
 
 <template>
@@ -10,21 +33,29 @@ import designData from '@/data/design_data.json'
     <FluidCursor />
 
     <!-- Background Ambience -->
-    <div class="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(139,92,246,0.1)_0%,rgba(0,0,0,0)_70%)] animate-pulse"></div>
+    <div
+      class="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(139,92,246,0.1)_0%,rgba(0,0,0,0)_70%)] animate-pulse"
+    ></div>
 
     <!-- Header -->
-    <div class="absolute top-8 left-8 z-10 pointer-events-none">
-      <h2 class="text-xs font-mono text-purple-500 tracking-[0.5em] mb-2">DIMENSION 03</h2>
-      <h1 class="text-5xl font-black tracking-tighter text-white">DESIGN <span class="text-purple-500 italic">MAGIC</span></h1>
+    <div
+      class="absolute bottom-8 left-0 w-full text-center pointer-events-none z-10 opacity-50 mix-blend-difference"
+    >
+      <!-- Text Removed as per user request -->
     </div>
 
-    <!-- Infinite Scroll Gallery -->
-    <InfiniteMenu :items="designData" />
-    
-    <!-- Instruction -->
-    <div class="absolute bottom-24 left-1/2 -translate-x-1/2 text-gray-500 text-xs tracking-widest animate-bounce pointer-events-none">
-      SCROLL TO EXPLORE
-    </div>
+    <!-- Brick Wall Layout -->
+    <BrickWall :items="designProjects" @item-click="openProject" />
+
+    <DesignProjectModal
+      :isOpen="isModalOpen"
+      :project="selectedProject"
+      :siblings="designProjects"
+      @close="isModalOpen = false"
+      @switch="openProject"
+    />
+
+    <!-- Instruction Removed -->
   </div>
 </template>
 

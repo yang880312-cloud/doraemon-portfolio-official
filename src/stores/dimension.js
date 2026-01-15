@@ -5,6 +5,7 @@ export const useDimensionStore = defineStore('dimension', () => {
   // Dimensions: 'LOBBY', 'PM', 'DESIGN', 'PROFILE'
   const currentDimension = ref('LOBBY')
   const isTransitioning = ref(false)
+  const navigationRequest = ref(null)
 
   // Actions
   function setDimension(dim) {
@@ -20,11 +21,22 @@ export const useDimensionStore = defineStore('dimension', () => {
     isTransitioning.value = false
   }
 
-  return { 
-    currentDimension, 
+  function requestNavigation(target) {
+    navigationRequest.value = target
+  }
+
+  function clearRequest() {
+    navigationRequest.value = null
+  }
+
+  return {
+    currentDimension,
     isTransitioning,
+    navigationRequest,
     setDimension,
     startTransition,
-    endTransition
+    endTransition,
+    requestNavigation,
+    clearRequest,
   }
 })

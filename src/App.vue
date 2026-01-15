@@ -14,7 +14,7 @@ const { currentDimension } = storeToRefs(dimensionStore)
 <template>
   <main class="w-full h-full relative overflow-hidden bg-void-black text-white">
     <WelcomeLoader v-if="loading" @finished="loading = false" />
-    
+
     <!-- Router View handles the current page/dimension -->
     <RouterView v-slot="{ Component }">
       <Transition name="fade" mode="out-in">
@@ -22,9 +22,9 @@ const { currentDimension } = storeToRefs(dimensionStore)
       </Transition>
     </RouterView>
 
-    <!-- Global Dock (Always present but conditionally visible/styled) -->
-    <NavigationDock />
-    
+    <!-- Global Dock (Hidden on Admin pages) -->
+    <NavigationDock v-if="!$route.path.startsWith('/admin')" />
+
     <!-- Global Overlay for transitions if needed -->
     <div id="transition-overlay" class="pointer-events-none fixed inset-0 z-50"></div>
   </main>
