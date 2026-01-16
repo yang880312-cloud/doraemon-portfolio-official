@@ -1,4 +1,3 @@
-;```javascript
 import { ref } from 'vue'
 import { defineStore } from 'pinia'
 import { supabase } from '@/supabase'
@@ -42,7 +41,6 @@ export const useAuthStore = defineStore('auth', () => {
     isLoggedIn,
     login,
     logout,
-    checkUser
+    checkUser,
   }
 })
-```
