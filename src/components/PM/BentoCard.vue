@@ -12,45 +12,52 @@ defineProps({
 </script>
 
 <template>
-  <div 
-    class="group relative overflow-hidden rounded-xl bg-white/5 border border-white/10 backdrop-blur-sm transition-all duration-300 hover:border-blue-400/50 hover:bg-white/10"
+  <div
+    class="group relative overflow-hidden rounded-3xl bg-white border-4 border-[#1e3a8a] transition-all duration-300 hover:-translate-y-1 hover:shadow-[8px_8px_0px_rgba(30,58,138,1)] active:translate-y-0 active:shadow-none"
     :class="{
       'col-span-1 row-span-1': size === 'normal',
-      'col-span-2 row-span-2': size === 'large',
+      'col-span-1 md:col-span-2 row-span-2': size === 'large',
       'col-span-1 row-span-2': size === 'tall'
     }"
   >
-    <!-- Image BG (Dimmed) -->
-    <div class="absolute inset-0 z-0">
-      <img :src="project.thumbnail" class="w-full h-full object-cover opacity-40 group-hover:opacity-60 transition-opacity duration-500 grayscale group-hover:grayscale-0" alt="Project Thumbnail">
-      <div class="absolute inset-0 bg-gradient-to-t from-black/90 to-transparent"></div>
+    <!-- Background Image -->
+    <div class="absolute inset-0 z-0 bg-[#f0f9ff]">
+      <img :src="project.thumbnail" class="w-full h-full object-cover opacity-90 transition-transform duration-500 group-hover:scale-105" alt="Gadget Thumbnail">
+      <!-- Gradient Overlay for distinct text -->
+      <div class="absolute inset-0 bg-gradient-to-t from-[#1e3a8a]/90 via-transparent to-transparent opacity-80"></div>
     </div>
 
     <!-- Content -->
     <div class="relative z-10 flex flex-col justify-end h-full p-6">
-      
-      <!-- Metrics Badge -->
+
+      <!-- Category Badge -->
       <div class="flex gap-2 mb-2">
-        <span class="px-2 py-1 text-[10px] font-mono border border-blue-500/30 bg-blue-500/10 text-blue-300 rounded">
+        <span class="px-3 py-1 text-[10px] font-black tracking-widest border border-white/30 bg-[#ef4444] text-white rounded-full shadow-sm uppercase">
           {{ project.category }}
         </span>
       </div>
 
-      <h3 class="text-2xl font-bold text-white mb-1 tracking-tight">{{ project.title }}</h3>
-      <p class="text-sm text-gray-400 mb-4 line-clamp-2">{{ project.description }}</p>
+      <h3 class="text-2xl md:text-3xl font-black text-white mb-1 tracking-tighter drop-shadow-md group-hover:text-[#fcd34d] transition-colors">
+        {{ project.title }}
+      </h3>
+      <p class="text-sm text-blue-100 font-medium line-clamp-2 md:line-clamp-3 mb-4 opacity-90 group-hover:opacity-100">
+        {{ project.description }}
+      </p>
 
-      <!-- Data Details (Visible on hover) -->
-      <div class="grid grid-cols-3 gap-2 pt-4 border-t border-white/10 translate-y-full group-hover:translate-y-0 transition-transform duration-300">
-        <div v-for="(val, key) in project.pm_metrics" :key="key" class="text-center">
-          <div class="text-[10px] text-gray-500 uppercase">{{ key }}</div>
-          <div class="text-xs font-mono text-blue-300">{{ val }}</div>
+      <!-- Metrics Badge (Simplified) -->
+      <div class="flex gap-4 pt-4 border-t border-white/20">
+        <div v-for="(val, key) in project.pm_metrics" :key="key" class="text-center group-hover:scale-110 transition-transform bg-white/10 rounded-lg p-1 px-2 backdrop-blur-sm">
+          <div class="text-[8px] text-blue-200 uppercase font-bold tracking-wider opacity-80">{{ key }}</div>
+          <div class="text-xs font-black font-mono text-white">{{ val }}</div>
         </div>
       </div>
-      
+
     </div>
-    
-    <!-- Decorator -->
-    <div class="absolute top-2 right-2 w-2 h-2 rounded-full bg-blue-500/50 animate-pulse"></div>
+
+    <!-- Decorator: Bell Icon or Pocket -->
+    <div class="absolute top-4 right-4 w-8 h-8 rounded-full bg-[#fcd34d] border-2 border-[#1e3a8a] shadow-sm flex items-center justify-center animate-bounce duration-[2000ms]">
+      <div class="w-4 h-1 bg-[#1e3a8a] rounded-full opacity-50"></div>
+    </div>
 
   </div>
 </template>

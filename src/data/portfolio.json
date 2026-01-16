@@ -1,58 +1,154 @@
 [
   {
     "id": 1,
-    "title": "Quantum CRM",
-    "category": "B2B SaaS",
+    "title": "Anywhere Door CMS",
+    "category": "Enterprise Tool",
     "pm_metrics": {
-      "users": "10k+",
-      "retention": "85%",
-      "growth": "+120%"
+      "efficiency": "+45%",
+      "errors": "-90%",
+      "adoption": "100%"
     },
-    "design_mood": "Cyberpunk",
-    "description": "A CRM system that feels like a spaceship console.",
-    "thumbnail": "https://placehold.co/600x400/1e90ff/ffffff?text=CRM",
-    "tags": ["Vue 3", "Dashboard", "Data Vis"]
+    "description": "A centralized content management system connecting global teams instantly.",
+    "thumbnail": "https://placehold.co/800x800/e91e63/ffffff?text=Anywhere+Door",
+    "tags": ["Vue 3", "Supabase", "Real-time"],
+    "details": {
+      "problem": "Global teams were using fragmented tools (Email, Excel, Slack) to manage content, leading to version conflicts and 48hr delays.",
+      "solution": "Built a 'Single Source of Truth' platform. Like the Anywhere Door, it allows instant access to any project's status from any location.",
+      "tech": ["Vue 3 Composition API", "Pinia State Management", "Supabase Realtime Row Level Security"],
+      "impact": "Reduced content update time from 2 days to 5 minutes. Zero version conflict incidents in Q4."
+    }
   },
   {
     "id": 2,
-    "title": "Forest Sleep App",
-    "category": "B2C Mobile",
+    "title": "Translation Gummy",
+    "category": "AI Service",
     "pm_metrics": {
-      "users": "500k",
-      "rating": "4.9",
-      "revenue": "$50k/mo"
+      "languages": "50+",
+      "accuracy": "98.5%",
+      "latency": "<100ms"
     },
-    "design_mood": "Zen / Nature",
-    "description": "Sleep tracking with generative forest soundscapes.",
-    "thumbnail": "https://placehold.co/600x400/228b22/ffffff?text=Sleep",
-    "tags": ["React Native", "Audio", "Health"]
+    "description": "Real-time AI translation API for cross-border e-commerce chat.",
+    "thumbnail": "https://placehold.co/600x400/3b82f6/ffffff?text=Translation+AI",
+    "tags": ["Python", "OpenAI", "Redis"],
+    "details": {
+      "problem": "Customer support agents couldn't handle inquiries from 12 different countries efficiently, causing high drop-off rates.",
+      "solution": "Integrated an LLM-based translation layer into the chat widget. Agents type in English; users see their native language.",
+      "tech": ["FastAPI", "OpenAI GPT-4", "Redis Caching Layer"],
+      "impact": "International sales conversation rate increased by 22%. Support team can now scale without hiring native speakers for every region."
+    }
   },
   {
     "id": 3,
-    "title": "Neo-Tokyo E-com",
-    "category": "E-commerce",
+    "title": "Memory Bread LMS",
+    "category": "EdTech App",
     "pm_metrics": {
-      "conversion": "3.2%",
-      "cart_size": "$120",
-      "uptime": "99.99%"
+      "retention": "Day 30 > 40%",
+      "completion": "85%",
+      "rating": "4.8"
     },
-    "design_mood": "Neon / Glitch",
-    "description": "High-fashion streetwear store with 3D product view.",
-    "thumbnail": "https://placehold.co/600x400/9400d3/ffffff?text=E-com",
-    "tags": ["Next.js", "Three.js", "Stripe"]
+    "description": "Spaced repetition learning platform that ensures 100% retention.",
+    "thumbnail": "https://placehold.co/600x400/22c55e/ffffff?text=Memory+Bread",
+    "tags": ["React Native", "Firebase", "Gamification"],
+    "details": {
+      "problem": "Corporate training had a 15% completion rate. Employees found the material boring and hard to remember.",
+      "solution": "Gamified the learning process using the 'Memory Bread' concept—digesting small chunks of knowledge daily via mobile notifications.",
+      "tech": ["React Native", "Firebase Cloud Messaging", "Analytics Dashboard"],
+      "impact": "Course completion rate soared to 85%. Employee compliance scores hit record highs."
+    }
   },
   {
     "id": 4,
-    "title": "AI Writing Assistant",
-    "category": "GenAI Tool",
+    "title": "Time Furoshiki",
+    "category": "DevOps Tool",
     "pm_metrics": {
-      "mau": "25k",
-      "latency": "<200ms",
-      "nps": "72"
+      "rollback": "Instant",
+      "uptime": "99.99%",
+      "saving": "$12k/mo"
     },
-    "design_mood": "Minimalist",
-    "description": "Distraction-free writing environment powered by LLMs.",
-    "thumbnail": "https://placehold.co/600x400/000000/ffffff?text=AI",
-    "tags": ["Python", "NLP", "Clean UI"]
+    "description": "Automated backup and rollback system to restore any state instantly.",
+    "thumbnail": "https://placehold.co/600x400/ef4444/ffffff?text=Time+Wrap",
+    "tags": ["Docker", "Kubernetes", "Go"],
+    "details": {
+      "problem": "Production deployments were risky. Rollbacks took 4 hours, causing massive potential revenue loss during downtime.",
+      "solution": "Created a containerized snapshot system. Like the Time Furoshiki, it wraps the environment and can revert it to a 'fresh' state instantly.",
+      "tech": ["Docker Swarm", "Go CLI", "AWS S3 Lifecycle Policies"],
+      "impact": "Deployment fear is gone. We seek to deploy on Fridays now (just kidding, but we could)."
+    }
+  },
+  {
+    "id": 5,
+    "title": "Take-Copter Logistics",
+    "category": "Logistics Platform",
+    "pm_metrics": {
+      "delivery": "-20% time",
+      "fuel": "-15%",
+      "drivers": "500+"
+    },
+    "description": "Route optimization algorithm for last-mile delivery fleets.",
+    "thumbnail": "https://placehold.co/600x400/eab308/ffffff?text=Bamboo+Copter",
+    "tags": ["Algorithm", "Google Maps API", "Node.js"],
+    "details": {
+      "problem": "Delivery drivers were taking inefficient routes, wasting fuel and missing delivery windows.",
+      "solution": "Implemented a 'Take-Copter' view algorithm that calculates the most direct path accounting for traffic and weather.",
+      "tech": ["Genetic Algorithm", "Google Maps Matrix API", "Node.js Worker Threads"],
+      "impact": "Fleet fuel costs dropped 15% in the first month. Customer 'On-Time' satisfaction score rose to 4.9/5."
+    }
+  },
+  {
+    "id": 6,
+    "title": "Copy Robot Testing",
+    "category": "QA Automation",
+    "pm_metrics": {
+      "coverage": "90%",
+      "bugs": "-60%",
+      "speed": "10x"
+    },
+    "description": "AI agent swarm that mimics user behavior to test UI.",
+    "thumbnail": "https://placehold.co/600x400/6b7280/ffffff?text=Copy+Robot",
+    "tags": ["Playwright", "Typescript", "CI/CD"],
+    "details": {
+      "problem": "Manual QA testing was the bottleneck. We had 2 QA engineers for 15 developers.",
+      "solution": "Deployed 'Copy Robots'—automated E2E test suites that run on every pull request, mimicking real user clicks.",
+      "tech": ["Playwright", "GitHub Actions", "Typescript"],
+      "impact": "Release cycle shortened from 2 weeks to 3 days. Critical bugs caught in staging increased by 200%."
+    }
+  },
+  {
+    "id": 7,
+    "title": "Mood Orchestra",
+    "category": "HR Tech",
+    "pm_metrics": {
+      "engagement": "+18%",
+      "turnover": "-5%",
+      "feedback": "Daily"
+    },
+    "description": " Sentiment analysis tool to gauge team morale in real-time.",
+    "thumbnail": "https://placehold.co/600x400/a855f7/ffffff?text=Mood+Music",
+    "tags": ["NLP", "Slack Bot", "Dashboard"],
+    "details": {
+      "problem": "Remote work made it hard to sense team burnout. HR only found out when resignation letters arrived.",
+      "solution": "A Slack bot that acts like the 'Mood Orchestra', playing the right 'tune' (asking the right questions) to gauge vibe without being intrusive.",
+      "tech": ["Slack API", "Natural Language Processing", "Vue Dashboard"],
+      "impact": "Early detection of burnout risks allowed managers to intervene proactively. Team retention improved significantly."
+    }
+  },
+  {
+    "id": 8,
+    "title": "Pass Loop Security",
+    "category": "Cybersecurity",
+    "pm_metrics": {
+      "breaches": "0",
+      "audits": "Pass",
+      "sso": "Enabled"
+    },
+    "description": "Loophole-free authentication gateway for enterprise systems.",
+    "thumbnail": "https://placehold.co/600x400/06b6d4/ffffff?text=Pass+Loop",
+    "tags": ["OAuth2", "JWT", "Zero Trust"],
+    "details": {
+      "problem": "Legacy login systems were vulnerable and users hated remembering 10 passwords.",
+      "solution": "A 'Pass Loop' SSO gateway. Once you pass through, you are securely authenticated everywhere within the ecosystem.",
+      "tech": ["OAuth 2.0 / OIDC", "JWT Tokens", "Zero Trust Architecture"],
+      "impact": "Security audit passed with flying colors. User login complaints dropped to near zero."
+    }
   }
 ]

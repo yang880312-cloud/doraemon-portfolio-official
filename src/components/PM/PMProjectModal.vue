@@ -33,154 +33,120 @@ onUnmounted(() => (document.body.style.overflow = ''))
         @click.self="$emit('close')"
       >
         <!-- Backdrop -->
-        <div class="absolute inset-0 bg-black/90 backdrop-blur-sm"></div>
+        <div class="absolute inset-0 bg-[#0a2463]/90 backdrop-blur-md"></div>
 
-        <!-- Tech Dossier Container -->
+        <!-- Gadget Card Container -->
         <div
-          class="relative w-full max-w-6xl h-[85vh] flex flex-col md:flex-row bg-[#050505] border border-cyan-900/50 shadow-[0_0_50px_rgba(8,145,178,0.1)] overflow-hidden dossier-frame"
+          class="relative w-full max-w-5xl h-[90vh] md:h-[80vh] flex flex-col md:flex-row bg-[#ffffff] border-4 border-[#1e3a8a] rounded-[3rem] shadow-[0_20px_50px_rgba(30,58,138,0.5)] overflow-hidden gadget-card"
         >
-          <!-- Decorative Tech Borders -->
-          <div
-            class="absolute top-0 left-0 w-32 h-32 border-l-2 border-t-2 border-cyan-500/50 pointer-events-none"
-          ></div>
-          <div
-            class="absolute bottom-0 right-0 w-32 h-32 border-r-2 border-b-2 border-cyan-500/50 pointer-events-none"
-          ></div>
-          <div class="absolute top-0 right-0 w-4 h-4 bg-cyan-500/20 pointer-events-none"></div>
-          <div class="absolute bottom-0 left-0 w-4 h-4 bg-cyan-500/20 pointer-events-none"></div>
+          <!-- Decorative Hanging Holes (Like a physical tag) -->
+          <div class="absolute top-6 left-1/2 -translate-x-1/2 w-8 h-8 bg-[#0a2463] rounded-full z-50 border-4 border-[#3b82f6]"></div>
 
           <!-- Close Button -->
           <button
             @click="$emit('close')"
-            class="absolute top-6 right-6 z-50 w-10 h-10 flex items-center justify-center border border-cyan-500/30 text-cyan-500 hover:bg-cyan-500 hover:text-black transition-all font-mono"
+            class="absolute top-6 right-8 z-50 w-12 h-12 flex items-center justify-center bg-[#ef4444] text-white rounded-full font-black text-xl hover:scale-110 transition-transform shadow-md border-4 border-white"
           >
             ✕
           </button>
 
-          <!-- LEFT: Data/Image Hybrid -->
-          <div class="relative w-full md:w-2/3 h-1/2 md:h-full bg-gray-900 overflow-hidden group">
-            <!-- Image Slider -->
-            <div class="w-full h-full relative bg-black flex items-center justify-center">
-              <img
+          <!-- LEFT: Visual Showcase -->
+          <div class="relative w-full md:w-5/12 h-1/3 md:h-full bg-[#f0f9ff] flex items-center justify-center p-8 border-b-4 md:border-b-0 md:border-r-4 border-[#1e3a8a] overflow-hidden">
+             <!-- Background Pattern -->
+             <div class="absolute inset-0 opacity-10 bg-[radial-gradient(#1e3a8a_2px,transparent_2px)] [background-size:20px_20px]"></div>
+
+             <img
                 :src="currentImage"
-                class="w-full h-full object-contain md:object-cover transition-opacity duration-700 mx-auto"
+                class="relative z-10 w-full max-h-[80%] object-contain drop-shadow-2xl hover:scale-105 transition-transform duration-500"
               />
 
-              <!-- Navigation (Only if multiple images) -->
-              <div v-if="hasMultipleImages" class="absolute bottom-4 right-4 flex gap-2 z-20">
-                <button
-                  v-for="(img, idx) in project.images"
-                  :key="idx"
-                  @click.stop="currentIndex = idx"
-                  class="w-8 h-8 flex items-center justify-center text-[10px] font-mono border transition-all"
-                  :class="
-                    currentIndex === idx
-                      ? 'bg-cyan-500 text-black border-cyan-500 font-bold'
-                      : 'bg-black/50 text-cyan-500 border-cyan-900 hover:bg-cyan-900/50'
-                  "
-                >
-                  {{ (idx + 1).toString().padStart(2, '0') }}
-                </button>
-              </div>
-            </div>
-
-            <!-- Grid Overlay -->
-            <div
-              class="absolute inset-0 bg-[url('https://patterns.ibthemespro.com/res/lines.png')] opacity-10 pointer-events-none"
-            ></div>
-
-            <!-- Floating Data Points -->
-            <div
-              class="absolute bottom-8 left-8 font-mono text-xs text-cyan-400 bg-black/80 px-4 py-2 border-l-4 border-cyan-500 backdrop-blur z-10"
-            >
-              <div>IMG_SOURCE: {{ project?.id || '001' }}</div>
-              <div>RES: HIGH_FIDELITY</div>
-              <div v-if="hasMultipleImages" class="text-[9px] text-gray-500 mt-1">
-                FIG {{ currentIndex + 1 }} / {{ project.images.length }}
-              </div>
-            </div>
+             <!-- ID Badge -->
+             <div class="absolute bottom-6 left-6 bg-[#1e3a8a] text-white px-4 py-2 rounded-xl font-black font-mono shadow-[4px_4px_0px_#ef4444]">
+               NO. {{ (project.id || 0).toString().padStart(3, '0') }}
+             </div>
           </div>
 
-          <!-- RIGHT: Information Terminal -->
-          <div
-            class="w-full md:w-1/3 h-1/2 md:h-full bg-[#0a0a0c] flex flex-col border-l border-cyan-900/30 relative"
-          >
-            <!-- Scan Line -->
-            <div
-              class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-cyan-500 to-transparent opacity-50"
-            ></div>
+          <!-- RIGHT: Intel Briefing -->
+          <div class="w-full md:w-7/12 h-2/3 md:h-full bg-white flex flex-col relative">
 
-            <div class="p-8 flex-1 overflow-y-auto custom-scrollbar">
-              <div class="mb-8">
-                <div class="text-[10px] text-cyan-600 font-mono tracking-[0.2em] mb-2">
-                  // CLASSIFIED FILE
-                </div>
-                <h2 class="text-4xl font-bold text-white mb-2 uppercase tracking-tight">
-                  {{ project?.title }}
-                </h2>
-                <div
-                  class="inline-block px-2 py-1 bg-cyan-900/20 border border-cyan-500/30 text-cyan-300 text-xs font-mono"
-                >
-                  TYPE: {{ project?.category || 'LOGIC_MODULE' }}
-                </div>
-              </div>
-
-              <div class="space-y-6">
-                <div class="p-4 bg-cyan-900/5 border border-cyan-500/10 relative">
-                  <!-- Corner accents -->
-                  <div
-                    class="absolute top-0 left-0 w-2 h-2 border-l border-t border-cyan-500/50"
-                  ></div>
-                  <div
-                    class="absolute bottom-0 right-0 w-2 h-2 border-r border-b border-cyan-500/50"
-                  ></div>
-
-                  <h4 class="text-xs font-mono text-gray-500 mb-2">[ BRIEFIING ]</h4>
-                  <p class="text-gray-300 text-sm leading-relaxed font-light">
-                    {{
-                      project?.description ||
-                      'System data not available. Please contact administrator.'
-                    }}
-                  </p>
-                </div>
-
-                <div class="grid grid-cols-2 gap-4">
-                  <div
-                    class="bg-black border border-gray-800 p-3 flex flex-col items-center justify-center"
-                  >
-                    <span class="text-2xl font-mono text-cyan-400">{{
-                      project?.metricK || 'N/A'
-                    }}</span>
-                    <span class="text-[10px] text-gray-600 uppercase tracking-widest mt-1"
-                      >Efficiency</span
-                    >
-                  </div>
-                  <div
-                    class="bg-black border border-gray-800 p-3 flex flex-col items-center justify-center"
-                  >
-                    <span class="text-2xl font-mono text-white">ACTIVE</span>
-                    <span class="text-[10px] text-gray-600 uppercase tracking-widest mt-1"
-                      >Status</span
-                    >
-                  </div>
-                </div>
-              </div>
+            <!-- Header -->
+            <div class="p-8 pb-4 border-b-2 border-slate-100">
+               <div class="flex items-center gap-3 mb-2">
+                 <span class="bg-[#fcd34d] text-black text-xs font-black px-3 py-1 rounded-full uppercase tracking-widest border-2 border-black/10">
+                   {{ project.category }}
+                 </span>
+               </div>
+               <h2 class="text-4xl md:text-5xl font-black text-[#1e3a8a] tracking-tighter leading-tight relative z-10">
+                 {{ project.title }}
+                 <span class="text-[#ef4444] text-xl align-top">★</span>
+               </h2>
+               <p class="text-lg text-slate-500 font-medium mt-2">{{ project.description }}</p>
             </div>
 
-            <!-- Footer Action -->
-            <div class="p-8 border-t border-cyan-900/30">
-              <button
-                class="w-full group relative px-6 py-3 bg-transparent overflow-hidden text-cyan-400 font-mono text-sm border border-cyan-500/50 hover:border-cyan-400 transition-all"
-              >
-                <span
-                  class="absolute w-full h-full bg-cyan-500/10 left-0 top-0 -translate-x-full group-hover:translate-x-0 transition-transform duration-300 ease-out"
-                ></span>
-                <span class="relative flex items-center justify-center gap-2">
-                  <span>INITIATE_PROTOCOL</span>
-                  <span>>></span>
-                </span>
-              </button>
+            <!-- Scrollable Content -->
+            <div class="flex-1 overflow-y-auto p-8 space-y-8 custom-scrollbar">
+
+              <!-- 1. The Glitch (Problem) -->
+              <div class="relative pl-6 border-l-4 border-[#ef4444]">
+                <h3 class="text-sm font-black text-[#ef4444] uppercase tracking-widest mb-2 flex items-center gap-2">
+                  <span class="text-xl">⚡</span> The Glitch (Problem)
+                </h3>
+                <p class="text-slate-700 leading-relaxed font-medium">
+                  {{ project.details?.problem || "System data unavailable." }}
+                </p>
+              </div>
+
+              <!-- 2. The Gadget (Solution) -->
+              <div class="relative pl-6 border-l-4 border-[#3b82f6]">
+                <h3 class="text-sm font-black text-[#3b82f6] uppercase tracking-widest mb-2 flex items-center gap-2">
+                  <span class="text-xl">💡</span> The Gadget (Solution)
+                </h3>
+                <p class="text-slate-700 leading-relaxed font-medium">
+                   {{ project.details?.solution || "Solution data unavailable." }}
+                </p>
+              </div>
+
+               <!-- 3. Tech Stack -->
+               <div>
+                  <h3 class="text-sm font-black text-[#1e3a8a] uppercase tracking-widest mb-3 flex items-center gap-2">
+                  <span class="text-xl">🛠️</span> Core Mechanics
+                </h3>
+                <div class="flex flex-wrap gap-2">
+                  <span
+                    v-for="tech in (project.details?.tech || project.tags)"
+                    :key="tech"
+                    class="px-3 py-1 bg-slate-100 text-[#1e3a8a] font-bold text-sm rounded-lg border border-slate-200"
+                  >
+                    {{ tech }}
+                  </span>
+                </div>
+               </div>
+
+               <!-- 4. Impact -->
+               <div class="bg-[#f0f9ff] p-6 rounded-2xl border-2 border-[#1e3a8a]/20">
+                 <h3 class="text-sm font-black text-[#1e3a8a] uppercase tracking-widest mb-4 flex items-center gap-2">
+                    <span class="text-xl">📊</span> Mission Results
+                 </h3>
+                 <div class="grid grid-cols-3 gap-4">
+                    <div v-for="(val, key) in project.pm_metrics" :key="key" class="text-center">
+                      <div class="text-2xl font-black text-[#ef4444] font-mono">{{ val }}</div>
+                      <div class="text-[10px] uppercase font-bold text-[#1e3a8a]/60">{{ key }}</div>
+                    </div>
+                 </div>
+                 <p class="mt-4 text-sm text-[#1e3a8a] italic border-t border-[#1e3a8a]/10 pt-4">
+                   "{{ project.details?.impact || 'Impact data confidential.' }}"
+                 </p>
+               </div>
+
             </div>
+
+             <!-- Footer Button -->
+             <div class="p-6 border-t border-slate-100 bg-white">
+                <a :href="project.link || '#'" target="_blank" class="block w-full text-center bg-[#1e3a8a] text-white font-black py-4 rounded-xl text-lg hover:bg-[#172554] hover:-translate-y-1 transition-all shadow-[0_8px_0px_#0a2463] active:translate-y-0 active:shadow-none">
+                  ACCESS PROJECT REPO >>
+                </a>
+             </div>
+
           </div>
         </div>
       </div>
@@ -191,44 +157,30 @@ onUnmounted(() => (document.body.style.overflow = ''))
 <style scoped>
 .modal-enter-active,
 .modal-leave-active {
-  transition: opacity 0.3s ease;
-  transition-delay: 0.1s;
+  transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
 .modal-enter-from,
 .modal-leave-to {
   opacity: 0;
+  transform: scale(0.8) translateY(50px);
 }
 
-.dossier-frame {
-  box-shadow: 0 0 100px rgba(0, 0, 0, 0.8);
+.gadget-card {
+  perspective: 1000px;
 }
 
 .custom-scrollbar::-webkit-scrollbar {
-  width: 4px;
+  width: 6px;
 }
 .custom-scrollbar::-webkit-scrollbar-track {
-  background: #050505;
+  background: #f1f5f9;
 }
 .custom-scrollbar::-webkit-scrollbar-thumb {
-  background: #0e7490;
+  background: #cbd5e1;
+  border-radius: 10px;
 }
-
-/* Tech Reveal Animation */
-.modal-enter-active .dossier-frame {
-  animation: tech-reveal 0.5s cubic-bezier(0.23, 1, 0.32, 1) forwards;
-}
-
-@keyframes tech-reveal {
-  0% {
-    opacity: 0;
-    transform: scale(0.9) translateY(20px);
-    clip-path: inset(50% 0 50% 0);
-  }
-  100% {
-    opacity: 1;
-    transform: scale(1) translateY(0);
-    clip-path: inset(0 0 0 0);
-  }
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
 }
 </style>
