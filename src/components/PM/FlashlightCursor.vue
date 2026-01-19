@@ -40,10 +40,15 @@ onUnmounted(() => {
     <!-- Flashlight Body (Small Torch) -->
     <div class="relative -top-4 -left-4">
        <!-- SVG Flashlight -->
-       <svg width="40" height="40" viewBox="0 0 24 24" fill="none" class="drop-shadow-lg transform -rotate-45">
-          <path d="M12 2L14.5 9H9.5L12 2Z" fill="#ef4444" stroke="#7f1d1d" stroke-width="1.5" stroke-linejoin="round"/>
-          <rect x="8" y="9" width="8" height="12" rx="2" fill="#ef4444" stroke="#7f1d1d" stroke-width="1.5"/>
-          <path d="M10 14H14" stroke="#991b1b" stroke-linecap="round"/>
+       <svg width="48" height="48" viewBox="0 0 24 24" fill="none" class="drop-shadow-lg transform -rotate-45 origin-center">
+          <!-- Handle -->
+          <rect x="10" y="10" width="4" height="10" rx="1" fill="#475569" stroke="#1e293b" stroke-width="1.5" />
+          <!-- Switch -->
+          <rect x="11" y="12" width="2" height="3" rx="0.5" fill="#ef4444" />
+          <!-- Head Base -->
+          <path d="M9 10H15L16 4H8L9 10Z" fill="#334155" stroke="#1e293b" stroke-width="1.5" stroke-linejoin="round"/>
+          <!-- Lens/Bulb Area -->
+          <ellipse cx="12" cy="4" rx="4" ry="1.5" fill="#fef3c7" stroke="#7f1d1d" stroke-width="1.5"/>
        </svg>
 
        <!-- The Light Beam -->

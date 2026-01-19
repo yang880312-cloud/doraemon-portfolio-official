@@ -39,8 +39,7 @@ onUnmounted(() => (document.body.style.overflow = ''))
         <div
           class="relative w-full max-w-5xl h-[90vh] md:h-[80vh] flex flex-col md:flex-row bg-[#ffffff] border-4 border-[#1e3a8a] rounded-[3rem] shadow-[0_20px_50px_rgba(30,58,138,0.5)] overflow-hidden gadget-card"
         >
-          <!-- Decorative Hanging Holes (Like a physical tag) -->
-          <div class="absolute top-6 left-1/2 -translate-x-1/2 w-8 h-8 bg-[#0a2463] rounded-full z-50 border-4 border-[#3b82f6]"></div>
+
 
           <!-- Close Button -->
           <button

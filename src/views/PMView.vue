@@ -1,19 +1,42 @@
 <script setup>
-import { ref } from 'vue'
+import { ref, computed, onMounted } from 'vue'
 import BentoCard from '@/components/PM/BentoCard.vue'
 import PMProjectModal from '@/components/PM/PMProjectModal.vue'
 import FlashlightCursor from '@/components/PM/FlashlightCursor.vue'
-import portfolioData from '@/data/portfolio.json'
+import { useDataStore } from '@/stores/dataStore'
 
 const isModalOpen = ref(false)
 const selectedProject = ref(null)
+
+const dataStore = useDataStore()
+
+// Fetch data on mount
+onMounted(() => {
+  dataStore.fetchProjects()
+})
+
+// Unified Projects Data (Mapped from DB)
+const projects = computed(() => {
+  const pmProjects = dataStore.projects.filter(p => p.type === 'PM')
+
+  return pmProjects.map(p => {
+    // Unpack nested fields from pm_metrics if they exist (backward compatibility for Seeder hack)
+    const packedDetails = p.pm_metrics?._details
+    const packedColor = p.pm_metrics?._theme_color
+
+    return {
+      ...p,
+      // Ensure we fallback to the unpacked values or existing ones
+      details: packedDetails || p.details || {},
+      theme_color: packedColor || p.theme_color || '#1e3a8a'
+    }
+  })
+})
 
 function openProject(project) {
   selectedProject.value = project
   isModalOpen.value = true
 }
-
-const projects = ref(portfolioData)
 
 // Determine card size: Only the first one is large
 function getCardSize(index) {
