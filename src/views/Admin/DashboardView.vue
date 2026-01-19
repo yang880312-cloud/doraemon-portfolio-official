@@ -22,7 +22,7 @@ function handleLogout() {
 </script>
 
 <template>
-  <div class="min-h-screen bg-[#050505] text-white font-mono p-8">
+  <div class="h-full w-full overflow-y-auto bg-[#050505] text-white font-mono p-8 custom-scrollbar">
     <header class="flex justify-between items-center mb-12 border-b border-white/10 pb-4">
       <div>
         <h1 class="text-2xl font-bold text-cyan-400">DORAEMON 控制中樞</h1>
