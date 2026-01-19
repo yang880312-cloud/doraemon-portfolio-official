@@ -3,6 +3,7 @@
     "id": 1,
     "title": "Anywhere Door CMS",
     "category": "Enterprise Tool",
+    "theme_color": "#e91e63",
     "pm_metrics": {
       "efficiency": "+45%",
       "errors": "-90%",
@@ -22,6 +23,7 @@
     "id": 2,
     "title": "Translation Gummy",
     "category": "AI Service",
+    "theme_color": "#3b82f6",
     "pm_metrics": {
       "languages": "50+",
       "accuracy": "98.5%",
@@ -41,6 +43,7 @@
     "id": 3,
     "title": "Memory Bread LMS",
     "category": "EdTech App",
+    "theme_color": "#22c55e",
     "pm_metrics": {
       "retention": "Day 30 > 40%",
       "completion": "85%",
@@ -60,6 +63,7 @@
     "id": 4,
     "title": "Time Furoshiki",
     "category": "DevOps Tool",
+    "theme_color": "#ef4444",
     "pm_metrics": {
       "rollback": "Instant",
       "uptime": "99.99%",
@@ -79,6 +83,7 @@
     "id": 5,
     "title": "Take-Copter Logistics",
     "category": "Logistics Platform",
+    "theme_color": "#eab308",
     "pm_metrics": {
       "delivery": "-20% time",
       "fuel": "-15%",
@@ -98,6 +103,7 @@
     "id": 6,
     "title": "Copy Robot Testing",
     "category": "QA Automation",
+    "theme_color": "#6b7280",
     "pm_metrics": {
       "coverage": "90%",
       "bugs": "-60%",
@@ -117,6 +123,7 @@
     "id": 7,
     "title": "Mood Orchestra",
     "category": "HR Tech",
+    "theme_color": "#a855f7",
     "pm_metrics": {
       "engagement": "+18%",
       "turnover": "-5%",
@@ -136,6 +143,7 @@
     "id": 8,
     "title": "Pass Loop Security",
     "category": "Cybersecurity",
+    "theme_color": "#06b6d4",
     "pm_metrics": {
       "breaches": "0",
       "audits": "Pass",
@@ -155,6 +163,7 @@
     "id": 9,
     "title": "Time-Saving Cloth ERP",
     "category": "Enterprise ERP",
+    "theme_color": "#10b981",
     "pm_metrics": {
       "process": "-50% time",
       "data": "100% sync",

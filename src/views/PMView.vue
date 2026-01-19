@@ -2,6 +2,7 @@
 import { ref } from 'vue'
 import BentoCard from '@/components/PM/BentoCard.vue'
 import PMProjectModal from '@/components/PM/PMProjectModal.vue'
+import FlashlightCursor from '@/components/PM/FlashlightCursor.vue'
 import portfolioData from '@/data/portfolio.json'
 
 const isModalOpen = ref(false)
@@ -22,7 +23,9 @@ function getCardSize(index) {
 </script>
 
 <template>
-  <div class="relative w-full min-h-screen bg-[#f0f8ff] text-[#1e3a8a] p-4 pt-20 md:p-8 md:pt-24 overflow-y-auto">
+  <div class="relative w-full h-full bg-[#f0f8ff] text-[#1e3a8a] p-4 pt-20 md:p-8 md:pt-24 overflow-y-auto cursor-none">
+    <!-- Custom Cursor -->
+    <FlashlightCursor />
     <!-- Header Section -->
     <header
       class="max-w-7xl mx-auto mb-10 flex flex-col md:flex-row justify-between items-end border-b-4 border-[#1e3a8a] pb-6"
