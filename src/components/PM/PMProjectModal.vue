@@ -55,10 +55,13 @@ onUnmounted(() => (document.body.style.overflow = ''))
              <!-- Background Pattern -->
              <div class="absolute inset-0 opacity-10 bg-[radial-gradient(#1e3a8a_2px,transparent_2px)] [background-size:20px_20px]"></div>
 
-             <img
-                :src="currentImage"
-                class="relative z-10 w-full max-h-[80%] object-contain drop-shadow-2xl hover:scale-105 transition-transform duration-500"
-              />
+             <!-- Image Container -->
+             <div class="relative w-full h-full flex items-center justify-center p-4">
+                 <img
+                    :src="currentImage"
+                    class="relative z-10 w-auto h-auto max-w-full max-h-full object-contain drop-shadow-2xl hover:scale-105 transition-transform duration-500"
+                  />
+             </div>
 
              <!-- ID Badge -->
              <div class="absolute bottom-6 left-6 bg-[#1e3a8a] text-white px-4 py-2 rounded-xl font-black font-mono shadow-[4px_4px_0px_#ef4444]">
@@ -67,11 +70,11 @@ onUnmounted(() => (document.body.style.overflow = ''))
           </div>
 
           <!-- RIGHT: Intel Briefing -->
-          <div class="w-full md:w-7/12 h-2/3 md:h-full bg-white flex flex-col relative">
+          <div class="w-full md:w-7/12 h-2/3 md:h-full bg-white flex flex-col relative z-20">
 
             <!-- Header -->
-            <div class="p-8 pb-4 border-b-2 border-slate-100">
-               <div class="flex items-center gap-3 mb-2">
+            <div class="p-8 pb-4 border-b-2 border-slate-100 relative z-30">
+               <div class="flex items-center gap-3 mb-2 relative">
                  <span class="bg-[#fcd34d] text-black text-xs font-black px-3 py-1 rounded-full uppercase tracking-widest border-2 border-black/10">
                    {{ project.category }}
                  </span>

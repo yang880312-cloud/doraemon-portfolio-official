@@ -150,5 +150,24 @@
       "tech": ["OAuth 2.0 / OIDC", "JWT Tokens", "Zero Trust Architecture"],
       "impact": "Security audit passed with flying colors. User login complaints dropped to near zero."
     }
+  },
+  {
+    "id": 9,
+    "title": "Time-Saving Cloth ERP",
+    "category": "Enterprise ERP",
+    "pm_metrics": {
+      "process": "-50% time",
+      "data": "100% sync",
+      "cost": "-30%"
+    },
+    "description": "Smart resource planning system that wraps complex data in simple views.",
+    "thumbnail": "https://placehold.co/600x400/10b981/ffffff?text=Cloth+ERP",
+    "tags": ["Vue 3", "Node.js", "PostgreSQL"],
+    "details": {
+      "problem": "Legacy ERP systems were bloated and slow, causing data entry to take hours manually.",
+      "solution": "Developed a 'Time-Saving Cloth' interface layer that simplifies complex database interactions into drag-and-drop actions.",
+      "tech": ["Vue 3", "Node.js Express", "PostgreSQL"],
+      "impact": "Administrative overhead reduced by 30%. Data entry errors dropped to near zero."
+    }
   }
 ]

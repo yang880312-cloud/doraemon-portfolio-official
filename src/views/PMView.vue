@@ -1,6 +1,5 @@
 <script setup>
 import { ref } from 'vue'
-import DataCursor from '@/components/PM/DataCursor.vue'
 import BentoCard from '@/components/PM/BentoCard.vue'
 import PMProjectModal from '@/components/PM/PMProjectModal.vue'
 import portfolioData from '@/data/portfolio.json'
@@ -9,26 +8,21 @@ const isModalOpen = ref(false)
 const selectedProject = ref(null)
 
 function openProject(project) {
-  console.log('Opening PM Project:', project)
   selectedProject.value = project
   isModalOpen.value = true
 }
 
 const projects = ref(portfolioData)
 
-// Determine card size based on ID or custom logic
+// Determine card size: Only the first one is large
 function getCardSize(index) {
   if (index === 0) return 'large'
-  if (index === 3) return 'tall'
   return 'normal'
 }
 </script>
 
 <template>
   <div class="relative w-full min-h-screen bg-[#f0f8ff] text-[#1e3a8a] p-4 pt-20 md:p-8 md:pt-24 overflow-y-auto">
-    <!-- Custom Cursor -->
-    <DataCursor />
-
     <!-- Header Section -->
     <header
       class="max-w-7xl mx-auto mb-10 flex flex-col md:flex-row justify-between items-end border-b-4 border-[#1e3a8a] pb-6"
@@ -49,7 +43,7 @@ function getCardSize(index) {
     </header>
 
     <!-- Bento Grid Canvas -->
-    <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-6 auto-rows-[250px] mb-20">
+    <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-6 auto-rows-[250px] mb-20 pb-20">
       <BentoCard
         v-for="(project, index) in projects"
         :key="project.id"
