@@ -30,6 +30,7 @@ const formData = ref({
 })
 
 // Initialize
+// Initialize
 onMounted(async () => {
   if (!isNew.value) {
     // Ensure we have data
@@ -41,7 +42,35 @@ onMounted(async () => {
     if (existing) {
       // Deep copy to avoid mutating store directly before save
       formData.value = JSON.parse(JSON.stringify(existing))
+      // Ensure images is array to prevent "not iterable" error in GalleryUploader
+      if (!formData.value.images) formData.value.images = []
+      // Ensure pm_metrics structure exists
+      if (!formData.value.pm_metrics) formData.value.pm_metrics = {}
+      if (!formData.value.pm_metrics._details) formData.value.pm_metrics._details = {}
     }
+  } else {
+    // New project initialization
+     formData.value.images = []
+     formData.value.pm_metrics = {
+       users: '', revenue: '',
+       _details: { problem: '', solution: '', tech: [], impact: '', repo: '' }
+     }
+  }
+})
+
+// Computed for comma-separated tech stack
+const techStackInput = computed({
+  get: () => {
+     const tech = formData.value.pm_metrics?._details?.tech
+     return Array.isArray(tech) ? tech.join(', ') : ''
+  },
+  set: (val) => {
+    // Ensure initialization
+    if (!formData.value.pm_metrics) formData.value.pm_metrics = {}
+    if (!formData.value.pm_metrics._details) formData.value.pm_metrics._details = {}
+
+    // Split by comma and clean whitespace
+    formData.value.pm_metrics._details.tech = val.split(',').map(s => s.trim()).filter(Boolean)
   }
 })
 
@@ -159,13 +188,30 @@ async function remove() {
               placeholder="請輸入專案名稱"
             />
           </div>
-          <div>
-            <label class="block text-xs text-gray-500 mb-1">分類 (CATEGORY)</label>
-            <input
-              v-model="formData.category"
-              class="w-full bg-black border border-gray-700 p-2 text-sm focus:border-cyan-500 outline-none"
-              placeholder="例如：B2B SaaS, UI Design"
-            />
+          <div class="grid grid-cols-2 gap-4">
+            <div>
+              <label class="block text-xs text-gray-500 mb-1">分類 (CATEGORY)</label>
+              <input
+                v-model="formData.category"
+                class="w-full bg-black border border-gray-700 p-2 text-sm focus:border-cyan-500 outline-none"
+                placeholder="e.g. B2B SaaS"
+              />
+            </div>
+             <div v-if="formData.type === 'PM'">
+               <label class="block text-xs text-gray-500 mb-1">主題色 (THEME COLOR)</label>
+               <div class="flex gap-2">
+                 <input
+                  v-model="formData.pm_metrics._theme_color"
+                  type="color"
+                  class="h-9 w-9 bg-transparent border-0 cursor-pointer"
+                />
+                <input
+                  v-model="formData.pm_metrics._theme_color"
+                  class="flex-1 bg-black border border-gray-700 p-2 text-sm font-mono text-cyan-500"
+                  placeholder="#1e3a8a"
+                />
+               </div>
+            </div>
           </div>
         </div>
 
@@ -175,44 +221,90 @@ async function remove() {
             <ImageUploader v-model="formData.image" label="封面圖片 (COVER IMAGE)" />
           </div>
           <div>
+             <!-- Safely bind to images with v-if check to prevent initial null error if store is slow -->
             <label class="block text-xs text-gray-500 mb-1">畫廊多圖連結 (GALLERY IMAGES)</label>
-
             <GalleryUploader
               v-model="formData.images"
-              label="畫廊多圖 (GALLERY IMAGES) - 支援批次上傳"
+              label="畫廊多圖 - 支援批次上傳"
             />
           </div>
         </div>
 
         <!-- Description -->
         <div>
-          <label class="block text-xs text-gray-500 mb-1">專案描述 (DESCRIPTION)</label>
+          <label class="block text-xs text-gray-500 mb-1">專案簡述 (SUMMARY)</label>
           <textarea
             v-model="formData.description"
-            class="w-full h-32 bg-black border border-gray-700 p-3 text-sm leading-relaxed focus:border-cyan-500 outline-none resize-none"
-            placeholder="請輸入專案介紹..."
+            class="w-full h-24 bg-black border border-gray-700 p-3 text-sm leading-relaxed focus:border-cyan-500 outline-none resize-none"
+            placeholder="卡片上的簡短介紹..."
           ></textarea>
         </div>
 
-        <!-- Specifics -->
-        <div v-if="formData.type === 'PM'" class="grid grid-cols-2 gap-4">
-          <div>
-            <label class="block text-xs text-gray-500 mb-1">關鍵數據：用戶數 (USERS)</label>
-            <input
-              v-model="formData.pm_metrics.users"
-              class="w-full bg-black border border-gray-700 p-2 text-sm"
-              placeholder="e.g. 10k+"
-            />
-          </div>
-          <div>
-            <label class="block text-xs text-gray-500 mb-1">關鍵數據：增長/營收 (GROWTH)</label>
-            <input
-              v-model="formData.pm_metrics.revenue"
-              class="w-full bg-black border border-gray-700 p-2 text-sm"
-              placeholder="e.g. +120%"
-            />
-          </div>
+        <!-- PM Specifics -->
+        <div v-if="formData.type === 'PM'" class="space-y-6 border-t border-gray-800 pt-6">
+           <h3 class="text-sm font-mono text-cyan-400">祕密道具詳情 (GADGET DETAILS)</h3>
+
+           <!-- Metrics Row -->
+           <div class="grid grid-cols-2 gap-4">
+             <div>
+              <label class="block text-xs text-gray-500 mb-1">關鍵數據：用戶數 (USERS)</label>
+              <input v-model="formData.pm_metrics.users" class="w-full bg-black border border-gray-700 p-2 text-sm" placeholder="10k+" />
+            </div>
+            <div>
+              <label class="block text-xs text-gray-500 mb-1">關鍵數據：成效 (GROWTH)</label>
+              <input v-model="formData.pm_metrics.revenue" class="w-full bg-black border border-gray-700 p-2 text-sm" placeholder="+50%" />
+            </div>
+           </div>
+
+           <!-- Problem & Solution -->
+           <div class="grid grid-cols-1 gap-4">
+              <div>
+                <label class="block text-xs text-red-400 mb-1">故障/痛點 (PROBLEM)</label>
+                <textarea
+                  v-model="formData.pm_metrics._details.problem"
+                  class="w-full h-20 bg-black border border-red-900/30 p-2 text-sm focus:border-red-500 outline-none"
+                  placeholder="遇到的問題..."
+                ></textarea>
+              </div>
+              <div>
+                <label class="block text-xs text-green-400 mb-1">道具/解決方案 (SOLUTION)</label>
+                 <textarea
+                  v-model="formData.pm_metrics._details.solution"
+                  class="w-full h-28 bg-black border border-green-900/30 p-2 text-sm focus:border-green-500 outline-none"
+                  placeholder="使用了什麼道具/方法..."
+                ></textarea>
+              </div>
+           </div>
+
+           <!-- Tech & Impact -->
+           <div class="space-y-4">
+             <div>
+               <label class="block text-xs text-blue-400 mb-1">核心機制 (TECH STACK) - 用逗號分隔</label>
+               <input
+                v-model="techStackInput"
+                class="w-full bg-black border border-blue-900/30 p-2 text-sm focus:border-blue-500 outline-none"
+                placeholder="Vue, Firebase, Tailwind"
+              />
+             </div>
+             <div>
+               <label class="block text-xs text-yellow-400 mb-1">任務成果 (IMPACT)</label>
+               <textarea
+                  v-model="formData.pm_metrics._details.impact"
+                  class="w-full h-20 bg-black border border-yellow-900/30 p-2 text-sm focus:border-yellow-500 outline-none"
+                  placeholder="量化成果描述..."
+                ></textarea>
+             </div>
+             <div>
+                <label class="block text-xs text-gray-500 mb-1">道具倉庫連結 (REPO LINK)</label>
+                <input
+                  v-model="formData.pm_metrics._details.repo"
+                  class="w-full bg-black border border-gray-700 p-2 text-sm"
+                  placeholder="https://github.com/..."
+                />
+             </div>
+           </div>
         </div>
+
         <div v-if="formData.type === 'DESIGN'">
           <label class="block text-xs text-gray-500 mb-1">氛圍關鍵字 (MOOD)</label>
           <input
@@ -269,7 +361,12 @@ async function remove() {
             <div class="w-[400px]">
               <!-- Standard Bento size -->
               <BentoCard
-                :project="formData"
+                :project="{
+                   ...formData,
+                   // Ensure preview sees the mapped structure immediately
+                   details: formData.pm_metrics._details,
+                   theme_color: formData.pm_metrics._theme_color
+                }"
                 size="large"
                 class="pointer-events-none shadow-2xl shadow-blue-900/20"
               />
