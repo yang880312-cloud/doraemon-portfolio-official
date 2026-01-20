@@ -356,22 +356,24 @@ async function remove() {
           ></div>
 
           <!-- PM PREVIEW: Bento Card -->
-          <div v-if="formData.type === 'PM'" class="relative z-10 transition-all duration-500">
-            <!-- Scale wrapper or just max-width -->
-            <div class="w-[400px]">
-              <!-- Standard Bento size -->
-              <BentoCard
-                :project="{
-                   ...formData,
-                   // Ensure preview sees the mapped structure immediately
-                   details: formData.pm_metrics._details,
-                   theme_color: formData.pm_metrics._theme_color
-                }"
-                size="large"
-                class="pointer-events-none shadow-2xl shadow-blue-900/20"
-              />
+          <div v-if="formData.type === 'PM'" class="relative z-10 transition-all duration-500 w-full flex flex-col items-center">
+            <!-- Scale wrapper: Force scale down to simulate desktop view on smaller container -->
+            <div class="origin-top transform scale-[0.6] sm:scale-[0.7] md:scale-[0.8] lg:scale-100">
+               <div class="w-[350px] md:w-[400px]">
+                <!-- Standard Bento size -->
+                <BentoCard
+                  :project="{
+                    ...formData,
+                    // Ensure preview sees the mapped structure immediately
+                    details: formData.pm_metrics._details,
+                    theme_color: formData.pm_metrics._theme_color
+                  }"
+                  size="large"
+                  class="pointer-events-none shadow-2xl shadow-blue-900/20"
+                />
+              </div>
             </div>
-            <div class="text-center mt-8 text-gray-600 font-mono text-xs">
+            <div class="text-center mt-4 text-gray-600 font-mono text-xs">
               *Previewing 'Large' Variant
             </div>
           </div>

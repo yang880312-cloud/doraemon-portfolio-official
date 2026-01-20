@@ -17,6 +17,16 @@ const currentImage = computed(() => {
   return props.project?.image
 })
 
+function nextImage() {
+  if (!hasMultipleImages.value) return
+  currentIndex.value = (currentIndex.value + 1) % props.project.images.length
+}
+
+function prevImage() {
+  if (!hasMultipleImages.value) return
+  currentIndex.value = (currentIndex.value - 1 + props.project.images.length) % props.project.images.length
+}
+
 // Prevent scrolling when modal is open
 onMounted(() => {
   if (props.isOpen) document.body.style.overflow = 'hidden'
@@ -50,20 +60,56 @@ onUnmounted(() => (document.body.style.overflow = ''))
           </button>
 
           <!-- LEFT: Visual Showcase -->
-          <div class="relative w-full md:w-5/12 h-1/3 md:h-full bg-[#f0f9ff] flex items-center justify-center p-8 border-b-4 md:border-b-0 md:border-r-4 border-[#1e3a8a] overflow-hidden">
+          <div class="relative w-full md:w-5/12 h-1/3 md:h-full bg-[#f0f9ff] flex flex-col items-center justify-center p-4 md:p-8 border-b-4 md:border-b-0 md:border-r-4 border-[#1e3a8a] overflow-hidden group">
              <!-- Background Pattern -->
              <div class="absolute inset-0 opacity-10 bg-[radial-gradient(#1e3a8a_2px,transparent_2px)] [background-size:20px_20px]"></div>
 
-             <!-- Image Container -->
-             <div class="relative w-full h-full flex items-center justify-center p-4">
-                 <img
-                    :src="currentImage"
-                    class="relative z-10 w-auto h-auto max-w-full max-h-full object-contain drop-shadow-2xl hover:scale-105 transition-transform duration-500"
-                  />
+             <!-- Main Image Container -->
+             <div class="relative flex-1 w-full flex items-center justify-center overflow-hidden mb-4">
+
+                 <!-- Prev Button -->
+                 <button
+                    v-if="hasMultipleImages"
+                    @click.stop="prevImage"
+                    class="absolute left-2 z-20 p-2 bg-black/20 hover:bg-black/50 text-white rounded-full backdrop-blur-sm transition-all opacity-0 group-hover:opacity-100"
+                 >
+                   ←
+                 </button>
+
+                 <!-- Image Transition Wrapper -->
+                 <Transition name="fade" mode="out-in">
+                    <img
+                        :key="currentIndex"
+                        :src="currentImage"
+                        class="relative z-10 w-full h-full object-contain drop-shadow-2xl hover:scale-105 transition-transform duration-500"
+                    />
+                 </Transition>
+
+                 <!-- Next Button -->
+                 <button
+                    v-if="hasMultipleImages"
+                    @click.stop="nextImage"
+                    class="absolute right-2 z-20 p-2 bg-black/20 hover:bg-black/50 text-white rounded-full backdrop-blur-sm transition-all opacity-0 group-hover:opacity-100"
+                 >
+                   →
+                 </button>
+             </div>
+
+             <!-- Thumbnail Strip (IG Style Grid) -->
+             <div v-if="hasMultipleImages" class="relative z-20 flex gap-2 overflow-x-auto pb-2 w-full justify-center custom-scrollbar h-16 shrink-0">
+               <button
+                 v-for="(img, idx) in project.images"
+                 :key="idx"
+                 @click.stop="currentIndex = idx"
+                 class="w-12 h-12 rounded-lg border-2 overflow-hidden transition-all shrink-0 hover:scale-110"
+                 :class="currentIndex === idx ? 'border-[#ef4444] scale-110 ring-2 ring-[#ef4444]/30' : 'border-[#1e3a8a]/20 opacity-60 hover:opacity-100'"
+               >
+                 <img :src="img" class="w-full h-full object-cover" />
+               </button>
              </div>
 
              <!-- ID Badge -->
-             <div class="absolute bottom-6 left-6 bg-[#1e3a8a] text-white px-4 py-2 rounded-xl font-black font-mono shadow-[4px_4px_0px_#ef4444]">
+             <div class="absolute top-4 left-4 md:bottom-6 md:left-6 md:top-auto bg-[#1e3a8a] text-white px-4 py-2 rounded-xl font-black font-mono shadow-[4px_4px_0px_#ef4444] z-10 pointer-events-none">
                NO. {{ (project.id || 0).toString().padStart(3, '0') }}
              </div>
           </div>
@@ -166,6 +212,16 @@ onUnmounted(() => (document.body.style.overflow = ''))
 .modal-leave-to {
   opacity: 0;
   transform: scale(0.8) translateY(50px);
+}
+
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.3s ease;
+}
+
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
 }
 
 .gadget-card {
