@@ -21,11 +21,17 @@ const projects = computed(() => {
 
   return pmProjects.map(p => {
     // Unpack nested fields from pm_metrics if they exist (backward compatibility for Seeder hack)
-    const packedDetails = p.pm_metrics?._details
-    const packedColor = p.pm_metrics?._theme_color
+    const rawMetrics = p.pm_metrics || {}
+    const packedDetails = rawMetrics._details
+    const packedColor = rawMetrics._theme_color
+
+    // Clean metrics for display (remove internal storage keys)
+    // eslint-disable-next-line no-unused-vars
+    const { _details, _theme_color, ...cleanMetrics } = rawMetrics
 
     return {
       ...p,
+      pm_metrics: cleanMetrics,
       // Ensure we fallback to the unpacked values or existing ones
       details: packedDetails || p.details || {},
       theme_color: packedColor || p.theme_color || '#1e3a8a'
