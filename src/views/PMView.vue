@@ -61,16 +61,17 @@ function getCardSize(index) {
     >
       <div>
         <h1 class="text-5xl md:text-7xl font-black tracking-tighter mb-2 text-[#1e3a8a] drop-shadow-sm">
-          SECRET <span class="text-[#ef4444]">GADGETS</span>
+          祕密 <span class="text-[#ef4444]">道具倉庫</span>
         </h1>
         <p class="text-[#1e3a8a]/70 font-medium max-w-lg text-lg">
-          Solving real-world problems with futuristic logic.
-          <br /><span class="text-xs uppercase tracking-widest bg-[#1e3a8a] text-white px-2 py-1 rounded-full mt-2 inline-block">22nd Century Department Store</span>
+          用未來邏輯解決現實世界的問題。
+          <br /><span class="text-xs uppercase tracking-widest bg-[#1e3a8a] text-white px-2 py-1 rounded-full mt-2 inline-block">22世紀百貨公司</span>
         </p>
       </div>
       <div class="text-right font-bold font-mono text-sm text-[#ef4444] mt-4 md:mt-0 bg-white px-4 py-2 rounded-xl border-2 border-[#1e3a8a] shadow-[4px_4px_0px_rgba(30,58,138,1)]">
-        SYSTEM: ONLINE <br />
-        GADGETS: {{ projects.length }}
+        系統狀態：線上 <br />
+        道具總數：<span v-if="dataStore.isLoading" class="animate-pulse">掃描中...</span>
+        <span v-else>{{ projects.length }}</span>
       </div>
     </header>
 
