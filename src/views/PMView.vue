@@ -7,6 +7,7 @@ import { useDataStore } from '@/stores/dataStore'
 
 const isModalOpen = ref(false)
 const selectedProject = ref(null)
+const selectedIndex = ref(0) // Track index for numbering
 
 const dataStore = useDataStore()
 
@@ -39,8 +40,9 @@ const projects = computed(() => {
   })
 })
 
-function openProject(project) {
+function openProject(project, index) {
   selectedProject.value = project
+  selectedIndex.value = index
   isModalOpen.value = true
 }
 
@@ -83,12 +85,12 @@ function getCardSize(index) {
         :project="project"
         :size="getCardSize(index)"
         class="cursor-pointer shadow-lg hover:shadow-xl transition-shadow duration-300"
-        @click="openProject(project)"
+        @click="openProject(project, index)"
       />
     </div>
 
     <!-- Project Detail Modal -->
-    <PMProjectModal :isOpen="isModalOpen" :project="selectedProject" @close="isModalOpen = false" />
+    <PMProjectModal :isOpen="isModalOpen" :project="selectedProject" :index="selectedIndex" @close="isModalOpen = false" />
   </div>
 </template>
 

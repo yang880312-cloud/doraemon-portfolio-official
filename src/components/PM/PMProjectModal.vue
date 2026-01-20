@@ -4,6 +4,7 @@ import { onMounted, onUnmounted, ref, computed } from 'vue'
 const props = defineProps({
   isOpen: Boolean,
   project: Object,
+  index: Number,
 })
 
 const emit = defineEmits(['close'])
@@ -65,34 +66,36 @@ onUnmounted(() => (document.body.style.overflow = ''))
              <div class="absolute inset-0 opacity-10 bg-[radial-gradient(#1e3a8a_2px,transparent_2px)] [background-size:20px_20px]"></div>
 
              <!-- Main Image Container -->
+             <!-- Added aspect ratio wrapper to match standard card feel -->
              <div class="relative flex-1 w-full flex items-center justify-center overflow-hidden mb-4">
+                 <div class="relative w-full aspect-[4/3] max-h-full">
+                     <!-- Prev Button -->
+                     <button
+                        v-if="hasMultipleImages"
+                        @click.stop="prevImage"
+                        class="absolute left-2 top-1/2 -translate-y-1/2 z-20 p-2 bg-black/20 hover:bg-black/50 text-white rounded-full backdrop-blur-sm transition-all opacity-0 group-hover:opacity-100"
+                     >
+                       ←
+                     </button>
 
-                 <!-- Prev Button -->
-                 <button
-                    v-if="hasMultipleImages"
-                    @click.stop="prevImage"
-                    class="absolute left-2 z-20 p-2 bg-black/20 hover:bg-black/50 text-white rounded-full backdrop-blur-sm transition-all opacity-0 group-hover:opacity-100"
-                 >
-                   ←
-                 </button>
+                     <!-- Image Transition Wrapper -->
+                     <Transition name="fade" mode="out-in">
+                        <img
+                            :key="currentIndex"
+                            :src="currentImage"
+                            class="absolute inset-0 w-full h-full object-cover rounded-2xl drop-shadow-2xl hover:scale-105 transition-transform duration-500"
+                        />
+                     </Transition>
 
-                 <!-- Image Transition Wrapper -->
-                 <Transition name="fade" mode="out-in">
-                    <img
-                        :key="currentIndex"
-                        :src="currentImage"
-                        class="relative z-10 w-full h-full object-contain drop-shadow-2xl hover:scale-105 transition-transform duration-500"
-                    />
-                 </Transition>
-
-                 <!-- Next Button -->
-                 <button
-                    v-if="hasMultipleImages"
-                    @click.stop="nextImage"
-                    class="absolute right-2 z-20 p-2 bg-black/20 hover:bg-black/50 text-white rounded-full backdrop-blur-sm transition-all opacity-0 group-hover:opacity-100"
-                 >
-                   →
-                 </button>
+                     <!-- Next Button -->
+                     <button
+                        v-if="hasMultipleImages"
+                        @click.stop="nextImage"
+                        class="absolute right-2 top-1/2 -translate-y-1/2 z-20 p-2 bg-black/20 hover:bg-black/50 text-white rounded-full backdrop-blur-sm transition-all opacity-0 group-hover:opacity-100"
+                     >
+                       →
+                     </button>
+                 </div>
              </div>
 
              <!-- Thumbnail Strip (IG Style Grid) -->
@@ -110,7 +113,7 @@ onUnmounted(() => (document.body.style.overflow = ''))
 
              <!-- ID Badge -->
              <div class="absolute top-4 left-4 md:bottom-6 md:left-6 md:top-auto bg-[#1e3a8a] text-white px-4 py-2 rounded-xl font-black font-mono shadow-[4px_4px_0px_#ef4444] z-10 pointer-events-none">
-               NO. {{ (project.id || 0).toString().padStart(3, '0') }}
+               NO. {{ (index + 1).toString().padStart(3, '0') }}
              </div>
           </div>
 
