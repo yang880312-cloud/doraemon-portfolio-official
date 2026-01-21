@@ -50,16 +50,17 @@ function resetCursor() {
     ></div>
 
     <!-- Hidden Image Layer (Revealed by Flashlight Mask) -->
-    <!-- We use mask-image to create the flashlight effect locally on the card -->
-      class="absolute inset-0 z-10 pointer-events-none transition-opacity duration-200"
+    <img
+      :src="project.thumbnail || (project.gallery && project.gallery[0])"
+      alt="Project Thumbnail"
+      class="absolute inset-0 w-full h-full object-cover z-10 pointer-events-none transition-opacity duration-200"
       :style="{
         opacity: isHovering ? 1 : 0,
         maskImage: isHovering ? `radial-gradient(circle 120px at ${cursorX}px ${cursorY}px, black 30%, transparent 100%)` : 'none',
         WebkitMaskImage: isHovering ? `radial-gradient(circle 120px at ${cursorX}px ${cursorY}px, black 30%, transparent 100%)` : 'none'
       }"
-    >
-      <img :src="project.thumbnail" class="w-full h-full object-cover" alt="Gadget Thumbnail">
-    </div>
+    />
+
 
     <!-- Content (Always visible on top) -->
     <div class="relative z-20 flex flex-col justify-end h-full p-5 md:p-6 pointer-events-none">
