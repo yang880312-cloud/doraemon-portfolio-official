@@ -30,8 +30,12 @@ const projects = computed(() => {
     // eslint-disable-next-line no-unused-vars
     const { _details, _theme_color, ...cleanMetrics } = rawMetrics
 
+    // Fallback: If no thumbnail, use the first image in gallery
+    const displayThumbnail = p.thumbnail || (p.images && p.images.length > 0 ? p.images[0] : '')
+
     return {
       ...p,
+      thumbnail: displayThumbnail, // Explicitly override
       pm_metrics: cleanMetrics,
       // Ensure we fallback to the unpacked values or existing ones
       details: packedDetails || p.details || {},

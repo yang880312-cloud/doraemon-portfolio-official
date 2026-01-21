@@ -61,14 +61,14 @@ onUnmounted(() => (document.body.style.overflow = ''))
           </button>
 
           <!-- LEFT: Visual Showcase -->
-          <div class="relative w-full md:w-5/12 h-1/3 md:h-full bg-[#f0f9ff] flex flex-col items-center justify-center p-4 md:p-8 border-b-4 md:border-b-0 md:border-r-4 border-[#1e3a8a] overflow-hidden group">
+          <div class="relative w-full md:w-5/12 h-1/3 md:h-full bg-[#f0f9ff] flex flex-col p-6 border-b-4 md:border-b-0 md:border-r-4 border-[#1e3a8a] overflow-hidden group">
              <!-- Background Pattern -->
              <div class="absolute inset-0 opacity-10 bg-[radial-gradient(#1e3a8a_2px,transparent_2px)] [background-size:20px_20px]"></div>
 
-             <!-- Main Image Container -->
-             <!-- Added aspect ratio wrapper to match standard card feel -->
-             <div class="relative flex-1 w-full flex items-center justify-center overflow-hidden mb-4">
-                 <div class="relative w-full aspect-[4/3] max-h-full">
+             <!-- Main Image Container (4:3 Aspect Ratio) -->
+             <div class="relative w-full flex-1 flex flex-col justify-center mb-4">
+                 <div class="relative w-full aspect-[4/3] rounded-2xl overflow-hidden shadow-xl border-4 border-white transition-transform duration-500 hover:scale-[1.02]">
+
                      <!-- Prev Button -->
                      <button
                         v-if="hasMultipleImages"
@@ -83,7 +83,7 @@ onUnmounted(() => (document.body.style.overflow = ''))
                         <img
                             :key="currentIndex"
                             :src="currentImage"
-                            class="absolute inset-0 w-full h-full object-cover rounded-2xl drop-shadow-2xl hover:scale-105 transition-transform duration-500"
+                            class="absolute inset-0 w-full h-full object-cover"
                         />
                      </Transition>
 
@@ -95,25 +95,25 @@ onUnmounted(() => (document.body.style.overflow = ''))
                      >
                        →
                      </button>
+
+                     <!-- ID Badge (Overlay on Image) -->
+                     <div class="absolute top-4 left-4 bg-[#1e3a8a]/90 backdrop-blur-sm text-white px-3 py-1.5 rounded-lg font-black font-mono shadow-[2px_2px_0px_#ef4444] z-30 pointer-events-none border border-white/20 text-sm">
+                       NO. {{ (index + 1).toString().padStart(3, '0') }}
+                     </div>
                  </div>
              </div>
 
              <!-- Thumbnail Strip (IG Style Grid) -->
-             <div v-if="hasMultipleImages" class="relative z-20 flex gap-2 overflow-x-auto pb-2 w-full justify-center custom-scrollbar h-16 shrink-0">
+             <div v-if="hasMultipleImages" class="relative z-20 flex gap-2 overflow-x-auto pb-2 w-full justify-center custom-scrollbar h-16 shrink-0 pt-2 border-t border-[#1e3a8a]/10">
                <button
                  v-for="(img, idx) in project.images"
                  :key="idx"
                  @click.stop="currentIndex = idx"
-                 class="w-12 h-12 rounded-lg border-2 overflow-hidden transition-all shrink-0 hover:scale-110"
-                 :class="currentIndex === idx ? 'border-[#ef4444] scale-110 ring-2 ring-[#ef4444]/30' : 'border-[#1e3a8a]/20 opacity-60 hover:opacity-100'"
+                 class="w-12 h-12 rounded-lg border-2 overflow-hidden transition-all shrink-0 relative"
+                 :class="currentIndex === idx ? 'border-[#ef4444] scale-110 ring-2 ring-[#ef4444]/30' : 'border-[#1e3a8a]/20 opacity-60 hover:opacity-100 hover:scale-110'"
                >
                  <img :src="img" class="w-full h-full object-cover" />
                </button>
-             </div>
-
-             <!-- ID Badge -->
-             <div class="absolute top-4 left-4 md:bottom-6 md:left-6 md:top-auto bg-[#1e3a8a] text-white px-4 py-2 rounded-xl font-black font-mono shadow-[4px_4px_0px_#ef4444] z-10 pointer-events-none">
-               NO. {{ (index + 1).toString().padStart(3, '0') }}
              </div>
           </div>
 
