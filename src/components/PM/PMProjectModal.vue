@@ -60,7 +60,7 @@ onUnmounted(() => (document.body.style.overflow = ''))
           </button>
 
           <!-- LEFT: Visual Showcase (Dark Theme) -->
-          <div class="relative w-full md:w-1/2 h-1/3 md:h-full bg-[#0f172a] flex flex-col p-6 md:p-10 border-b-4 md:border-b-0 md:border-r-4 border-[#1e3a8a] overflow-hidden group">
+          <div class="relative w-full md:w-1/2 h-1/3 md:h-full bg-[#0f172a] flex flex-col border-b-4 md:border-b-0 md:border-r-4 border-[#1e3a8a] overflow-hidden group">
 
              <!-- Background Grid Pattern -->
              <div class="absolute inset-0 opacity-20 bg-[linear-gradient(rgba(255,255,255,0.05)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.05)_1px,transparent_1px)] [background-size:20px_20px]"></div>
