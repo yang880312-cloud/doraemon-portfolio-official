@@ -120,14 +120,14 @@ onUnmounted(() => (document.body.style.overflow = ''))
              </div>
           </div>
 
-          <!-- RIGHT: Intel Briefing (White Theme) -->
-          <div class="w-full md:w-1/2 h-2/3 md:h-full bg-white flex flex-col relative z-20">
+          <!-- RIGHT: Intel Briefing (White Theme -> Soft Slate Theme) -->
+          <div class="w-full md:w-1/2 h-2/3 md:h-full bg-[#F8FAFC] flex flex-col relative z-20">
 
             <!-- Header -->
-            <div class="px-8 pt-10 pb-6 border-b border-slate-100">
+            <div class="px-8 pt-10 pb-6 border-b border-slate-200">
                <div class="flex items-center gap-3 mb-3">
                  <span class="bg-[#fcd34d] text-[#1e3a8a] text-[10px] md:text-xs font-black px-3 py-1 rounded-full uppercase tracking-widest border border-yellow-400 shadow-sm">
-                   這是一個文件 <!-- Hardcoded for visual match, or use project.category -->
+                   {{ project.category || "PROJECT" }}
                  </span>
                </div>
                <h2 class="text-3xl md:text-5xl font-black text-[#1e3a8a] tracking-tight leading-none mb-2">
@@ -177,15 +177,15 @@ onUnmounted(() => (document.body.style.overflow = ''))
                   <span
                     v-for="tech in (project.details?.tech || project.tags)"
                     :key="tech"
-                    class="px-3 py-1 bg-slate-50 text-[#1e3a8a] font-bold text-xs rounded border border-slate-200"
+                    class="px-3 py-1 bg-white text-[#1e3a8a] font-bold text-xs rounded border border-slate-200 shadow-sm"
                   >
                     {{ tech }}
                   </span>
                 </div>
                </div>
 
-               <!-- 4. Impact (Boxed) -->
-               <div class="bg-[#f0f9ff] rounded-2xl border border-[#3b82f6]/20 overflow-hidden relative">
+               <!-- 4. Impact (Boxed & Larger Metrics) -->
+               <div class="bg-white rounded-2xl border border-[#3b82f6]/20 overflow-hidden relative shadow-sm">
                  <div class="absolute top-0 left-0 w-1 h-full bg-[#3b82f6]"></div>
                  <div class="p-6">
                     <h3 class="text-xs font-black text-[#1e3a8a] uppercase tracking-widest mb-4 flex items-center gap-2">
@@ -193,7 +193,8 @@ onUnmounted(() => (document.body.style.overflow = ''))
                      </h3>
                      <div class="flex justify-around items-end">
                         <div v-for="(val, key) in project.pm_metrics" :key="key" class="text-center group/metric">
-                          <div class="text-xl md:text-3xl font-black text-[#ef4444] font-mono mb-1 group-hover/metric:scale-110 transition-transform">{{ val }}</div>
+                          <!-- Metric Value: Increased to text-4xl for visibility -->
+                          <div class="text-2xl md:text-4xl font-black text-[#ef4444] font-mono mb-1 group-hover/metric:scale-110 transition-transform drop-shadow-sm">{{ val }}</div>
                           <div class="text-[10px] uppercase font-bold text-[#1e3a8a]/60 tracking-wider">{{ key }}</div>
                         </div>
                      </div>
@@ -203,7 +204,7 @@ onUnmounted(() => (document.body.style.overflow = ''))
             </div>
 
              <!-- Footer Button -->
-             <div class="p-6 border-t border-slate-100 bg-white">
+             <div class="p-6 border-t border-slate-200 bg-[#F8FAFC]">
                 <a :href="project.link || '#'" target="_blank" class="block w-full text-center bg-[#1e3a8a] text-white font-black py-4 rounded-xl text-lg tracking-wide hover:bg-[#172554] hover:shadow-lg hover:-translate-y-1 transition-all shadow-[0_4px_0px_#0a2463] active:translate-y-0 active:shadow-none bg-[linear-gradient(45deg,transparent_25%,rgba(255,255,255,0.1)_50%,transparent_75%,transparent_100%)] bg-[length:250%_250%,100%_100%] bg-[position:0_0,0_0] hover:bg-[position:100%_100%,0_0]">
                   訪問專案倉庫 >>
                 </a>
@@ -217,15 +218,16 @@ onUnmounted(() => (document.body.style.overflow = ''))
 </template>
 
 <style scoped>
+/* Modal Entry Animation */
 .modal-enter-active,
 .modal-leave-active {
-  transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1); /* Ease-out quart for premium feel */
 }
 
 .modal-enter-from,
 .modal-leave-to {
   opacity: 0;
-  transform: scale(0.8) translateY(50px);
+  transform: scale(0.95) translateY(20px); /* Subtle zoom-in instead of drastic move */
 }
 
 .fade-enter-active,
