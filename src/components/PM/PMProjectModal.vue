@@ -185,19 +185,32 @@ onUnmounted(() => (document.body.style.overflow = ''))
                </div>
 
                <!-- 4. Impact (Boxed & Larger Metrics) -->
-               <div class="bg-white rounded-2xl border border-[#3b82f6]/20 overflow-hidden relative shadow-sm">
-                 <div class="absolute top-0 left-0 w-1 h-full bg-[#3b82f6]"></div>
-                 <div class="p-6">
-                    <h3 class="text-xs font-black text-[#1e3a8a] uppercase tracking-widest mb-4 flex items-center gap-2">
-                        <span class="text-lg">📊</span> 任務成果
-                     </h3>
-                     <div class="flex justify-around items-end">
-                        <div v-for="(val, key) in project.pm_metrics" :key="key" class="text-center group/metric">
-                          <!-- Metric Value: Increased to text-4xl for visibility -->
-                          <div class="text-2xl md:text-4xl font-black text-[#ef4444] font-mono mb-1 group-hover/metric:scale-110 transition-transform drop-shadow-sm">{{ val }}</div>
-                          <div class="text-[10px] uppercase font-bold text-[#1e3a8a]/60 tracking-wider">{{ key }}</div>
-                        </div>
-                     </div>
+               <div class="bg-[#eff6ff] rounded-xl border-l-4 border-[#3b82f6] overflow-hidden relative shadow-sm p-6">
+                  <h3 class="text-xs font-black text-[#1e3a8a] uppercase tracking-widest mb-6 flex items-center gap-2">
+                    <!-- Icon -->
+                    <div class="w-6 h-6 flex items-center justify-center bg-gradient-to-br from-green-400 to-blue-500 rounded-md shadow-sm">
+                       <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"></line><line x1="12" y1="20" x2="12" y2="4"></line><line x1="6" y1="20" x2="6" y2="14"></line></svg>
+                    </div>
+                    任務成果
+                 </h3>
+                 <div class="flex flex-wrap justify-between items-start gap-y-6">
+                    <div v-for="(val, key) in project.pm_metrics" :key="key" class="text-center group/metric flex-1 min-w-[100px]">
+
+                      <!-- Value Parsing Logic (Inline for simplicity) -->
+                      <div class="flex items-baseline justify-center gap-1 mb-1">
+                        <!-- Big Number -->
+                        <span class="text-3xl md:text-5xl font-black text-[#ef4444] font-mono tracking-tighter drop-shadow-sm">
+                           {{ typeof val === 'string' ? val.match(/^([-+0-9.%]+)/)?.[0] || val : val }}
+                        </span>
+                        <!-- Small Unit -->
+                         <span class="text-base md:text-xl font-bold text-[#ef4444] font-mono opacity-80">
+                            {{ typeof val === 'string' ? val.replace(/^([-+0-9.%]+)/, '').trim() : '' }}
+                         </span>
+                      </div>
+
+                      <!-- Label -->
+                      <div class="text-[10px] md:text-xs font-bold text-[#64748b] tracking-[0.2em] uppercase">{{ key }}</div>
+                    </div>
                  </div>
                </div>
 
