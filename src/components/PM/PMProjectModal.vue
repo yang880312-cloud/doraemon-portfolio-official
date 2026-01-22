@@ -59,80 +59,54 @@ onUnmounted(() => (document.body.style.overflow = ''))
             ✕
           </button>
 
-          <!-- LEFT: Visual Showcase (Dark Theme) -->
-          <div class="relative w-full md:w-1/2 h-1/3 md:h-[600px] lg:h-full bg-[#0b1121] flex flex-col items-center justify-center p-0 overflow-hidden border-b-4 md:border-b-0 md:border-r-4 border-[#1e3a8a] group relative">
+          <!-- LEFT: Visual Showcase (Dark Theme, Full Bleed Image) -->
+          <div class="relative w-full md:w-1/2 h-1/3 md:h-[600px] lg:h-full bg-black flex flex-col items-center justify-center p-0 overflow-hidden border-b-4 md:border-b-0 md:border-r-4 border-[#1e3a8a] group relative">
 
-             <!-- Background Elements -->
-             <div class="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(30,58,138,0.2)_0%,rgba(15,23,42,1)_100%)]"></div>
-             <div class="absolute inset-0 opacity-10 bg-[linear-gradient(rgba(255,255,255,0.05)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.05)_1px,transparent_1px)] [background-size:24px_24px]"></div>
+             <!-- Navigation Arrows (Subtle, appear on hover) -->
+             <button
+                v-if="hasMultipleImages"
+                @click.stop="prevImage"
+                class="absolute left-0 top-0 bottom-0 z-20 w-16 flex items-center justify-center bg-gradient-to-r from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-white"
+             >
+                <span class="text-4xl font-light transform -translate-x-2 group-hover:translate-x-0 transition-transform">‹</span>
+             </button>
 
-             <!-- Main Image Container (Full Width/Height) -->
-             <div class="relative w-full h-full z-10 group/image">
+             <button
+                v-if="hasMultipleImages"
+                @click.stop="nextImage"
+                class="absolute right-0 top-0 bottom-0 z-20 w-16 flex items-center justify-center bg-gradient-to-l from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-white"
+             >
+                <span class="text-4xl font-light transform translate-x-2 group-hover:translate-x-0 transition-transform">›</span>
+             </button>
 
-                <!-- Number Badge (Floating Top-Left) -->
-                <div class="absolute top-6 left-6 z-30 px-4 py-1.5 bg-[#172554]/80 border border-[#3b82f6]/30 text-[#3b82f6] text-xs font-black tracking-widest rounded-full shadow-[0_0_15px_rgba(59,130,246,0.5)] backdrop-blur-md uppercase flex items-center gap-2">
-                   <div class="w-2 h-2 rounded-full bg-[#ef4444] animate-pulse"></div>
-                   NO. {{ (index + 1).toString().padStart(3, '0') }}
-                </div>
-
-                <!-- Nav Buttons -->
-                <button
-                    v-if="hasMultipleImages"
-                    @click.stop="prevImage"
-                    class="absolute left-4 top-1/2 -translate-y-1/2 z-30 w-10 h-10 flex items-center justify-center bg-black/50 text-white rounded-full backdrop-blur-md border border-white/10 hover:bg-[#3b82f6] hover:border-[#3b82f6] transition-all opacity-0 group-hover/image:opacity-100 -translate-x-4 group-hover/image:translate-x-0"
-                >
-                   ←
-                </button>
-
-                 <button
-                    v-if="hasMultipleImages"
-                    @click.stop="nextImage"
-                    class="absolute right-4 top-1/2 -translate-y-1/2 z-30 w-10 h-10 flex items-center justify-center bg-black/50 text-white rounded-full backdrop-blur-md border border-white/10 hover:bg-[#3b82f6] hover:border-[#3b82f6] transition-all opacity-0 group-hover/image:opacity-100 translate-x-4 group-hover/image:translate-x-0"
-                 >
-                   →
-                 </button>
-
-                 <!-- Image Frame (Full Bleed with minor margin) -->
-                 <div class="w-full h-full p-4 md:p-6">
-                    <div class="w-full h-full rounded-2xl overflow-hidden border-2 border-[#1e3a8a]/50 shadow-[0_0_40px_rgba(30,58,138,0.4)] relative bg-[#0f172a]">
-                        <Transition name="fade" mode="out-in">
-                            <img
-                                :key="currentIndex"
-                                :src="currentImage"
-                                class="absolute inset-0 w-full h-full object-cover"
-                            />
-                        </Transition>
-                        <!-- Glass Reflection Overlay -->
-                        <div class="absolute inset-0 bg-gradient-to-tr from-white/5 to-transparent pointer-events-none"></div>
-                    </div>
-                 </div>
-             </div>
-
-             <!-- Thumbnail Strip (Floating Bottom Overlay) -->
-             <div v-if="hasMultipleImages" class="absolute bottom-6 md:bottom-8 z-20 flex gap-2 justify-center w-full max-w-md px-4 pointer-events-none">
-               <div class="flex gap-2 p-2 bg-black/30 backdrop-blur-md rounded-2xl pointer-events-auto border border-white/10">
-                   <button
-                     v-for="(img, idx) in project.images"
-                     :key="idx"
-                     @click.stop="currentIndex = idx"
-                     class="w-10 h-10 sm:w-12 sm:h-12 rounded-lg border overflow-hidden transition-all shrink-0 hover:scale-110 relative"
-                     :class="currentIndex === idx ? 'border-[#3b82f6] shadow-[0_0_10px_rgba(59,130,246,0.5)] opacity-100 scale-110' : 'border-white/10 opacity-50 hover:opacity-100 grayscale hover:grayscale-0'"
-                   >
-                     <img :src="img" class="w-full h-full object-cover" />
-                   </button>
-               </div>
+             <!-- Main Image (Pure Full Bleed) -->
+             <div class="relative w-full h-full z-10">
+                <Transition name="fade" mode="out-in">
+                    <img
+                        :key="currentIndex"
+                        :src="currentImage"
+                        class="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                        alt="Project Visual"
+                    />
+                </Transition>
              </div>
           </div>
 
-          <!-- RIGHT: Intel Briefing (White Theme -> Soft Slate Theme) -->
+          <!-- RIGHT: Intel Briefing -->
           <div class="w-full md:w-1/2 h-2/3 md:h-full bg-[#F8FAFC] flex flex-col relative z-20">
 
             <!-- Header -->
             <div class="px-8 pt-10 pb-6 border-b border-slate-200">
-               <div class="flex items-center gap-3 mb-3">
-                 <span class="bg-[#fcd34d] text-[#1e3a8a] text-[10px] md:text-xs font-black px-3 py-1 rounded-full uppercase tracking-widest border border-yellow-400 shadow-sm">
-                   {{ project.category || "PROJECT" }}
-                 </span>
+               <div class="flex items-center justify-between mb-3">
+                 <div class="flex items-center gap-3">
+                    <span class="bg-[#fcd34d] text-[#1e3a8a] text-[10px] md:text-xs font-black px-3 py-1 rounded-full uppercase tracking-widest border border-yellow-400 shadow-sm">
+                        {{ project.category || "PROJECT" }}
+                    </span>
+                 </div>
+                 <!-- Number Badge (Moved here) -->
+                 <div class="font-black font-mono text-slate-300 text-sm tracking-widest border border-slate-200 px-2 py-1 rounded bg-white">
+                    NO. {{ (index + 1).toString().padStart(3, '0') }}
+                 </div>
                </div>
                <h2 class="text-3xl md:text-5xl font-black text-[#1e3a8a] tracking-tight leading-none mb-2">
                  {{ project.title }}
