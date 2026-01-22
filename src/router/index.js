@@ -57,6 +57,12 @@ const router = createRouter({
       component: () => import('../views/Admin/ProfileEditor.vue'),
       meta: { dimension: 'ADMIN', requiresAuth: true },
     },
+    {
+      path: '/admin/seeder',
+      name: 'admin-seeder',
+      component: () => import('../views/Admin/Seeder.vue'),
+      meta: { dimension: 'ADMIN', requiresAuth: true },
+    },
   ],
 })
 

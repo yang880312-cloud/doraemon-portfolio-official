@@ -37,12 +37,17 @@ function handleLogout() {
           </button>
         </p>
       </div>
-      <button
-        @click="handleLogout"
-        class="text-xs border border-red-900/50 text-red-500 px-4 py-2 hover:bg-red-900/20"
-      >
-        登出系統
-      </button>
+      <div class="flex items-center gap-4">
+        <router-link to="/admin/seeder" class="text-xs font-mono text-emerald-400 bg-emerald-400/10 px-3 py-1.5 rounded hover:bg-emerald-400/20 transition-colors border border-emerald-400/30">
+            🌱 SEED DATA
+        </router-link>
+        <button
+            @click="handleLogout"
+            class="text-xs border border-red-900/50 text-red-500 px-4 py-2 hover:bg-red-900/20"
+        >
+            登出系統
+        </button>
+      </div>
     </header>
 
     <!-- Stats Row -->

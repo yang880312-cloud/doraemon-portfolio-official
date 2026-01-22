@@ -100,7 +100,8 @@ onMounted(() => {
 
     // Center glow (The Vortex)
     const gradient = ctx.createRadialGradient(centerX, centerY, 0, centerX, centerY, width / 1.5)
-    gradient.addColorStop(0, '#0f0529') // Deep cosmic center
+    gradient.addColorStop(0, '#1a0b40') // Lighter Deep cosmic center
+    gradient.addColorStop(0.4, '#0f0529') // Mid dark
     gradient.addColorStop(1, '#000000') // Outer Dark
     ctx.fillStyle = gradient
     ctx.fillRect(0, 0, width, height)
@@ -140,9 +141,9 @@ onUnmounted(() => {
   left: 0;
   width: 100vw;
   height: 100vh;
-  z-index: -1;
+  z-index: 0; /* Brought forward from -1 to ensure visibility */
   overflow: hidden;
-  background: black;
+  background: #020005; /* Fallback very dark purple */
 }
 
 .warp-canvas {
@@ -160,11 +161,11 @@ onUnmounted(() => {
   position: absolute;
   inset: 0;
   background-image:
-    linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+    linear-gradient(rgba(45, 212, 191, 0.05) 1px, transparent 1px), /* Teal tint */
+    linear-gradient(90deg, rgba(45, 212, 191, 0.05) 1px, transparent 1px);
   background-size: 50px 50px;
   mask-image: radial-gradient(circle, #000 0%, transparent 80%);
-  opacity: 0.5;
+  opacity: 0.6;
   pointer-events: none;
 }
 </style>
