@@ -2,7 +2,7 @@
 import { ref, computed, onMounted } from 'vue'
 import { useDataStore } from '@/stores/dataStore'
 import FluidCursor from '@/components/Design/FluidCursor.vue'
-import BrickWall from '@/components/Design/BrickWall.vue'
+import ZeroGGrid from '@/components/Design/ZeroGGrid.vue'
 import DesignProjectModal from '@/components/Design/DesignProjectModal.vue'
 
 const store = useDataStore()
@@ -32,20 +32,13 @@ function openProject(project) {
     <!-- Custom Jelly Cursor -->
     <FluidCursor />
 
-    <!-- Background Ambience -->
+    <!-- Background Ambience (Subtle Galaxy Feel) -->
     <div
-      class="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(139,92,246,0.1)_0%,rgba(0,0,0,0)_70%)] animate-pulse"
+      class="absolute inset-0 bg-[radial-gradient(circle_at_50%_0%,rgba(30,30,40,0.4)_0%,rgba(0,0,0,0)_60%)] pointer-events-none"
     ></div>
 
-    <!-- Header -->
-    <div
-      class="absolute bottom-8 left-0 w-full text-center pointer-events-none z-10 opacity-50 mix-blend-difference"
-    >
-      <!-- Text Removed as per user request -->
-    </div>
-
-    <!-- Brick Wall Layout -->
-    <BrickWall :items="designProjects" @item-click="openProject" />
+    <!-- Zero Gravity Gallery Grid -->
+    <ZeroGGrid :items="designProjects" @item-click="openProject" />
 
     <DesignProjectModal
       :isOpen="isModalOpen"
@@ -54,13 +47,11 @@ function openProject(project) {
       @close="isModalOpen = false"
       @switch="openProject"
     />
-
-    <!-- Instruction Removed -->
   </div>
 </template>
 
 <style scoped>
-/* Hide default cursor */
+/* Hide default cursor globally within this view */
 div {
   cursor: none;
 }
