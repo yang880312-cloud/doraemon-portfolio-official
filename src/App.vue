@@ -17,7 +17,7 @@ authStore.checkUser()
 </script>
 
 <template>
-  <main class="w-full h-full relative overflow-hidden bg-void-black text-white">
+  <main class="w-full h-full relative bg-void-black text-white">
     <WelcomeLoader v-if="loading" @finished="loading = false" />
 
     <!-- Router View handles the current page/dimension -->

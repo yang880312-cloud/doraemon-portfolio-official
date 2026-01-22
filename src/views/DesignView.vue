@@ -99,4 +99,19 @@ function openProject(project) {
   transform: rotateX(5deg);
   transition: transform 0.5s ease-out;
 }
+/* Font Import for Heavy Look */
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@900&display=swap');
+
+.secret-gadget-title {
+  font-family: 'Noto Sans TC', sans-serif;
+  color: #009EFF; /* Doraemon Blue */
+  -webkit-text-stroke: 5px white;
+  paint-order: stroke fill;
+  text-shadow: 6px 6px 0px #0247A2; /* Hard Shadow */
+  line-height: 1.1;
+}
+
+.code-badge {
+  font-family: 'Noto Sans TC', sans-serif;
+}
 </style>

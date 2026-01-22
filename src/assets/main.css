@@ -7,11 +7,11 @@
   --text-primary: #ffffff;
 }
 
-body {
   background-color: var(--app-bg);
   color: var(--text-primary);
   margin: 0;
-  overflow: hidden; /* Hide scrollbars for the immersive 3D feel */
+  /* overflow: hidden;  <-- REMOVED to allow scrolling in sub-pages */
+  overflow-x: hidden; /* Prevent horizontal scroll globally */
   font-family: 'Inter', sans-serif;
   user-select: none; /* Prevent selection during physics interactions */
 }
