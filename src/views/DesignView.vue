@@ -72,6 +72,7 @@ function openProject(project) {
   </div>
 </template>
 
+<style scoped>
 /* Scrollbar Hiding for immersive feel */
 ::-webkit-scrollbar {
   width: 8px;
