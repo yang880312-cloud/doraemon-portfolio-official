@@ -102,11 +102,11 @@ onMounted(() => {
       <div class="absolute inset-[-20px] bg-pink-500/20 rounded-[20px] blur-xl opacity-0 transition-opacity duration-300 group-hover:opacity-100"></div>
 
       <div
-        class="door-frame w-56 h-96 bg-gradient-to-br from-pink-600 to-pink-800 rounded-t-full rounded-b-lg relative border-4 border-pink-900 shadow-[0_20px_50px_rgba(236,72,153,0.4)] overflow-hidden"
+        class="door-frame w-56 h-96 bg-gradient-to-br from-pink-600 to-pink-800 rounded-t-[3rem] rounded-b-lg relative border-4 border-pink-900 shadow-[0_20px_50px_rgba(236,72,153,0.4)] overflow-hidden"
       >
         <!-- The Door Leaf -->
         <div
-          class="door-leaf absolute inset-0 bg-door-pink rounded-t-full rounded-b-lg origin-left transition-transform duration-1000 ease-in-out border-r-4 border-pink-400 flex items-center justify-end pr-6 group"
+          class="door-leaf absolute inset-0 bg-door-pink rounded-t-[3rem] rounded-b-lg origin-left transition-transform duration-1000 ease-in-out border-r-4 border-pink-400 flex items-center justify-end pr-6 group"
           :class="{ open: isOpen }"
         >
           <!-- Surface Detail (Wood grain or Magic texture) -->
@@ -123,7 +123,7 @@ onMounted(() => {
 
         <!-- The Void (Behind the door) -->
         <div
-          class="door-void absolute inset-2 bg-black overflow-hidden rounded-t-[10rem] rounded-b opacity-0 transition-opacity duration-300 delay-300"
+          class="door-void absolute inset-2 bg-black overflow-hidden rounded-t-[2.5rem] rounded-b opacity-0 transition-opacity duration-300 delay-300"
           :class="{ 'opacity-100': isOpen }"
         >
           <div class="stars absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/stardust.png')] animate-twinkle opacity-50"></div>

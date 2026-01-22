@@ -1,11 +1,13 @@
 <script setup>
-import { computed, onMounted } from 'vue'
+import { computed, onMounted, ref } from 'vue'
 import { useDataStore } from '@/stores/dataStore'
 import WarpTunnelEnvironment from '@/components/Design/WarpTunnelEnvironment.vue'
 import ZeroGGrid from '@/components/Design/ZeroGGrid.vue'
 import DesignProjectModal from '@/components/Design/DesignProjectModal.vue'
 
 const store = useDataStore()
+const selectedProject = ref(null)
+const isModalOpen = ref(false)
 
 onMounted(async () => {
   if (store.projects.length === 0) {
@@ -16,10 +18,15 @@ onMounted(async () => {
 const designProjects = computed(() => {
   return store.projects.filter((p) => p.type === 'DESIGN')
 })
+
+function openProject(project) {
+  selectedProject.value = project
+  isModalOpen.value = true
+}
 </script>
 
 <template>
-  <div class="relative min-h-screen overflow-hidden bg-black text-white selection:bg-pink-500 selection:text-white">
+  <div class="relative min-h-screen overflow-hidden bg-transparent text-white selection:bg-pink-500 selection:text-white">
     <!-- BACKGROUND: The Time Warp Tunnel -->
     <WarpTunnelEnvironment />
 
@@ -28,7 +35,7 @@ const designProjects = computed(() => {
 
       <!-- Header Area -->
       <header class="mb-16 text-center space-y-4 relative">
-        <h1 class="text-6xl md:text-8xl font-black tracking-tighter text-transparent bg-clip-text bg-gradient-to-b from-white to-white/20 drop-shadow-[0_0_20px_rgba(255,255,255,0.5)]">
+        <h1 class="text-6xl md:text-8xl font-black tracking-tighter text-transparent bg-clip-text bg-gradient-to-b from-white to-white/60 drop-shadow-[0_0_30px_rgba(255,255,255,0.6)]" style="font-family: 'Arial Black', sans-serif;">
           DORAEMON<br/>DESIGN
         </h1>
         <p class="text-blue-300 font-mono tracking-widest text-sm uppercase">
@@ -37,12 +44,18 @@ const designProjects = computed(() => {
       </header>
 
       <!-- Zero-G Gallery Grid -->
-      <ZeroGGrid :items="designProjects" />
+      <ZeroGGrid :items="designProjects" @item-click="openProject" />
 
     </div>
 
     <!-- Modals -->
-    <DesignProjectModal />
+    <DesignProjectModal
+      :isOpen="isModalOpen"
+      :project="selectedProject"
+      :siblings="designProjects"
+      @close="isModalOpen = false"
+      @switch="openProject"
+    />
   </div>
 </template>
 
