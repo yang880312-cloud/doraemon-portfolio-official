@@ -46,9 +46,9 @@ onUnmounted(() => (document.body.style.overflow = ''))
         <!-- Backdrop -->
         <div class="absolute inset-0 bg-[#0a2463]/90 backdrop-blur-md"></div>
 
-        <!-- Main Card Container -->
+        <!-- Main Card Container (Significantly Widened for Landscape) -->
         <div
-          class="relative w-full max-w-6xl h-[90vh] md:h-[80vh] flex flex-col md:flex-row bg-white border-4 border-[#1e3a8a] rounded-[2.5rem] shadow-[0_20px_60px_rgba(15,23,42,0.6)] overflow-hidden gadget-card"
+          class="relative w-full max-w-[90vw] md:max-w-[85vw] lg:max-w-[80vw] xl:max-w-[1400px] h-[90vh] md:h-[80vh] flex flex-col md:flex-row bg-white border-4 border-[#1e3a8a] rounded-[2.5rem] shadow-[0_20px_60px_rgba(15,23,42,0.6)] overflow-hidden gadget-card transition-all duration-300"
         >
 
           <!-- Close Button -->
@@ -60,7 +60,7 @@ onUnmounted(() => (document.body.style.overflow = ''))
           </button>
 
           <!-- LEFT: Visual Showcase (Dark Theme, Full Bleed Image) -->
-          <div class="relative w-full md:w-1/2 h-1/3 md:h-[600px] lg:h-full bg-black flex flex-col items-center justify-center p-0 overflow-hidden border-b-4 md:border-b-0 md:border-r-4 border-[#1e3a8a] group relative">
+          <div class="relative w-full md:w-[55%] lg:w-[60%] h-1/3 md:h-full bg-black flex flex-col items-center justify-center p-0 overflow-hidden border-b-4 md:border-b-0 md:border-r-4 border-[#1e3a8a] group relative">
 
              <!-- Navigation Arrows (Subtle, appear on hover) -->
              <button
@@ -93,24 +93,24 @@ onUnmounted(() => (document.body.style.overflow = ''))
           </div>
 
           <!-- RIGHT: Intel Briefing -->
-          <div class="w-full md:w-1/2 h-2/3 md:h-full bg-[#F8FAFC] flex flex-col relative z-20">
+          <div class="w-full md:w-[45%] lg:w-[40%] h-2/3 md:h-full bg-[#F8FAFC] flex flex-col relative z-20">
 
             <!-- Header -->
             <div class="px-8 pt-10 pb-6 border-b border-slate-200">
-               <div class="flex items-center justify-between mb-3">
+               <div class="flex items-center gap-4 mb-3">
+                 <!-- Number Badge (Moved to Left) -->
+                 <div class="font-black font-mono text-slate-400 text-xs tracking-widest border border-slate-200 px-2 py-1 rounded bg-white">
+                    NO. {{ (index + 1).toString().padStart(3, '0') }}
+                 </div>
                  <div class="flex items-center gap-3">
                     <span class="bg-[#fcd34d] text-[#1e3a8a] text-[10px] md:text-xs font-black px-3 py-1 rounded-full uppercase tracking-widest border border-yellow-400 shadow-sm">
                         {{ project.category || "PROJECT" }}
                     </span>
                  </div>
-                 <!-- Number Badge (Moved here) -->
-                 <div class="font-black font-mono text-slate-300 text-sm tracking-widest border border-slate-200 px-2 py-1 rounded bg-white">
-                    NO. {{ (index + 1).toString().padStart(3, '0') }}
-                 </div>
                </div>
-               <h2 class="text-3xl md:text-5xl font-black text-[#1e3a8a] tracking-tight leading-none mb-2">
+               <h2 class="text-3xl md:text-4xl xl:text-5xl font-black text-[#1e3a8a] tracking-tight leading-none mb-2">
                  {{ project.title }}
-                 <span class="text-[#ef4444] text-2xl align-top">★</span>
+                 <span class="text-[#ef4444] text-xl align-top">★</span>
                </h2>
                <p class="text-sm md:text-base text-slate-500 font-medium leading-normal max-w-md">
                  {{ project.description }}
