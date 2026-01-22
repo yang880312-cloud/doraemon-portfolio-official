@@ -1,57 +1,49 @@
 <script setup>
-import { ref, computed, onMounted } from 'vue'
-import { useDataStore } from '@/stores/dataStore'
-import FluidCursor from '@/components/Design/FluidCursor.vue'
+import { computed } from 'vue'
+import { useProjectStore } from '@/stores/projects'
+import WarpTunnelEnvironment from '@/components/Design/WarpTunnelEnvironment.vue'
 import ZeroGGrid from '@/components/Design/ZeroGGrid.vue'
-import HoloLabEnvironment from '@/components/Design/HoloLabEnvironment.vue'
 import DesignProjectModal from '@/components/Design/DesignProjectModal.vue'
 
-const store = useDataStore()
-const selectedProject = ref(null)
-const isModalOpen = ref(false)
+const projectStore = useProjectStore()
 
-// Fetch Data
-onMounted(async () => {
-  if (store.projects.length === 0) {
-    await store.fetchProjects()
-  }
-})
-
-// Filter Design Projects
 const designProjects = computed(() => {
-  return store.projects.filter((p) => p.type === 'DESIGN')
+  return projectStore.projects.filter((p) => p.type === 'DESIGN')
 })
-
-function openProject(project) {
-  selectedProject.value = project
-  isModalOpen.value = true
-}
 </script>
 
 <template>
-  <div class="relative w-full h-screen bg-[#050505] overflow-hidden">
-    <!-- Custom Jelly Cursor -->
-    <FluidCursor />
+  <div class="relative min-h-screen overflow-hidden bg-black text-white selection:bg-pink-500 selection:text-white">
+    <!-- BACKGROUND: The Time Warp Tunnel -->
+    <WarpTunnelEnvironment />
 
-    <!-- 3D Holographic Lab Environment -->
-    <HoloLabEnvironment />
+    <!-- FOREGROUND: Content Grid -->
+    <div class="relative z-10 container mx-auto px-4 py-20 min-h-screen flex flex-col">
 
-    <!-- Zero Gravity Gallery Grid -->
-    <ZeroGGrid :items="designProjects" @item-click="openProject" />
+      <!-- Header Area -->
+      <header class="mb-16 text-center space-y-4 relative">
+        <h1 class="text-6xl md:text-8xl font-black tracking-tighter text-transparent bg-clip-text bg-gradient-to-b from-white to-white/20 drop-shadow-[0_0_20px_rgba(255,255,255,0.5)]">
+          DORAEMON<br/>DESIGN
+        </h1>
+        <p class="text-blue-300 font-mono tracking-widest text-sm uppercase">
+          // Visual Archive // Time-Space Coordinates: 2112.09.03
+        </p>
+      </header>
 
-    <DesignProjectModal
-      :isOpen="isModalOpen"
-      :project="selectedProject"
-      :siblings="designProjects"
-      @close="isModalOpen = false"
-      @switch="openProject"
-    />
+      <!-- Zero-G Gallery Grid -->
+      <ZeroGGrid :projects="designProjects" />
+
+    </div>
+
+    <!-- Modals -->
+    <DesignProjectModal />
   </div>
 </template>
 
 <style scoped>
-/* Hide default cursor globally within this view */
-div {
-  cursor: none;
+/* Scrollbar Hiding for immersive feel */
+::-webkit-scrollbar {
+  width: 0px;
+  background: transparent;
 }
 </style>
