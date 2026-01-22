@@ -1,14 +1,20 @@
 <script setup>
-import { computed } from 'vue'
-import { useProjectStore } from '@/stores/projects'
+import { computed, onMounted } from 'vue'
+import { useDataStore } from '@/stores/dataStore'
 import WarpTunnelEnvironment from '@/components/Design/WarpTunnelEnvironment.vue'
 import ZeroGGrid from '@/components/Design/ZeroGGrid.vue'
 import DesignProjectModal from '@/components/Design/DesignProjectModal.vue'
 
-const projectStore = useProjectStore()
+const store = useDataStore()
+
+onMounted(async () => {
+  if (store.projects.length === 0) {
+    await store.fetchProjects()
+  }
+})
 
 const designProjects = computed(() => {
-  return projectStore.projects.filter((p) => p.type === 'DESIGN')
+  return store.projects.filter((p) => p.type === 'DESIGN')
 })
 </script>
 
@@ -31,7 +37,7 @@ const designProjects = computed(() => {
       </header>
 
       <!-- Zero-G Gallery Grid -->
-      <ZeroGGrid :projects="designProjects" />
+      <ZeroGGrid :items="designProjects" />
 
     </div>
 

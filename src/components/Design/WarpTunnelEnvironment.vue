@@ -3,6 +3,7 @@ import { onMounted, onUnmounted, ref } from 'vue'
 
 const canvasRef = ref(null)
 let animationId = null
+let resizeHandler = null
 
 onMounted(() => {
   const canvas = canvasRef.value
@@ -17,11 +18,16 @@ onMounted(() => {
   const resize = () => {
     width = window.innerWidth
     height = window.innerHeight
-    canvas.width = width
-    canvas.height = height
+    if(canvas) {
+        canvas.width = width
+        canvas.height = height
+    }
     centerX = width / 2
     centerY = height / 2
   }
+
+  // Assign to module-level variable for cleanup
+  resizeHandler = resize
 
   window.addEventListener('resize', resize)
   resize()
@@ -111,7 +117,9 @@ onMounted(() => {
 })
 
 onUnmounted(() => {
-  window.removeEventListener('resize', resize)
+  if (resizeHandler) {
+    window.removeEventListener('resize', resizeHandler)
+  }
   cancelAnimationFrame(animationId)
 })
 </script>
