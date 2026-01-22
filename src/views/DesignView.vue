@@ -3,6 +3,7 @@ import { ref, computed, onMounted } from 'vue'
 import { useDataStore } from '@/stores/dataStore'
 import FluidCursor from '@/components/Design/FluidCursor.vue'
 import ZeroGGrid from '@/components/Design/ZeroGGrid.vue'
+import HoloLabEnvironment from '@/components/Design/HoloLabEnvironment.vue'
 import DesignProjectModal from '@/components/Design/DesignProjectModal.vue'
 
 const store = useDataStore()
@@ -32,10 +33,8 @@ function openProject(project) {
     <!-- Custom Jelly Cursor -->
     <FluidCursor />
 
-    <!-- Background Ambience (Subtle Galaxy Feel) -->
-    <div
-      class="absolute inset-0 bg-[radial-gradient(circle_at_50%_0%,rgba(30,30,40,0.4)_0%,rgba(0,0,0,0)_60%)] pointer-events-none"
-    ></div>
+    <!-- 3D Holographic Lab Environment -->
+    <HoloLabEnvironment />
 
     <!-- Zero Gravity Gallery Grid -->
     <ZeroGGrid :items="designProjects" @item-click="openProject" />
