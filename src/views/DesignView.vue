@@ -23,6 +23,8 @@ function openProject(project) {
   selectedProject.value = project
   isModalOpen.value = true
 }
+
+// Force Rebuild: 2026-01-22 v2
 </script>
 
 <template>
