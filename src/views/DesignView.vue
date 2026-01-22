@@ -35,11 +35,11 @@ function openProject(project) {
 
       <!-- Header Area -->
       <header class="mb-16 text-center space-y-4 relative">
-        <h1 class="text-6xl md:text-8xl font-black tracking-tighter text-transparent bg-clip-text bg-gradient-to-b from-white to-white/60 drop-shadow-[0_0_30px_rgba(255,255,255,0.6)]" style="font-family: 'Arial Black', sans-serif;">
-          DORAEMON<br/>DESIGN
+        <h1 class="text-6xl md:text-8xl font-black tracking-tighter text-transparent bg-clip-text bg-gradient-to-b from-white via-white to-white/50 drop-shadow-[0_0_30px_rgba(255,255,255,0.4)]" style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">
+          VISUAL<br/>ARCHIVE
         </h1>
-        <p class="text-blue-300 font-mono tracking-widest text-sm uppercase">
-          // Visual Archive // Time-Space Coordinates: 2112.09.03
+        <p class="text-blue-300/80 font-mono tracking-[0.5em] text-xs uppercase scale-y-75 transform">
+          FUTURE AESTHETICS // COLLECTION
         </p>
       </header>
 

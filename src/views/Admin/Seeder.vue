@@ -14,6 +14,7 @@ async function seedData() {
   status.value = 'Seeding...'
   log('Starting seed process...')
 
+  // 1. Seed PM Projects
   for (const project of portfolioData) {
     // Prepare object for DB
     const dbPayload = {
@@ -31,7 +32,7 @@ async function seedData() {
       }
     }
 
-    log(`Inserting: ${project.title}...`)
+    log(`Checking PM: ${project.title}...`)
 
     try {
         // First check if it exists by title to avoid duplicates (naive check)
@@ -53,6 +54,52 @@ async function seedData() {
         }
     } catch (e) {
         log(`Exception: ${e.message}`)
+    }
+  }
+
+  // 2. Seed Design Projects (Dummy Data)
+  const designDummies = [
+    { title: 'Neon Genesis', category: '3D Art', layout: 'big', color: '#fca5a5' },
+    { title: 'Cyber Void', category: 'Motion', layout: 'standard', color: '#86efac' },
+    { title: 'Quantum UI', category: 'Interface', layout: 'wide', color: '#93c5fd' },
+    { title: 'Flux Capacitor', category: 'Concept', layout: 'tall', color: '#f0abfc' },
+    { title: 'Neural Net', category: 'AI Generated', layout: 'standard', color: '#fcd34d' },
+    { title: 'Holo Prism', category: '3D Art', layout: 'wide', color: '#6ee7b7' },
+    { title: 'Void Walker', category: 'Character', layout: 'tall', color: '#c4b5fd' },
+    { title: 'Time Dilator', category: 'VFX', layout: 'standard', color: '#f472b6' },
+    { title: 'Hyper Drive', category: 'Motion', layout: 'big', color: '#2dd4bf' },
+    { title: 'Chrono Trigger', category: 'Concept', layout: 'wide', color: '#fb923c' },
+    { title: 'Event Horizon', category: '3D Art', layout: 'standard', color: '#e879f9' },
+    { title: 'Singularity', category: 'Interface', layout: 'tall', color: '#38bdf8' },
+  ]
+
+  log('--- Seeding Design Dummies ---')
+
+  for (const dummy of designDummies) {
+     const dbPayload = {
+      title: dummy.title,
+      category: dummy.category,
+      type: 'DESIGN',
+      description: 'A futuristic design exploration. Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
+      // Use placeholder images (abstract neon)
+      image: `https://picsum.photos/seed/${dummy.title.replace(' ', '')}/800/800`,
+      tags: ['Futuristic', 'Design', 'Concept'],
+      layout: dummy.layout,
+      theme_color: dummy.color
+    }
+
+    log(`Inserting Design: ${dummy.title}...`)
+
+    // Check exist
+    const { data: existing } = await supabase.from('projects').select('id').eq('title', dummy.title).single()
+    if (!existing) {
+        const { error } = await supabase.from('projects').insert(dbPayload)
+        if (error) log(`Error: ${error.message}`)
+        else log(`Created ${dummy.title}`)
+    } else {
+        // Update layout/color just in case we changed seed logic
+        await supabase.from('projects').update(dbPayload).eq('id', existing.id)
+        log(`Updated ${dummy.title}`)
     }
   }
 
