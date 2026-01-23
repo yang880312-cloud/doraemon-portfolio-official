@@ -39,11 +39,15 @@ function removeSkill(index) {
 function addExperience() {
   formData.value.experience.push({
     id: Date.now(),
-    company: 'Company Name',
-    role: 'Job Title',
-    period: 'Year - Year',
-    description: 'Description of achievements...',
-    image: '',
+    company: 'New Company',
+    role: 'Position Title',
+    period: '2024 - Present',
+    description: 'Brief description of the role...',
+    theme: 'cyan',
+    techStack: ['Tech 1', 'Tech 2'],
+    bullets: ['Key impact 1', 'Key impact 2'],
+    achievements: ['Achievement 1', 'Achievement 2'],
+    image: 'https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&w=800&q=80',
   })
 }
 
@@ -155,6 +159,7 @@ async function save() {
               刪除
             </button>
 
+            <!-- Row 1: Basic Info -->
             <div class="grid grid-cols-2 gap-4 mb-2">
               <div>
                 <label class="block text-[10px] text-gray-600 mb-1">公司/組織 (COMPANY)</label>
@@ -172,24 +177,77 @@ async function save() {
               </div>
             </div>
 
-            <div class="mb-2">
-              <label class="block text-[10px] text-gray-600 mb-1">時間區間 (PERIOD)</label>
-              <input
-                v-model="exp.period"
-                class="w-full bg-black border border-gray-700 p-2 text-sm focus:border-cyan-500 outline-none"
-              />
+            <!-- Row 2: Period & Theme -->
+            <div class="grid grid-cols-2 gap-4 mb-2">
+               <div>
+                  <label class="block text-[10px] text-gray-600 mb-1">時間區間 (PERIOD)</label>
+                  <input
+                    v-model="exp.period"
+                    class="w-full bg-black border border-gray-700 p-2 text-sm focus:border-cyan-500 outline-none"
+                  />
+               </div>
+               <div>
+                  <label class="block text-[10px] text-gray-600 mb-1">視覺主題 (THEME COLOR)</label>
+                  <select v-model="exp.theme" class="w-full bg-black border border-gray-700 p-2 text-sm focus:border-cyan-500 outline-none text-gray-300">
+                      <option value="cyan">Cyan (Default)</option>
+                      <option value="purple">Purple (Future)</option>
+                      <option value="orange">Orange (Industrial)</option>
+                      <option value="blue">Blue (Origin)</option>
+                  </select>
+               </div>
             </div>
 
-            <div>
-              <label class="block text-[10px] text-gray-600 mb-1">成就描述 (DESCRIPTION)</label>
+            <!-- Row 3: Narrative -->
+            <div class="mb-4">
+              <label class="block text-[10px] text-gray-600 mb-1">任務簡報 (MISSION BRIEF)</label>
               <textarea
                 v-model="exp.description"
                 class="w-full h-16 bg-black border border-gray-700 p-2 text-sm focus:border-cyan-500 outline-none resize-none"
               ></textarea>
             </div>
 
+            <!-- Row 4: Advanced Lists (v2.0) -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4 border-t border-gray-800 pt-4">
+                <!-- Tech Stack -->
+                <div>
+                     <label class="block text-[10px] text-blue-400 mb-1">技術堆疊 (TECH STACK)</label>
+                     <div class="text-[9px] text-gray-600 mb-1">每行一項 或 用逗號分隔</div>
+                     <textarea
+                        :value="exp.techStack ? (Array.isArray(exp.techStack) ? exp.techStack.join('\n') : exp.techStack) : ''"
+                        @input="e => exp.techStack = e.target.value.split('\n')"
+                        class="w-full h-24 bg-black border border-gray-700 p-2 text-xs focus:border-blue-500 outline-none resize-none font-mono"
+                        placeholder="Vue.js&#10;Node.js"
+                     ></textarea>
+                </div>
+
+                <!-- Key Impacts (Bullets) -->
+                <div>
+                     <label class="block text-[10px] text-green-400 mb-1">關鍵戰績 (KEY IMPACTS)</label>
+                     <div class="text-[9px] text-gray-600 mb-1">每行一項 (顯示為 Bullet Points)</div>
+                     <textarea
+                        :value="exp.bullets ? (Array.isArray(exp.bullets) ? exp.bullets.join('\n') : exp.bullets) : ''"
+                        @input="e => exp.bullets = e.target.value.split('\n')"
+                        class="w-full h-24 bg-black border border-gray-700 p-2 text-xs focus:border-green-500 outline-none resize-none font-mono"
+                        placeholder="Lead Team of 10&#10;Increased Revenue by 20%"
+                     ></textarea>
+                </div>
+
+                <!-- Achievements -->
+                <div>
+                     <label class="block text-[10px] text-yellow-400 mb-1">主要成就 (ACHIEVEMENTS)</label>
+                     <div class="text-[9px] text-gray-600 mb-1">每行一項 (底部 Grid)</div>
+                     <textarea
+                        :value="exp.achievements ? (Array.isArray(exp.achievements) ? exp.achievements.join('\n') : exp.achievements) : ''"
+                        @input="e => exp.achievements = e.target.value.split('\n')"
+                        class="w-full h-24 bg-black border border-gray-700 p-2 text-xs focus:border-yellow-500 outline-none resize-none font-mono"
+                        placeholder="S-Rank Award&#10;0.001ms Latency"
+                     ></textarea>
+                </div>
+            </div>
+
+            <!-- Row 5: Image -->
             <div class="mt-2">
-              <label class="block text-[10px] text-gray-600 mb-1">經歷圖片 (IMAGE URL)</label>
+              <label class="block text-[10px] text-gray-600 mb-1">背景影像 (IMAGE URL)</label>
               <input
                 v-model="exp.image"
                 class="w-full bg-black border border-gray-700 p-2 text-sm focus:border-cyan-500 outline-none mb-2"
