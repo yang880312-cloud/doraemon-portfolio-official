@@ -110,28 +110,37 @@ function getSpanClass(layout) {
     <!-- Only visible if not dealt yet and we have items -->
     <div
       v-if="!isDealt && items.length > 0"
-      class="fixed inset-0 z-50 flex flex-col items-center justify-center bg-black/60 backdrop-blur-sm transition-opacity duration-500"
+      class="fixed inset-0 z-50 flex flex-col items-center justify-center bg-black/80 backdrop-blur-md transition-opacity duration-700"
       @click="dealCards"
     >
-        <div class="relative w-64 h-96 cursor-pointer group hover:scale-105 transition-transform duration-300">
-            <!-- Stack Effect Layers -->
-            <div class="absolute inset-0 bg-white/10 rounded-3xl transform rotate-6 translate-y-4 border border-white/20"></div>
-            <div class="absolute inset-0 bg-white/20 rounded-3xl transform -rotate-3 translate-y-2 border border-white/20"></div>
+        <!-- Title in Intro Screen -->
+        <h1 class="mb-12 text-center opacity-0 animate-fade-in-up" style="animation-delay: 0.2s; animation-fill-mode: forwards;">
+            <span class="block text-5xl md:text-7xl font-black tracking-tight text-transparent bg-clip-text bg-gradient-to-b from-[#00A0E9] to-[#0089C9] drop-shadow-[0_0_15px_rgba(0,160,233,0.6)] mb-4" style="font-family: 'Noto Sans TC', sans-serif;">
+                繪世界藝廊
+            </span>
+            <span class="text-white/60 tracking-[0.5em] text-sm font-mono border-t border-white/20 pt-4 block mx-auto w-32">
+                PAINTED WORLD
+            </span>
+        </h1>
 
-            <!-- Top Card (The Deck) -->
-            <div class="absolute inset-0 bg-gradient-to-br from-[#009EFF] to-[#0247A2] rounded-3xl shadow-[0_0_50px_rgba(0,158,255,0.4)] border-4 border-white flex flex-col items-center justify-center text-center p-6 transform rotate-0 group-hover:-translate-y-2 transition-transform">
-                <div class="w-16 h-16 border-4 border-white rounded-full flex items-center justify-center mb-4">
-                    <span class="text-3xl font-black text-white">繪</span>
+        <div class="relative w-[300px] h-[450px] cursor-pointer group hover:scale-105 transition-transform duration-500 will-change-transform perspective-1000">
+            <!-- Stack Effect Layers (Rotated cards behind) -->
+            <div class="absolute inset-0 bg-contain bg-center bg-no-repeat opacity-40 transform rotate-6 translate-y-4 transition-transform duration-500 group-hover:rotate-12 group-hover:translate-x-4" style="background-image: url('/src/assets/cyber-tarot-back.png');"></div>
+            <div class="absolute inset-0 bg-contain bg-center bg-no-repeat opacity-60 transform -rotate-3 translate-y-2 transition-transform duration-500 group-hover:-rotate-6 group-hover:-translate-x-4" style="background-image: url('/src/assets/cyber-tarot-back.png');"></div>
+
+            <!-- Top Card (The Active Deck) -->
+            <div class="absolute inset-0 rounded-2xl shadow-[0_0_50px_rgba(139,92,246,0.3)] group-hover:shadow-[0_0_80px_rgba(139,92,246,0.6)] transition-shadow duration-500 overflow-hidden border border-white/10">
+                <img src="/src/assets/cyber-tarot-back.png" alt="Deck" class="w-full h-full object-contain" />
+
+                <!-- Overlay Text -->
+                <div class="absolute inset-0 flex flex-col items-center justify-center bg-black/20 group-hover:bg-transparent transition-colors">
+                     <!-- Floating 'Click' Hint -->
+                     <div class="mt-32 px-6 py-2 bg-black/60 backdrop-blur-sm rounded-full border border-white/20 text-white/90 text-xs tracking-[0.3em] font-mono group-hover:bg-[#009EFF] group-hover:text-black group-hover:font-bold transition-all duration-300">
+                        點擊發牌 // START
+                     </div>
                 </div>
-                <h3 class="text-2xl font-black text-white tracking-widest mb-2">點擊發牌</h3>
-                <p class="text-xs text-white/70 font-mono tracking-widest">DEAL PROJECTS</p>
             </div>
-
-            <!-- Pulse Effect -->
-            <div class="absolute -inset-4 border-2 border-dashed border-white/30 rounded-[2.5rem] animate-spin-slow pointer-events-none"></div>
         </div>
-
-        <p class="mt-12 text-white/50 animate-pulse tracking-[0.5em] font-mono text-xs">CLICK TO EXPLORE</p>
     </div>
 
     <!-- Zero-G Grid -->
