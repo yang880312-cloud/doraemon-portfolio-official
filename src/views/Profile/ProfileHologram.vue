@@ -116,6 +116,8 @@ const currentTheme = computed(() => {
     return themeColors[t] || themeColors.cyan
 })
 
+const isLastChapter = computed(() => currentIndex.value === experiences.value.length - 1)
+
 // --- Actions ---
 function next() {
   if (currentIndex.value < experiences.value.length - 1) {
@@ -174,83 +176,105 @@ onMounted(() => {
         </div>
     </Transition>
 
-    <!-- Immersive Background -->
-    <div class="absolute inset-0 z-0 transition-colors duration-1000">
+    <!-- Immersive Background & Warp Effect -->
+    <div class="absolute inset-0 z-0 transition-all duration-1000 overflow-hidden"
+         :class="{ 'warp-speed-active': isLastChapter }">
+
         <!-- Deep Space Nebula -->
         <div
             class="absolute inset-0 opacity-80 transition-all duration-1000"
             :class="`bg-[radial-gradient(circle_at_30%_50%,var(--tw-gradient-stops))]`"
             :style="{ '--tw-gradient-from': currentTheme.bg.replace('bg-', '') + '90', '--tw-gradient-to': '#000000' }"
         ></div>
-        <!-- (Hack) Explicit gradients because dynamic utility classes might purge -->
+
+        <!-- Explicit Theme Gradients -->
         <div v-if="experiences[currentIndex]?.theme === 'purple'" class="absolute inset-0 bg-[radial-gradient(circle_at_30%_50%,#581c87_0%,#000000_70%)] opacity-80 transition-opacity duration-1000"></div>
         <div v-if="experiences[currentIndex]?.theme === 'orange'" class="absolute inset-0 bg-[radial-gradient(circle_at_30%_50%,#7c2d12_0%,#000000_70%)] opacity-80 transition-opacity duration-1000"></div>
         <div v-if="experiences[currentIndex]?.theme === 'blue'"   class="absolute inset-0 bg-[radial-gradient(circle_at_30%_50%,#1e3a8a_0%,#000000_70%)] opacity-80 transition-opacity duration-1000"></div>
 
-        <div class="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/stardust.png')] opacity-20 animate-pulse"></div>
+        <!-- Stars / Warp Lines -->
+        <div class="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/stardust.png')] opacity-20 stars-layer"></div>
+
+        <!-- Warp Speed Streaks (Visible only in last chapter) -->
+        <div class="absolute inset-0 warp-streaks opacity-0 transition-opacity duration-2000" :class="{ 'opacity-100': isLastChapter }">
+             <div class="absolute inset-0 bg-[conic-gradient(from_0deg_at_50%_50%,transparent_0deg,rgba(255,255,255,0.1)_20deg,transparent_40deg)] animate-spin-slow mix-blend-screen"></div>
+             <div class="absolute inset-0 bg-[radial-gradient(circle,transparent_20%,#a855f720_100%)] animate-pulse"></div>
+        </div>
+
         <!-- Grid Floor -->
         <div class="absolute bottom-0 w-full h-1/2 bg-[linear-gradient(to_bottom,transparent_0%,rgba(255,255,255,0.05)_100%)]"></div>
     </div>
 
-    <!-- LEFT: The Controller (Reel) -->
-    <div class="relative z-10 w-full md:w-[40%] h-[40%] md:h-full flex flex-col items-center justify-center bg-black/40 backdrop-blur-sm border-b md:border-r" :class="currentTheme.border + '/30'">
+    <!-- LEFT: The Controller (Reel) with COCKPIT FRAME -->
+    <div class="relative z-10 w-full md:w-[40%] h-[40%] md:h-full flex flex-col items-center justify-center p-6 md:p-12">
 
-        <!-- Decoration: Mechanical Header -->
-        <div class="absolute top-6 left-6 font-mono text-xs tracking-[0.2em] flex items-center gap-2" :class="currentTheme.main">
-            <div class="w-2 h-2 rounded-full animate-ping" :class="currentTheme.bg"></div>
-            TIME_NAVIGATOR // {{ experiences[currentIndex]?.period }}
-        </div>
+        <!-- Cockpit Glass Panel Frame -->
+        <div class="absolute inset-6 md:inset-12 bg-black/40 backdrop-blur-md rounded-2xl border transition-colors duration-500 shadow-2xl flex flex-col items-center justify-center"
+             :class="[currentTheme.border + '/40', currentTheme.shadow]">
 
-        <!-- The Reel Visual -->
-        <div class="relative h-[300px] w-full overflow-hidden mask-gradient-y">
-            <!-- Focus Frame (Lens) - Explicitly Centered -->
-            <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 h-[110px] w-[80%] border-y-2 pointer-events-none rounded-lg transition-colors duration-500 z-0 bg-white/5"
-                 :class="currentTheme.border + '/50 shadow-[0_0_30px_currentColor]'"></div>
+             <!-- Corner Decorations (Tech Feel) -->
+             <div class="absolute top-0 left-0 w-8 h-8 border-t-2 border-l-2 rounded-tl-xl" :class="currentTheme.border"></div>
+             <div class="absolute top-0 right-0 w-8 h-8 border-t-2 border-r-2 rounded-tr-xl" :class="currentTheme.border"></div>
+             <div class="absolute bottom-0 left-0 w-8 h-8 border-b-2 border-l-2 rounded-bl-xl" :class="currentTheme.border"></div>
+             <div class="absolute bottom-0 right-0 w-8 h-8 border-b-2 border-r-2 rounded-br-xl" :class="currentTheme.border"></div>
 
-            <!-- Scrollable List - Centered Origin -->
-            <div
-                class="absolute top-1/2 w-full transition-transform duration-500 ease-out z-10"
-                :style="{ transform: `translateY(calc(-50% - ${currentIndex * 100}px))` }"
-            >
+            <!-- Decoration: Mechanical Header -->
+            <div class="absolute top-6 left-8 font-mono text-xs tracking-[0.2em] flex items-center gap-2" :class="currentTheme.main">
+                <div class="w-2 h-2 rounded-full animate-ping" :class="currentTheme.bg"></div>
+                TIME_NAVIGATOR // {{ experiences[currentIndex]?.period }}
+            </div>
+
+            <!-- The Reel Visual -->
+            <div class="relative h-[300px] w-full overflow-hidden mask-gradient-y mt-8">
+                <!-- Focus Frame (Lens) - Explicitly Centered -->
+                <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 h-[110px] w-[80%] border-y-2 pointer-events-none rounded-lg transition-colors duration-500 z-0 bg-white/5"
+                     :class="currentTheme.border + '/50 shadow-[0_0_30px_currentColor]'"></div>
+
+                <!-- Scrollable List - Centered Origin -->
                 <div
-                    v-for="(exp, index) in experiences"
-                    :key="exp.id"
-                    @click="select(index)"
-                    class="h-[100px] flex items-center justify-center cursor-pointer group transition-all duration-300 relative"
-                    :class="{ 'scale-110 opacity-100': currentIndex === index, 'opacity-40 scale-90': currentIndex !== index }"
+                    class="absolute top-1/2 w-full transition-transform duration-500 ease-out z-10"
+                    :style="{ transform: `translateY(calc(-50% - ${currentIndex * 100}px))` }"
                 >
-                    <!-- Card Item -->
-                    <div class="relative w-[70%] p-4 border-l-4 bg-gray-900/90 transition-colors shadow-lg"
-                         :class="currentIndex === index ? currentTheme.border : 'border-gray-700'">
-                        <div class="text-[10px] font-mono mb-1 transition-colors" :class="currentIndex === index ? currentTheme.main : 'text-gray-500'">{{ exp.period }}</div>
-                        <div class="font-bold text-lg truncate">{{ exp.company }}</div>
+                    <div
+                        v-for="(exp, index) in experiences"
+                        :key="exp.id"
+                        @click="select(index)"
+                        class="h-[100px] flex items-center justify-center cursor-pointer group transition-all duration-300 relative"
+                        :class="{ 'scale-110 opacity-100': currentIndex === index, 'opacity-40 scale-90': currentIndex !== index }"
+                    >
+                        <!-- Card Item -->
+                        <div class="relative w-[70%] p-4 border-l-4 bg-gray-900/90 transition-colors shadow-lg"
+                             :class="currentIndex === index ? currentTheme.border : 'border-gray-700'">
+                            <div class="text-[10px] font-mono mb-1 transition-colors" :class="currentIndex === index ? currentTheme.main : 'text-gray-500'">{{ exp.period }}</div>
+                            <div class="font-bold text-lg truncate">{{ exp.company }}</div>
 
-                        <!-- Active Indicator -->
-                        <div v-if="currentIndex === index" class="absolute -right-2 top-1/2 -translate-y-1/2 w-4 h-4 rotate-45" :class="currentTheme.bg + ' shadow-[0_0_10px_currentColor]'"></div>
+                            <!-- Active Indicator -->
+                            <div v-if="currentIndex === index" class="absolute -right-2 top-1/2 -translate-y-1/2 w-4 h-4 rotate-45" :class="currentTheme.bg + ' shadow-[0_0_10px_currentColor]'"></div>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
 
-        <!-- Physical Controls -->
-        <div class="flex gap-8 mt-8">
-            <button
-                @click="prev"
-                :disabled="currentIndex === 0"
-                class="group relative w-16 h-16 rounded-full border-2 flex items-center justify-center disabled:opacity-30 disabled:cursor-not-allowed transition-all active:scale-95"
-                :class="[currentTheme.border, currentTheme.btnHover]"
-            >
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" :class="currentTheme.main"><path d="m18 15-6-6-6 6"/></svg>
-            </button>
+            <!-- Physical Controls -->
+            <div class="flex gap-8 mt-4 mb-4">
+                <button
+                    @click="prev"
+                    :disabled="currentIndex === 0"
+                    class="group relative w-16 h-16 rounded-full border-2 flex items-center justify-center disabled:opacity-30 disabled:cursor-not-allowed transition-all active:scale-95 bg-black/50"
+                    :class="[currentTheme.border, currentTheme.btnHover]"
+                >
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" :class="currentTheme.main"><path d="m18 15-6-6-6 6"/></svg>
+                </button>
 
-            <button
-                @click="next"
-                :disabled="currentIndex === experiences.length - 1"
-                class="group relative w-16 h-16 rounded-full border-2 flex items-center justify-center disabled:opacity-30 disabled:cursor-not-allowed transition-all active:scale-95"
-                :class="[currentTheme.border, currentTheme.btnHover]"
-            >
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" :class="currentTheme.main"><path d="m6 9 6 6 6-6"/></svg>
-            </button>
+                <button
+                    @click="next"
+                    :disabled="currentIndex === experiences.length - 1"
+                    class="group relative w-16 h-16 rounded-full border-2 flex items-center justify-center disabled:opacity-30 disabled:cursor-not-allowed transition-all active:scale-95 bg-black/50"
+                    :class="[currentTheme.border, currentTheme.btnHover]"
+                >
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" :class="currentTheme.main"><path d="m6 9 6 6 6-6"/></svg>
+                </button>
+            </div>
         </div>
     </div>
 
@@ -374,7 +398,7 @@ onMounted(() => {
 
 <style scoped>
 .mask-gradient-y {
-    mask-image: linear-gradient(to bottom, transparent, black 20%, black 80%, transparent);
+    mask-image: linear-gradient(to bottom, transparent, black 10%, black 90%, transparent);
 }
 
 .fade-enter-active, .fade-leave-active { transition: opacity 0.5s; }
@@ -392,4 +416,24 @@ onMounted(() => {
 
 .animate-bounce-slight { animation: bounceSlight 2s infinite; }
 @keyframes bounceSlight { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-3px); } }
+
+/* Warp Speed Effect */
+.warp-speed-active .stars-layer {
+    animation: zoomStars 2s infinite linear;
+    opacity: 0.5;
+}
+
+@keyframes zoomStars {
+    0% { transform: scale(1); opacity: 0.3; }
+    50% { opacity: 0.8; }
+    100% { transform: scale(2); opacity: 0; }
+}
+
+.animate-spin-slow {
+    animation: spin 10s linear infinite;
+}
+@keyframes spin {
+    from { transform: scale(1.5) rotate(0deg); }
+    to { transform: scale(1.5) rotate(360deg); }
+}
 </style>
