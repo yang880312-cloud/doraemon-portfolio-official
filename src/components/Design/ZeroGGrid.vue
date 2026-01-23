@@ -1,5 +1,5 @@
 <script setup>
-import { ref, onMounted, nextTick } from 'vue'
+import { ref, onMounted, nextTick, watch } from 'vue'
 import gsap from 'gsap'
 
 const props = defineProps({
@@ -11,32 +11,44 @@ const emit = defineEmits(['item-click'])
 // 3D Magnetic Tilt Logic
 const cardRefs = ref([])
 
-onMounted(() => {
-  // "Poker Deal" Animation
+function playDealAnimation() {
   nextTick(() => {
     // Ensure refs are populated
     if (cardRefs.value.length === 0) return
 
     // Animate from "Bottom Center Stack"
-    gsap.from(cardRefs.value, {
-      duration: 1.2,
-      y: window.innerHeight, // Start from bottom of screen
-      x: (index) => {
-        // Simple randomization to make the stack look messy before flying out
-        return (Math.random() - 0.5) * 200
+    gsap.fromTo(cardRefs.value,
+      {
+        y: window.innerHeight, // Start from bottom of screen
+        x: (index) => (Math.random() - 0.5) * 200, // Random scatter
+        scale: 0.2,
+        rotation: () => Math.random() * 60 - 30,
+        opacity: 0
       },
-      scale: 0.2,
-      rotation: () => Math.random() * 60 - 30, // Random rotation in stack
-      opacity: 0,
-      stagger: {
-        amount: 0.8, // Total time to deal all cards
-        from: "start"
-      },
-      ease: "back.out(1.2)", // "Springy" deal effect
-      clearProps: "all" // Important: Clear transform so magnetic hover works afterwards
-    })
+      {
+        duration: 1.2,
+        y: 0,
+        x: 0,
+        scale: 1,
+        rotation: 0,
+        opacity: 1,
+        stagger: {
+          amount: 0.8,
+          from: "start"
+        },
+        ease: "back.out(1.2)",
+        clearProps: "all" // Important: Clear transform so magnetic hover works afterwards
+      }
+    )
   })
-})
+}
+
+// Watch for data changes to trigger animation
+watch(() => props.items, (newItems) => {
+  if (newItems && newItems.length > 0) {
+    playDealAnimation()
+  }
+}, { immediate: true })
 
 function handleMouseMove(e, index) {
   const card = cardRefs.value[index]
