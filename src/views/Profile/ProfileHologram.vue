@@ -202,20 +202,25 @@ onMounted(() => {
         </div>
 
         <!-- The Reel Visual -->
-        <div class="relative h-[300px] w-full flex items-center justify-center overflow-hidden mask-gradient-y">
+        <div class="relative h-[300px] w-full overflow-hidden mask-gradient-y">
+            <!-- Focus Frame (Lens) - Explicitly Centered -->
+            <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 h-[110px] w-[80%] border-y-2 pointer-events-none rounded-lg transition-colors duration-500 z-0 bg-white/5"
+                 :class="currentTheme.border + '/50 shadow-[0_0_30px_currentColor]'"></div>
+
+            <!-- Scrollable List - Centered Origin -->
             <div
-                class="absolute w-64 transition-transform duration-500 ease-out"
-                :style="{ transform: `translateY(${-currentIndex * 100}px)` }"
+                class="absolute top-1/2 w-full transition-transform duration-500 ease-out z-10"
+                :style="{ transform: `translateY(calc(-50% - ${currentIndex * 100}px))` }"
             >
                 <div
                     v-for="(exp, index) in experiences"
                     :key="exp.id"
                     @click="select(index)"
-                    class="h-[100px] flex items-center justify-center cursor-pointer group transition-all duration-300"
+                    class="h-[100px] flex items-center justify-center cursor-pointer group transition-all duration-300 relative"
                     :class="{ 'scale-110 opacity-100': currentIndex === index, 'opacity-40 scale-90': currentIndex !== index }"
                 >
                     <!-- Card Item -->
-                    <div class="relative w-full mx-8 p-4 border-l-4 bg-gray-900/80 hover:bg-gray-800 transition-colors"
+                    <div class="relative w-[70%] p-4 border-l-4 bg-gray-900/90 transition-colors shadow-lg"
                          :class="currentIndex === index ? currentTheme.border : 'border-gray-700'">
                         <div class="text-[10px] font-mono mb-1 transition-colors" :class="currentIndex === index ? currentTheme.main : 'text-gray-500'">{{ exp.period }}</div>
                         <div class="font-bold text-lg truncate">{{ exp.company }}</div>
@@ -225,10 +230,6 @@ onMounted(() => {
                     </div>
                 </div>
             </div>
-
-            <!-- Focus Frame (Lens) -->
-            <div class="absolute inset-x-12 h-[110px] border-y-2 pointer-events-none rounded-lg transition-colors duration-500"
-                 :class="currentTheme.border + '/50 shadow-[0_0_30px_currentColor] bg-white/5'"></div>
         </div>
 
         <!-- Physical Controls -->
