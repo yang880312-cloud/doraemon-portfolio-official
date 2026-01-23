@@ -43,6 +43,7 @@ function addExperience() {
     role: 'Job Title',
     period: 'Year - Year',
     description: 'Description of achievements...',
+    image: '',
   })
 }
 
@@ -185,6 +186,21 @@ async function save() {
                 v-model="exp.description"
                 class="w-full h-16 bg-black border border-gray-700 p-2 text-sm focus:border-cyan-500 outline-none resize-none"
               ></textarea>
+            </div>
+
+            <div class="mt-2">
+              <label class="block text-[10px] text-gray-600 mb-1">經歷圖片 (IMAGE URL)</label>
+              <input
+                v-model="exp.image"
+                class="w-full bg-black border border-gray-700 p-2 text-sm focus:border-cyan-500 outline-none mb-2"
+                placeholder="https://..."
+              />
+              <div
+                v-if="exp.image"
+                class="w-full h-24 bg-gray-800 rounded overflow-hidden"
+              >
+                <img :src="exp.image" class="w-full h-full object-cover" />
+              </div>
             </div>
           </div>
         </div>
