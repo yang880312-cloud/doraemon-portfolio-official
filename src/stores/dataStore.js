@@ -102,8 +102,8 @@ export const useDataStore = defineStore('data', () => {
   }
 
   async function updateProfile(newProfile) {
-    // Assuming we update the profile with ID 1, or the ID we fetched
-    const id = profile.value.id || 1
+    // Use the ID from the payload, fallback to 1 only if missing
+    const id = newProfile.id || 1
     const { error } = await supabase.from('profile').update(newProfile).eq('id', id)
 
     if (error) {
