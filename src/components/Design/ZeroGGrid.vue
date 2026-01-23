@@ -1,20 +1,20 @@
 <script setup>
-import { ref, onMounted, nextTick, watch } from 'vue'
+import { ref, nextTick, watch } from 'vue'
 import gsap from 'gsap'
 
 const props = defineProps({
   items: Array,
 })
 
-const emit = defineEmits(['item-click'])
+const emit = defineEmits(['item-click', 'deal-start'])
 
 // 3D Magnetic Tilt Logic
 const cardRefs = ref([])
-
 const isDealt = ref(false)
 
 function dealCards() {
     isDealt.value = true
+    emit('deal-start')
 
     nextTick(() => {
         if (cardRefs.value.length === 0) return
@@ -110,7 +110,7 @@ function getSpanClass(layout) {
     <!-- Only visible if not dealt yet and we have items -->
     <div
       v-if="!isDealt && items.length > 0"
-      class="fixed inset-0 z-50 flex flex-col items-center justify-center bg-black/80 backdrop-blur-md transition-opacity duration-700"
+      class="fixed inset-0 z-50 flex flex-col items-center justify-center bg-black/90 backdrop-blur-md transition-opacity duration-700"
       @click="dealCards"
     >
         <!-- Title in Intro Screen -->
@@ -129,15 +129,15 @@ function getSpanClass(layout) {
             <div class="absolute inset-0 bg-contain bg-center bg-no-repeat opacity-60 transform -rotate-3 translate-y-2 transition-transform duration-500 group-hover:-rotate-6 group-hover:-translate-x-4" style="background-image: url('/src/assets/cyber-tarot-back.png');"></div>
 
             <!-- Top Card (The Active Deck) -->
-            <div class="absolute inset-0 rounded-2xl shadow-[0_0_50px_rgba(139,92,246,0.3)] group-hover:shadow-[0_0_80px_rgba(139,92,246,0.6)] transition-shadow duration-500 overflow-hidden border border-white/10">
-                <img src="/src/assets/cyber-tarot-back.png" alt="Deck" class="w-full h-full object-contain" />
+            <div class="absolute inset-0 rounded-2xl shadow-[0_0_50px_rgba(139,92,246,0.3)] group-hover:shadow-[0_0_80px_rgba(139,92,246,0.6)] transition-shadow duration-500 overflow-hidden border border-white/10 bg-[#0a0a0a]">
+                <img src="/src/assets/cyber-tarot-back.png" alt="Deck" class="w-full h-full object-cover" />
 
                 <!-- Overlay Text -->
                 <div class="absolute inset-0 flex flex-col items-center justify-center bg-black/20 group-hover:bg-transparent transition-colors">
                      <!-- Floating 'Click' Hint -->
-                     <div class="mt-32 px-6 py-2 bg-black/60 backdrop-blur-sm rounded-full border border-white/20 text-white/90 text-xs tracking-[0.3em] font-mono group-hover:bg-[#009EFF] group-hover:text-black group-hover:font-bold transition-all duration-300">
+                     <button class="mt-32 px-8 py-3 bg-black/60 backdrop-blur-sm rounded-full border border-white/20 text-white/90 text-sm tracking-[0.3em] font-mono group-hover:bg-[#009EFF] group-hover:text-black group-hover:font-bold group-hover:border-[#009EFF] transition-all duration-300">
                         點擊發牌 // START
-                     </div>
+                     </button>
                 </div>
             </div>
         </div>
@@ -218,7 +218,7 @@ function getSpanClass(layout) {
     will-change: transform;
 }
 
-/* Hide Scrollbar but keep functionality */
+/* Scrollbar Hiding for immersive feel */
 .custom-scrollbar::-webkit-scrollbar {
   width: 6px;
 }
