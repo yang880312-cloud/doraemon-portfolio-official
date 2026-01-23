@@ -59,7 +59,7 @@ function dealCards() {
                     grid: "auto",
                     from: "center"
                 },
-                ease: "power4.out",
+                ease: "back.out(1.2)",
                 clearProps: "all"
             }
         )
