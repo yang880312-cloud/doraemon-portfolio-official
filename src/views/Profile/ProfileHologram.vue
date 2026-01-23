@@ -6,7 +6,9 @@ const store = useDataStore()
 const emit = defineEmits(['back'])
 
 // --- Data Setup ---
-const rawExperience = computed(() => store.getProfile()?.experience || [])
+// --- Data Setup ---
+const profile = computed(() => store.getProfile() || {})
+const rawExperience = computed(() => profile.value.experience || [])
 
 const experiences = computed(() => {
   let list = [...rawExperience.value]
@@ -112,12 +114,12 @@ onMounted(() => {
             <!-- Profile Summary Card -->
             <div class="bg-gray-900/60 backdrop-blur-md rounded-xl border border-gray-800 p-6 flex flex-col items-center text-center shadow-lg shrink-0">
                 <div class="w-20 h-20 rounded-full border-2 mb-4 overflow-hidden relative group" :class="currentTheme.border">
-                    <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Felix" class="w-full h-full bg-gray-800 transition-transform duration-500 group-hover:scale-110" />
+                    <img :src="profile.image || 'https://api.dicebear.com/7.x/avataaars/svg?seed=Felix'" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110 bg-gray-800" />
                     <div class="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
                 </div>
                 <!-- Hover Glow Effect for Name -->
-                <h1 class="text-xl font-bold text-white transition-shadow duration-300" :class="`hover:drop-shadow-[0_0_8px_rgba(255,255,255,0.5)]`">Doraemon</h1>
-                <div class="text-xs font-mono text-gray-400 mt-1">LVL. 99 ARCHITECT</div>
+                <h1 class="text-xl font-bold text-white transition-shadow duration-300" :class="`hover:drop-shadow-[0_0_8px_rgba(255,255,255,0.5)]`">{{ profile.name || 'Loading...' }}</h1>
+                <div class="text-xs font-mono text-gray-400 mt-1 uppercase">{{ profile.title || 'ARCHITECT' }}</div>
 
                 <div class="w-full h-px bg-gray-800 my-4"></div>
 
@@ -128,6 +130,11 @@ onMounted(() => {
                         <span class="text-green-400 font-bold animate-pulse">● OPEN FOR WORK</span>
                     </div>
                 </div>
+
+                 <!-- Dynamic Bio -->
+                 <div v-if="profile.bio" class="mt-4 text-[10px] text-gray-500 text-left w-full border-t border-gray-800 pt-3 leading-relaxed line-clamp-4 font-mono">
+                     {{ profile.bio }}
+                 </div>
             </div>
 
             <!-- Timeline Navigation (Vertical Tabs) -->
