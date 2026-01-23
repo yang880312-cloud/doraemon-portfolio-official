@@ -124,30 +124,23 @@ function getSpanClass(layout) {
         </h1>
 
         <!-- Deck Container - Moved UP slightly (-mt-20) -->
-        <div class="relative w-[300px] h-[450px] -mt-20 cursor-pointer group hover:scale-105 transition-transform duration-500 will-change-transform perspective-1000" @click.stop="dealCards">
+        <div class="relative w-[300px] h-[450px] -mt-20 cursor-pointer group transition-transform duration-500 will-change-transform perspective-1000" @click.stop="dealCards">
 
-            <!-- THICKNESS LAYERS (Simulating a full deck) -->
-            <!-- We create a stack of cards going downwards -->
-            <div class="absolute inset-0 bg-cover bg-center bg-no-repeat rounded-xl shadow-lg transform translate-y-1 translate-x-1 opacity-90" style="background-image: url('/src/assets/custom-deck-back.jpg');"></div>
-            <div class="absolute inset-0 bg-cover bg-center bg-no-repeat rounded-xl shadow-lg transform translate-y-2 translate-x-2 opacity-80" style="background-image: url('/src/assets/custom-deck-back.jpg');"></div>
-            <div class="absolute inset-0 bg-cover bg-center bg-no-repeat rounded-xl shadow-lg transform translate-y-3 translate-x-3 opacity-70" style="background-image: url('/src/assets/custom-deck-back.jpg');"></div>
-            <div class="absolute inset-0 bg-cover bg-center bg-no-repeat rounded-xl shadow-lg transform translate-y-4 translate-x-4 opacity-60" style="background-image: url('/src/assets/custom-deck-back.jpg');"></div>
-
-            <!-- Messy cards for realism -->
-            <div class="absolute inset-0 bg-cover bg-center bg-no-repeat rounded-xl opacity-50 transform rotate-3 translate-y-2 transition-transform duration-500 group-hover:rotate-6 group-hover:translate-x-6" style="background-image: url('/src/assets/custom-deck-back.jpg');"></div>
-            <div class="absolute inset-0 bg-cover bg-center bg-no-repeat rounded-xl opacity-60 transform -rotate-2 translate-y-1 transition-transform duration-500 group-hover:-rotate-4 group-hover:-translate-x-6" style="background-image: url('/src/assets/custom-deck-back.jpg');"></div>
+            <!-- THICKNESS LAYERS (Simulating a full, solid deck) -->
+            <!-- Tighter packing for solid feel (1px overlap) -->
+            <div class="absolute inset-0 bg-cover bg-center bg-no-repeat rounded-xl shadow-md transform translate-y-[2px] translate-x-[1px] brightness-50" style="background-image: url('/src/assets/custom-deck-back.jpg');"></div>
+            <div class="absolute inset-0 bg-cover bg-center bg-no-repeat rounded-xl shadow-md transform translate-y-[4px] translate-x-[2px] brightness-50" style="background-image: url('/src/assets/custom-deck-back.jpg');"></div>
+            <div class="absolute inset-0 bg-cover bg-center bg-no-repeat rounded-xl shadow-md transform translate-y-[6px] translate-x-[3px] brightness-50" style="background-image: url('/src/assets/custom-deck-back.jpg');"></div>
+            <div class="absolute inset-0 bg-cover bg-center bg-no-repeat rounded-xl shadow-md transform translate-y-[8px] translate-x-[4px] brightness-50" style="background-image: url('/src/assets/custom-deck-back.jpg');"></div>
+            <div class="absolute inset-0 bg-cover bg-center bg-no-repeat rounded-xl shadow-md transform translate-y-[10px] translate-x-[5px] brightness-50" style="background-image: url('/src/assets/custom-deck-back.jpg');"></div>
 
             <!-- Top Card (The Active Deck) -->
-            <div class="absolute inset-0 rounded-xl shadow-[0_0_50px_rgba(139,92,246,0.3)] group-hover:shadow-[0_0_80px_rgba(139,92,246,0.6)] transition-shadow duration-500 overflow-hidden border border-white/10 bg-[#0a0a0a]">
+            <!-- Added Hover Lift Effect -->
+            <div class="absolute inset-0 rounded-xl shadow-[0_10px_30px_rgba(0,0,0,0.5)] group-hover:shadow-[0_20px_50px_rgba(139,92,246,0.4)] group-hover:-translate-y-2 transition-all duration-300 overflow-hidden border border-white/10 bg-[#0a0a0a]">
                 <img src="/src/assets/custom-deck-back.jpg" alt="Deck" class="w-full h-full object-cover" />
 
-                <!-- Overlay Text -->
-                <div class="absolute inset-0 flex flex-col items-center justify-center bg-black/10 group-hover:bg-transparent transition-colors">
-                     <!-- Floating 'Click' Hint -->
-                     <button class="mt-32 px-8 py-3 bg-black/60 backdrop-blur-sm rounded-full border border-white/20 text-white/90 text-sm tracking-[0.3em] font-mono group-hover:bg-[#009EFF] group-hover:text-black group-hover:font-bold group-hover:border-[#009EFF] transition-all duration-300 pointer-events-none">
-                        點擊發牌 // START
-                     </button>
-                </div>
+                <!-- Subtle sheen on hover instead of text -->
+                <div class="absolute inset-0 bg-gradient-to-tr from-white/0 via-white/0 to-white/20 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
             </div>
         </div>
     </div>
