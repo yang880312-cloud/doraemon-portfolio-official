@@ -110,7 +110,7 @@ function getSpanClass(layout) {
     <!-- Only visible if not dealt yet and we have items -->
     <div
       v-if="!isDealt && items.length > 0"
-      class="fixed inset-0 z-50 flex flex-col items-center justify-center bg-black/90 backdrop-blur-md transition-opacity duration-700"
+      class="fixed inset-0 z-50 flex flex-col items-center justify-center bg-black/40 backdrop-blur-sm transition-opacity duration-700"
       @click="dealCards"
     >
         <!-- Title in Intro Screen -->
@@ -124,23 +124,25 @@ function getSpanClass(layout) {
         </h1>
 
         <!-- Deck Container - Moved UP slightly (-mt-20) -->
-        <div class="relative w-[300px] h-[450px] -mt-20 cursor-pointer group transition-transform duration-500 will-change-transform perspective-1000" @click.stop="dealCards">
+        <!-- Added hover scale for interaction feedback -->
+        <div class="relative w-[300px] h-[450px] -mt-20 cursor-pointer group hover:scale-105 transition-transform duration-300 ease-out will-change-transform perspective-1000" @click.stop="dealCards">
+             <!-- CLICK HINT PULSE BEHIND -->
+             <div class="absolute inset-0 bg-blue-500/20 rounded-xl blur-2xl animate-pulse-slow"></div>
 
-            <!-- THICKNESS LAYERS (Simulating a full, solid deck) -->
-            <!-- Tighter packing for solid feel (1px overlap) -->
-            <div class="absolute inset-0 bg-cover bg-center bg-no-repeat rounded-xl shadow-md transform translate-y-[2px] translate-x-[1px] brightness-50" style="background-image: url('/src/assets/custom-deck-back.jpg');"></div>
-            <div class="absolute inset-0 bg-cover bg-center bg-no-repeat rounded-xl shadow-md transform translate-y-[4px] translate-x-[2px] brightness-50" style="background-image: url('/src/assets/custom-deck-back.jpg');"></div>
-            <div class="absolute inset-0 bg-cover bg-center bg-no-repeat rounded-xl shadow-md transform translate-y-[6px] translate-x-[3px] brightness-50" style="background-image: url('/src/assets/custom-deck-back.jpg');"></div>
-            <div class="absolute inset-0 bg-cover bg-center bg-no-repeat rounded-xl shadow-md transform translate-y-[8px] translate-x-[4px] brightness-50" style="background-image: url('/src/assets/custom-deck-back.jpg');"></div>
-            <div class="absolute inset-0 bg-cover bg-center bg-no-repeat rounded-xl shadow-md transform translate-y-[10px] translate-x-[5px] brightness-50" style="background-image: url('/src/assets/custom-deck-back.jpg');"></div>
+            <!-- THICKNESS LAYERS (Distinct Cards Stack) -->
+            <!-- Step-down stack for clear 'multiple cards' feel -->
+            <div class="absolute inset-0 bg-cover bg-center bg-no-repeat rounded-xl border border-white/10 shadow-sm transform translate-y-[15px] translate-x-[0px] scale-[0.95] opacity-40 brightness-50" style="background-image: url('/src/assets/custom-deck-back.jpg');"></div>
+            <div class="absolute inset-0 bg-cover bg-center bg-no-repeat rounded-xl border border-white/10 shadow-sm transform translate-y-[12px] translate-x-[0px] scale-[0.96] opacity-50 brightness-50" style="background-image: url('/src/assets/custom-deck-back.jpg');"></div>
+            <div class="absolute inset-0 bg-cover bg-center bg-no-repeat rounded-xl border border-white/10 shadow-sm transform translate-y-[9px] translate-x-[0px] scale-[0.97] opacity-60 brightness-50" style="background-image: url('/src/assets/custom-deck-back.jpg');"></div>
+            <div class="absolute inset-0 bg-cover bg-center bg-no-repeat rounded-xl border border-white/10 shadow-sm transform translate-y-[6px] translate-x-[0px] scale-[0.98] opacity-70 brightness-50" style="background-image: url('/src/assets/custom-deck-back.jpg');"></div>
+            <div class="absolute inset-0 bg-cover bg-center bg-no-repeat rounded-xl border border-white/10 shadow-sm transform translate-y-[3px] translate-x-[0px] scale-[0.99] opacity-80 brightness-50" style="background-image: url('/src/assets/custom-deck-back.jpg');"></div>
 
             <!-- Top Card (The Active Deck) -->
-            <!-- Added Hover Lift Effect -->
-            <div class="absolute inset-0 rounded-xl shadow-[0_10px_30px_rgba(0,0,0,0.5)] group-hover:shadow-[0_20px_50px_rgba(139,92,246,0.4)] group-hover:-translate-y-2 transition-all duration-300 overflow-hidden border border-white/10 bg-[#0a0a0a]">
-                <img src="/src/assets/custom-deck-back.jpg" alt="Deck" class="w-full h-full object-cover" />
+            <div class="absolute inset-0 rounded-xl shadow-[0_20px_60px_rgba(0,0,0,0.8)] border border-white/20 bg-[#0a0a0a] z-10 transition-transform duration-300 group-hover:-translate-y-2">
+                <img src="/src/assets/custom-deck-back.jpg" alt="Deck" class="w-full h-full object-cover rounded-xl" />
 
-                <!-- Subtle sheen on hover instead of text -->
-                <div class="absolute inset-0 bg-gradient-to-tr from-white/0 via-white/0 to-white/20 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                <!-- Sheen -->
+                <div class="absolute inset-0 bg-gradient-to-tr from-transparent via-white/5 to-white/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none"></div>
             </div>
         </div>
     </div>
