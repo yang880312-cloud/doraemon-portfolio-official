@@ -121,6 +121,9 @@ onMounted(() => {
                 <h1 class="text-xl font-bold text-white transition-shadow duration-300" :class="`hover:drop-shadow-[0_0_8px_rgba(255,255,255,0.5)]`">{{ profile.name || 'Loading...' }}</h1>
                 <div class="text-xs font-mono text-gray-400 mt-1 uppercase">{{ profile.title || 'ARCHITECT' }}</div>
 
+                <!-- Debug / Version Indicator (Temporary) -->
+                <div class="text-[9px] text-gray-600 font-mono mt-1">v2.1 SYNCED</div>
+
                 <div class="w-full h-px bg-gray-800 my-4"></div>
 
                 <!-- Status Indicators -->
