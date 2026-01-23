@@ -125,12 +125,12 @@ function getSpanClass(layout) {
 
         <div class="relative w-[300px] h-[450px] cursor-pointer group hover:scale-105 transition-transform duration-500 will-change-transform perspective-1000">
             <!-- Stack Effect Layers (Rotated cards behind) -->
-            <div class="absolute inset-0 bg-contain bg-center bg-no-repeat opacity-40 transform rotate-6 translate-y-4 transition-transform duration-500 group-hover:rotate-12 group-hover:translate-x-4" style="background-image: url('/src/assets/cyber-tarot-back.png');"></div>
-            <div class="absolute inset-0 bg-contain bg-center bg-no-repeat opacity-60 transform -rotate-3 translate-y-2 transition-transform duration-500 group-hover:-rotate-6 group-hover:-translate-x-4" style="background-image: url('/src/assets/cyber-tarot-back.png');"></div>
+            <div class="absolute inset-0 bg-contain bg-center bg-no-repeat opacity-40 transform rotate-6 translate-y-4 transition-transform duration-500 group-hover:rotate-12 group-hover:translate-x-4" style="background-image: url('/src/assets/custom-deck-back.png');"></div>
+            <div class="absolute inset-0 bg-contain bg-center bg-no-repeat opacity-60 transform -rotate-3 translate-y-2 transition-transform duration-500 group-hover:-rotate-6 group-hover:-translate-x-4" style="background-image: url('/src/assets/custom-deck-back.png');"></div>
 
             <!-- Top Card (The Active Deck) -->
             <div class="absolute inset-0 rounded-2xl shadow-[0_0_50px_rgba(139,92,246,0.3)] group-hover:shadow-[0_0_80px_rgba(139,92,246,0.6)] transition-shadow duration-500 overflow-hidden border border-white/10 bg-[#0a0a0a]">
-                <img src="/src/assets/cyber-tarot-back.png" alt="Deck" class="w-full h-full object-cover" />
+                <img src="/src/assets/custom-deck-back.png" alt="Deck" class="w-full h-full object-cover" />
 
                 <!-- Overlay Text -->
                 <div class="absolute inset-0 flex flex-col items-center justify-center bg-black/20 group-hover:bg-transparent transition-colors">
