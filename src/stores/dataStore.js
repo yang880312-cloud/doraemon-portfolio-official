@@ -89,7 +89,7 @@ export const useDataStore = defineStore('data', () => {
 
   async function fetchProfile() {
     // Assuming single-user profile for now (id 1 or just take the first one)
-    const { data, error } = await supabase.from('profile').select('*').limit(1).single()
+    const { data, error } = await supabase.from('profile').select('*').order('id', { ascending: true }).limit(1).single()
     if (error) {
       console.error('Error fetching profile:', error)
       return

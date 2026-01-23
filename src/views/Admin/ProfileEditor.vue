@@ -26,6 +26,13 @@ onMounted(async () => {
   // Ensure default structure
   if (!formData.value.skills) formData.value.skills = []
   if (!formData.value.experience) formData.value.experience = []
+
+  // Convert Arrays to Strings for Editing
+  formData.value.experience.forEach(exp => {
+      exp.techStackStr = Array.isArray(exp.techStack) ? exp.techStack.join('\n') : (exp.techStack || '')
+      exp.bulletsStr = Array.isArray(exp.bullets) ? exp.bullets.join('\n') : (exp.bullets || '')
+      exp.achievementsStr = Array.isArray(exp.achievements) ? exp.achievements.join('\n') : (exp.achievements || '')
+  })
 })
 
 function addSkill() {
@@ -47,6 +54,10 @@ function addExperience() {
     techStack: ['Tech 1', 'Tech 2'],
     bullets: ['Key impact 1', 'Key impact 2'],
     achievements: ['Achievement 1', 'Achievement 2'],
+     // Init strings
+    techStackStr: 'Tech 1\nTech 2',
+    bulletsStr: 'Key impact 1\nKey impact 2',
+    achievementsStr: 'Achievement 1\nAchievement 2',
     image: 'https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&w=800&q=80',
   })
 }
@@ -56,7 +67,20 @@ function removeExperience(index) {
 }
 
 async function save() {
-  await store.updateProfile(formData.value)
+  // Convert Strings back to Arrays
+  const payload = JSON.parse(JSON.stringify(formData.value))
+  payload.experience.forEach(exp => {
+      exp.techStack = exp.techStackStr.split('\n').filter(s => s.trim())
+      exp.bullets = exp.bulletsStr.split('\n').filter(s => s.trim())
+      exp.achievements = exp.achievementsStr.split('\n').filter(s => s.trim())
+
+      // cleanup temporary fields
+      delete exp.techStackStr
+      delete exp.bulletsStr
+      delete exp.achievementsStr
+  })
+
+  await store.updateProfile(payload)
   router.push('/admin')
 }
 </script>
@@ -211,10 +235,9 @@ async function save() {
                 <!-- Tech Stack -->
                 <div>
                      <label class="block text-[10px] text-blue-400 mb-1">技術堆疊 (TECH STACK)</label>
-                     <div class="text-[9px] text-gray-600 mb-1">每行一項 或 用逗號分隔</div>
+                     <div class="text-[9px] text-gray-600 mb-1">每行一項</div>
                      <textarea
-                        :value="exp.techStack ? (Array.isArray(exp.techStack) ? exp.techStack.join('\n') : exp.techStack) : ''"
-                        @input="e => exp.techStack = e.target.value.split('\n')"
+                        v-model="exp.techStackStr"
                         class="w-full h-24 bg-black border border-gray-700 p-2 text-xs focus:border-blue-500 outline-none resize-none font-mono"
                         placeholder="Vue.js&#10;Node.js"
                      ></textarea>
@@ -225,8 +248,7 @@ async function save() {
                      <label class="block text-[10px] text-green-400 mb-1">關鍵戰績 (KEY IMPACTS)</label>
                      <div class="text-[9px] text-gray-600 mb-1">每行一項 (顯示為 Bullet Points)</div>
                      <textarea
-                        :value="exp.bullets ? (Array.isArray(exp.bullets) ? exp.bullets.join('\n') : exp.bullets) : ''"
-                        @input="e => exp.bullets = e.target.value.split('\n')"
+                        v-model="exp.bulletsStr"
                         class="w-full h-24 bg-black border border-gray-700 p-2 text-xs focus:border-green-500 outline-none resize-none font-mono"
                         placeholder="Lead Team of 10&#10;Increased Revenue by 20%"
                      ></textarea>
@@ -237,8 +259,7 @@ async function save() {
                      <label class="block text-[10px] text-yellow-400 mb-1">主要成就 (ACHIEVEMENTS)</label>
                      <div class="text-[9px] text-gray-600 mb-1">每行一項 (底部 Grid)</div>
                      <textarea
-                        :value="exp.achievements ? (Array.isArray(exp.achievements) ? exp.achievements.join('\n') : exp.achievements) : ''"
-                        @input="e => exp.achievements = e.target.value.split('\n')"
+                        v-model="exp.achievementsStr"
                         class="w-full h-24 bg-black border border-gray-700 p-2 text-xs focus:border-yellow-500 outline-none resize-none font-mono"
                         placeholder="S-Rank Award&#10;0.001ms Latency"
                      ></textarea>
