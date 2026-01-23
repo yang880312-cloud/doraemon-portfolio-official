@@ -11,44 +11,60 @@ const emit = defineEmits(['item-click'])
 // 3D Magnetic Tilt Logic
 const cardRefs = ref([])
 
-function playDealAnimation() {
-  nextTick(() => {
-    // Ensure refs are populated
-    if (cardRefs.value.length === 0) return
+const isDealt = ref(false)
 
-    // Animate from "Bottom Center Stack"
-    gsap.fromTo(cardRefs.value,
-      {
-        y: window.innerHeight, // Start from bottom of screen
-        x: (index) => (Math.random() - 0.5) * 200, // Random scatter
-        scale: 0.2,
-        rotation: () => Math.random() * 60 - 30,
-        opacity: 0
-      },
-      {
-        duration: 1.2,
-        y: 0,
-        x: 0,
-        scale: 1,
-        rotation: 0,
-        opacity: 1,
-        stagger: {
-          amount: 0.8,
-          from: "start"
-        },
-        ease: "back.out(1.2)",
-        clearProps: "all" // Important: Clear transform so magnetic hover works afterwards
-      }
-    )
-  })
+function dealCards() {
+    isDealt.value = true
+
+    nextTick(() => {
+        if (cardRefs.value.length === 0) return
+
+        // Calculate center of screen for "From" position
+        // Since the deck is fixed center, we just use window center
+        const centerX = window.innerWidth / 2
+        const centerY = window.innerHeight / 2
+
+        gsap.fromTo(cardRefs.value,
+            {
+                // We want them to fly OUT from the center
+                // But since they are in grid flow, we use x/y to offset them
+                // This is a bit tricky with offsets.
+                // Simpler: use set to fixed center, then to grid.
+                // But getting their natural grid position is hard if they are fixed.
+                // Strategy: Use 'from' logic. We assume they are at their final position (because opacity 1 in DOM),
+                // and we animate 'from' the center.
+                x: (i, target) => {
+                    const rect = target.getBoundingClientRect()
+                    return centerX - (rect.left + rect.width/2)
+                },
+                y: (i, target) => {
+                    const rect = target.getBoundingClientRect()
+                    return centerY - (rect.top + rect.height/2)
+                },
+                scale: 0.1,
+                rotation: () => Math.random() * 180 - 90, // Crazy spin
+                opacity: 0,
+                z: -500
+            },
+            {
+                duration: 0.8,
+                x: 0,
+                y: 0,
+                scale: 1,
+                rotation: 0,
+                opacity: 1,
+                z: 0,
+                stagger: {
+                    amount: 0.6,
+                    grid: "auto",
+                    from: "center"
+                },
+                ease: "power4.out",
+                clearProps: "all"
+            }
+        )
+    })
 }
-
-// Watch for data changes to trigger animation
-watch(() => props.items, (newItems) => {
-  if (newItems && newItems.length > 0) {
-    playDealAnimation()
-  }
-}, { immediate: true })
 
 function handleMouseMove(e, index) {
   const card = cardRefs.value[index]
@@ -88,9 +104,38 @@ function getSpanClass(layout) {
 </script>
 
 <template>
-  <div class="w-full h-full overflow-y-auto custom-scrollbar p-8 md:p-16 pb-32">
+  <div class="relative w-full h-full overflow-y-auto custom-scrollbar p-8 md:p-16 pb-32">
+
+    <!-- Interaction Layer: The Deck Stack -->
+    <!-- Only visible if not dealt yet and we have items -->
+    <div
+      v-if="!isDealt && items.length > 0"
+      class="fixed inset-0 z-50 flex flex-col items-center justify-center bg-black/60 backdrop-blur-sm transition-opacity duration-500"
+      @click="dealCards"
+    >
+        <div class="relative w-64 h-96 cursor-pointer group hover:scale-105 transition-transform duration-300">
+            <!-- Stack Effect Layers -->
+            <div class="absolute inset-0 bg-white/10 rounded-3xl transform rotate-6 translate-y-4 border border-white/20"></div>
+            <div class="absolute inset-0 bg-white/20 rounded-3xl transform -rotate-3 translate-y-2 border border-white/20"></div>
+
+            <!-- Top Card (The Deck) -->
+            <div class="absolute inset-0 bg-gradient-to-br from-[#009EFF] to-[#0247A2] rounded-3xl shadow-[0_0_50px_rgba(0,158,255,0.4)] border-4 border-white flex flex-col items-center justify-center text-center p-6 transform rotate-0 group-hover:-translate-y-2 transition-transform">
+                <div class="w-16 h-16 border-4 border-white rounded-full flex items-center justify-center mb-4">
+                    <span class="text-3xl font-black text-white">繪</span>
+                </div>
+                <h3 class="text-2xl font-black text-white tracking-widest mb-2">點擊發牌</h3>
+                <p class="text-xs text-white/70 font-mono tracking-widest">DEAL PROJECTS</p>
+            </div>
+
+            <!-- Pulse Effect -->
+            <div class="absolute -inset-4 border-2 border-dashed border-white/30 rounded-[2.5rem] animate-spin-slow pointer-events-none"></div>
+        </div>
+
+        <p class="mt-12 text-white/50 animate-pulse tracking-[0.5em] font-mono text-xs">CLICK TO EXPLORE</p>
+    </div>
+
     <!-- Zero-G Grid -->
-    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 md:gap-8 max-w-[1600px] mx-auto">
+    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 md:gap-8 max-w-[1600px] mx-auto min-h-[50vh]">
 
       <div
         v-for="(item, index) in items"
@@ -100,7 +145,7 @@ function getSpanClass(layout) {
         @mouseleave="handleMouseLeave(index)"
         @click="$emit('item-click', item)"
         class="relative group rounded-3xl cursor-none transition-all duration-300 ease-out preserve-3d"
-        :class="getSpanClass(item.layout)"
+        :class="[getSpanClass(item.layout), isDealt ? 'opacity-100' : 'opacity-0']"
       >
         <!-- Aura Glow (Behind) -->
         <div
