@@ -112,7 +112,10 @@ async function seedData() {
         role: 'Future Creator',
         period: '2026 - Present',
         description: 'Now seeking to equip human teams with advanced AI weaponry. Ready to deploy into high-intensity development environments and turn imagination into reality.',
-        image: 'https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&w=800&q=80'
+        image: 'https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&w=800&q=80',
+        _theme: 'purple',
+        _techStack: ['AGI', 'Quantum', 'Neural Link'],
+        _achievements: ['Sentient Assistant', '99% Global Opt', 'Thought Interface']
       },
       {
         id: 102,
@@ -120,7 +123,10 @@ async function seedData() {
         role: 'Gadget Architect',
         period: '2023 - 2026',
         description: 'Specialized in 4th-dimensional state management. Built the "Anywhere Door" routing system which reduced user travel time to zero. Led a team of mini-dora robots to optimize production.',
-        image: 'https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?auto=format&fit=crop&w=800&q=80'
+        image: 'https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?auto=format&fit=crop&w=800&q=80',
+        _theme: 'orange',
+        _techStack: ['Vue 4', 'Hyper-Loop', 'Mini-Dora'],
+        _achievements: ['1B+ Users', '200% Efficiency', 'Mentored 50 Bots']
       },
       {
         id: 103,
@@ -128,9 +134,15 @@ async function seedData() {
         role: 'Prototype Model Ø',
         period: '2112 (Origin)',
         description: 'Manufactured with a passion for clean code and problem-solving algorithms. Passed all quality assurance tests with S-Rank. Initialized: Perfect.',
-        image: 'https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&w=800&q=80'
+        image: 'https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&w=800&q=80',
+        _theme: 'blue',
+        _techStack: ['Assembly', 'Logic Circuits', 'Fusion Reactor'],
+        _achievements: ['S-Rank QA', '0.001ms Kernel', 'Doraemon Pattern']
       }
   ]
+
+  // Note: Backend schema for 'experience' is JSONB, so adding underscore fields is safe for naive storage.
+  // Ideally, update ProfileEditor to support editing these, but for Seeding it's enough.
 
   // Assuming we update the main profile (id=1 or first found)
   try {
