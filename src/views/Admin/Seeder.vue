@@ -103,6 +103,54 @@ async function seedData() {
     }
   }
 
+  // 3. Seed Profile (Hero Journey)
+  log('--- Seeding Profile Hero Data ---')
+  const heroExperience = [
+      {
+        id: 101, // Arbitrary ID
+        company: 'The New Horizon',
+        role: 'Future Creator',
+        period: '2026 - Present',
+        description: 'Now seeking to equip human teams with advanced AI weaponry. Ready to deploy into high-intensity development environments and turn imagination into reality.',
+        image: 'https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&w=800&q=80'
+      },
+      {
+        id: 102,
+        company: 'Matsushiba Lab',
+        role: 'Gadget Architect',
+        period: '2023 - 2026',
+        description: 'Specialized in 4th-dimensional state management. Built the "Anywhere Door" routing system which reduced user travel time to zero. Led a team of mini-dora robots to optimize production.',
+        image: 'https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?auto=format&fit=crop&w=800&q=80'
+      },
+      {
+        id: 103,
+        company: 'Robot Factory',
+        role: 'Prototype Model Ø',
+        period: '2112 (Origin)',
+        description: 'Manufactured with a passion for clean code and problem-solving algorithms. Passed all quality assurance tests with S-Rank. Initialized: Perfect.',
+        image: 'https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&w=800&q=80'
+      }
+  ]
+
+  // Assuming we update the main profile (id=1 or first found)
+  try {
+      const { data: profile } = await supabase.from('profile').select('id').limit(1).single()
+      if (profile) {
+          const { error } = await supabase.from('profile').update({
+              experience: heroExperience,
+              image: 'https://i.pinimg.com/736x/2f/55/97/2f559707c3b01a1964c37f88f288d6ef.jpg', // Doraemon avatar
+              bio: 'A highly advanced cat-type robot from the 22nd century. Specialized in problem-solving gadgets and dream realization. Currently deployed to assist User with full-stack development.'
+          }).eq('id', profile.id)
+
+          if (error) log(`Error updating profile: ${error.message}`)
+          else log('Successfully seeded Profile Hero Data!')
+      } else {
+          log('No existing profile found to update. (Create a row in Supabase first)')
+      }
+  } catch (err) {
+      log(`Profile Seed Error: ${err.message}`)
+  }
+
   status.value = 'Finished'
   log('Done.')
 }

@@ -11,8 +11,8 @@ const rawExperience = computed(() => store.getProfile()?.experience || [])
 const experiences = computed(() => {
   let list = [...rawExperience.value]
 
-  // Use rich "Story Game" defaults if empty or generic
-  if (list.length === 0) {
+  // Use rich "Story Game" defaults if empty or just has a single placeholder (e.g. factory test)
+  if (list.length <= 1) {
     return [
       {
         id: 'hero-3',
@@ -20,7 +20,7 @@ const experiences = computed(() => {
         role: 'Future Creator',
         period: '2026 - Present',
         description: 'Now seeking to equip human teams with advanced AI weaponry. Ready to deploy into high-intensity development environments and turn imagination into reality.',
-        image: 'https://images.unsplash.com/photo-1451187580459-43490279c0fa?q=80&w=1000&auto=format&fit=crop'
+        image: 'https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&w=800&q=80'
       },
       {
         id: 'hero-2',
@@ -28,7 +28,7 @@ const experiences = computed(() => {
         role: 'Gadget Architect',
         period: '2023 - 2026',
         description: 'Specialized in 4th-dimensional state management. Built the "Anywhere Door" routing system which reduced user travel time to zero. Led a team of mini-dora robots to optimize production.',
-        image: 'https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?q=80&w=1000&auto=format&fit=crop'
+        image: 'https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?auto=format&fit=crop&w=800&q=80'
       },
       {
         id: 'hero-1',
@@ -36,7 +36,7 @@ const experiences = computed(() => {
         role: 'Prototype Model Ø',
         period: '2112 (Origin)',
         description: 'Manufactured with a passion for clean code and problem-solving algorithms. Passed all quality assurance tests with S-Rank. Initialized: Perfect.',
-        image: 'https://images.unsplash.com/photo-1550751827-4bd374c3f58b?q=80&w=1000&auto=format&fit=crop'
+        image: 'https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&w=800&q=80'
       }
     ]
   }
