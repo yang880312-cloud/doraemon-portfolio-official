@@ -4,6 +4,7 @@ import { useDataStore } from '@/stores/dataStore'
 import WarpTunnelEnvironment from '@/components/Design/WarpTunnelEnvironment.vue'
 import ZeroGGrid from '@/components/Design/ZeroGGrid.vue'
 import DesignProjectModal from '@/components/Design/DesignProjectModal.vue'
+import FluidCursor from '@/components/Design/FluidCursor.vue'
 
 const store = useDataStore()
 const selectedProject = ref(null)
@@ -32,6 +33,7 @@ function openProject(project) {
   <div class="relative min-h-screen overflow-y-auto overflow-x-hidden bg-transparent text-white selection:bg-pink-500 selection:text-white custom-scroll">
     <!-- BACKGROUND: The Time Warp Tunnel -->
     <WarpTunnelEnvironment />
+    <FluidCursor />
 
     <!-- FOREGROUND: Content Grid -->
     <div class="relative z-10 container mx-auto px-4 py-20 min-h-screen flex flex-col">

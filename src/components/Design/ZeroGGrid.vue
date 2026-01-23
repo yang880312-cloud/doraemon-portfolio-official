@@ -110,8 +110,7 @@ function getSpanClass(layout) {
     <!-- Only visible if not dealt yet and we have items -->
     <div
       v-if="!isDealt && items.length > 0"
-      class="fixed inset-0 z-50 flex flex-col items-center justify-center bg-black/40 backdrop-blur-sm transition-opacity duration-700"
-      @click="dealCards"
+      class="fixed inset-0 z-50 flex flex-col items-center justify-center pointer-events-none transition-opacity duration-700"
     >
         <!-- Title in Intro Screen -->
         <h1 class="mb-12 text-center opacity-0 animate-fade-in-up" style="animation-delay: 0.2s; animation-fill-mode: forwards;">
@@ -125,7 +124,7 @@ function getSpanClass(layout) {
 
         <!-- Deck Container - Moved UP slightly (-mt-20) -->
         <!-- Added hover scale for interaction feedback -->
-        <div class="relative w-[300px] h-[450px] -mt-20 cursor-pointer group hover:scale-105 transition-transform duration-300 ease-out will-change-transform perspective-1000" @click.stop="dealCards">
+        <div class="relative w-[300px] h-[450px] -mt-20 cursor-pointer group hover:scale-105 transition-transform duration-300 ease-out will-change-transform perspective-1000 pointer-events-auto" @click.stop="dealCards">
              <!-- CLICK HINT PULSE BEHIND -->
              <div class="absolute inset-0 bg-blue-500/20 rounded-xl blur-2xl animate-pulse-slow"></div>
 
