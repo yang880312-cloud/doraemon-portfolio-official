@@ -1,5 +1,5 @@
 <script setup>
-import { ref, nextTick, watch } from 'vue'
+import { ref, nextTick } from 'vue'
 import gsap from 'gsap'
 
 const props = defineProps({
@@ -123,19 +123,28 @@ function getSpanClass(layout) {
             </span>
         </h1>
 
-        <div class="relative w-[300px] h-[450px] cursor-pointer group hover:scale-105 transition-transform duration-500 will-change-transform perspective-1000">
-            <!-- Stack Effect Layers (Rotated cards behind) -->
-            <div class="absolute inset-0 bg-contain bg-center bg-no-repeat opacity-40 transform rotate-6 translate-y-4 transition-transform duration-500 group-hover:rotate-12 group-hover:translate-x-4" style="background-image: url('/src/assets/custom-deck-back.png');"></div>
-            <div class="absolute inset-0 bg-contain bg-center bg-no-repeat opacity-60 transform -rotate-3 translate-y-2 transition-transform duration-500 group-hover:-rotate-6 group-hover:-translate-x-4" style="background-image: url('/src/assets/custom-deck-back.png');"></div>
+        <!-- Deck Container - Moved UP slightly (-mt-20) -->
+        <div class="relative w-[300px] h-[450px] -mt-20 cursor-pointer group hover:scale-105 transition-transform duration-500 will-change-transform perspective-1000" @click.stop="dealCards">
+
+            <!-- THICKNESS LAYERS (Simulating a full deck) -->
+            <!-- We create a stack of cards going downwards -->
+            <div class="absolute inset-0 bg-cover bg-center bg-no-repeat rounded-xl shadow-lg transform translate-y-1 translate-x-1 opacity-90" style="background-image: url('/src/assets/custom-deck-back.jpg');"></div>
+            <div class="absolute inset-0 bg-cover bg-center bg-no-repeat rounded-xl shadow-lg transform translate-y-2 translate-x-2 opacity-80" style="background-image: url('/src/assets/custom-deck-back.jpg');"></div>
+            <div class="absolute inset-0 bg-cover bg-center bg-no-repeat rounded-xl shadow-lg transform translate-y-3 translate-x-3 opacity-70" style="background-image: url('/src/assets/custom-deck-back.jpg');"></div>
+            <div class="absolute inset-0 bg-cover bg-center bg-no-repeat rounded-xl shadow-lg transform translate-y-4 translate-x-4 opacity-60" style="background-image: url('/src/assets/custom-deck-back.jpg');"></div>
+
+            <!-- Messy cards for realism -->
+            <div class="absolute inset-0 bg-cover bg-center bg-no-repeat rounded-xl opacity-50 transform rotate-3 translate-y-2 transition-transform duration-500 group-hover:rotate-6 group-hover:translate-x-6" style="background-image: url('/src/assets/custom-deck-back.jpg');"></div>
+            <div class="absolute inset-0 bg-cover bg-center bg-no-repeat rounded-xl opacity-60 transform -rotate-2 translate-y-1 transition-transform duration-500 group-hover:-rotate-4 group-hover:-translate-x-6" style="background-image: url('/src/assets/custom-deck-back.jpg');"></div>
 
             <!-- Top Card (The Active Deck) -->
-            <div class="absolute inset-0 rounded-2xl shadow-[0_0_50px_rgba(139,92,246,0.3)] group-hover:shadow-[0_0_80px_rgba(139,92,246,0.6)] transition-shadow duration-500 overflow-hidden border border-white/10 bg-[#0a0a0a]">
-                <img src="/src/assets/custom-deck-back.png" alt="Deck" class="w-full h-full object-cover" />
+            <div class="absolute inset-0 rounded-xl shadow-[0_0_50px_rgba(139,92,246,0.3)] group-hover:shadow-[0_0_80px_rgba(139,92,246,0.6)] transition-shadow duration-500 overflow-hidden border border-white/10 bg-[#0a0a0a]">
+                <img src="/src/assets/custom-deck-back.jpg" alt="Deck" class="w-full h-full object-cover" />
 
                 <!-- Overlay Text -->
-                <div class="absolute inset-0 flex flex-col items-center justify-center bg-black/20 group-hover:bg-transparent transition-colors">
+                <div class="absolute inset-0 flex flex-col items-center justify-center bg-black/10 group-hover:bg-transparent transition-colors">
                      <!-- Floating 'Click' Hint -->
-                     <button class="mt-32 px-8 py-3 bg-black/60 backdrop-blur-sm rounded-full border border-white/20 text-white/90 text-sm tracking-[0.3em] font-mono group-hover:bg-[#009EFF] group-hover:text-black group-hover:font-bold group-hover:border-[#009EFF] transition-all duration-300">
+                     <button class="mt-32 px-8 py-3 bg-black/60 backdrop-blur-sm rounded-full border border-white/20 text-white/90 text-sm tracking-[0.3em] font-mono group-hover:bg-[#009EFF] group-hover:text-black group-hover:font-bold group-hover:border-[#009EFF] transition-all duration-300 pointer-events-none">
                         點擊發牌 // START
                      </button>
                 </div>
