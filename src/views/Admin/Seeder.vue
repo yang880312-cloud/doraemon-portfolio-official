@@ -115,7 +115,8 @@ async function seedData() {
         image: 'https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&w=800&q=80',
         _theme: 'purple',
         _techStack: ['AGI', 'Quantum', 'Neural Link'],
-        _achievements: ['Sentient Assistant', '99% Global Opt', 'Thought Interface']
+        _achievements: ['Sentient Assistant', '99% Global Opt', 'Thought Interface'],
+        _bullets: ['Seeking Senior/Lead Roles', 'Specialty: AI & Human-Computer Interaction', 'Ready for Immediate Deployment']
       },
       {
         id: 102,
@@ -126,7 +127,8 @@ async function seedData() {
         image: 'https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?auto=format&fit=crop&w=800&q=80',
         _theme: 'orange',
         _techStack: ['Vue 4', 'Hyper-Loop', 'Mini-Dora'],
-        _achievements: ['1B+ Users', '200% Efficiency', 'Mentored 50 Bots']
+        _achievements: ['1B+ Users', '200% Efficiency', 'Mentored 50 Bots'],
+        _bullets: ['Senior Frontend Developer at Matsushiba', 'Led team of 10+ Engineers', 'Optimized Production by 200%']
       },
       {
         id: 103,
@@ -137,7 +139,8 @@ async function seedData() {
         image: 'https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&w=800&q=80',
         _theme: 'blue',
         _techStack: ['Assembly', 'Logic Circuits', 'Fusion Reactor'],
-        _achievements: ['S-Rank QA', '0.001ms Kernel', 'Doraemon Pattern']
+        _achievements: ['S-Rank QA', '0.001ms Kernel', 'Doraemon Pattern'],
+        _bullets: ['Graduated S-Rank from Robot Academy', 'Core Focus: Algorithms & System Design', 'Clean Code Advocate']
       }
   ]
 
