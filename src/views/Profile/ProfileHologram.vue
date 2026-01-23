@@ -104,8 +104,8 @@ onMounted(() => {
     </div>
 
     <!-- MAIN CONTAINER: The Command Center -->
-    <!-- Adjusted height to explicitly leave room for the bottom Navigation Dock (approx 100-120px) -->
-    <div class="relative z-10 w-full max-w-6xl h-[calc(100vh-140px)] flex flex-col md:grid md:grid-cols-[280px_1fr] gap-6 p-4 md:p-0">
+    <!-- Aggressively reduced height (75vh) and lifted with margin-bottom to guarantee Dock clearance -->
+    <div class="relative z-10 w-full max-w-6xl h-[75vh] mb-16 flex flex-col md:grid md:grid-cols-[280px_1fr] gap-6 p-4 md:p-0">
 
         <!-- LEFT RAIL: Navigation & Status -->
         <div class="flex flex-col gap-4 order-2 md:order-1 h-full min-h-0">
