@@ -5,7 +5,7 @@ import { useRouter } from 'vue-router'
 import { useDimensionStore } from '@/stores/dimension'
 import gsap from 'gsap'
 import AnywhereDoor from '@/components/Lobby/AnywhereDoor.vue'
-import PhysicsWorld from '@/components/Lobby/PhysicsWorld.vue'
+import CyberTextBackground from '@/components/Lobby/CyberTextBackground.vue'
 import LobbyCursor from '@/components/Lobby/LobbyCursor.vue'
 
 const router = useRouter()
@@ -60,8 +60,8 @@ onMounted(() => {
 <template>
   <div class="relative w-full h-full bg-void-black overflow-hidden lobby-container">
     <!-- 1. Physics World (Background / Interactive Layer) -->
+    <CyberTextBackground />
     <LobbyCursor />
-    <PhysicsWorld />
 
     <!-- 2. UI Overlay (Title, Door) -->
     <div
