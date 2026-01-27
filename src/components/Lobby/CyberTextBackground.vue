@@ -90,12 +90,12 @@ onUnmounted(() => {
             class="absolute font-mono tracking-tighter whitespace-nowrap leading-none transition-all duration-500"
             :class="[
                 word.fontSize,
-                word.type === 'hero' ? 'font-black text-gray-600 mix-blend-overlay' : 'text-gray-800'
+                word.type === 'hero' ? 'font-black text-[#222]' : 'text-[#111]'
             ]"
             :style="{
                 left: word.x + 'px',
                 top: word.y + 'px',
-                opacity: word.opacity,
+                opacity: word.type === 'hero' ? 0.8 : 0.6,
                 transform: `rotate(${word.rotation}deg)`
             }"
         >
@@ -107,8 +107,8 @@ onUnmounted(() => {
     <div
         class="absolute inset-0 grid-layer will-change-[mask-image]"
         :style="{
-            maskImage: `radial-gradient(circle 350px at ${mouse.x}px ${mouse.y}px, black 0%, transparent 100%)`,
-            webkitMaskImage: `radial-gradient(circle 350px at ${mouse.x}px ${mouse.y}px, black 0%, transparent 100%)`
+            maskImage: `radial-gradient(circle 400px at ${mouse.x}px ${mouse.y}px, black 0%, transparent 100%)`,
+            webkitMaskImage: `radial-gradient(circle 400px at ${mouse.x}px ${mouse.y}px, black 0%, transparent 100%)`
         }"
     >
         <span
@@ -117,12 +117,12 @@ onUnmounted(() => {
             class="absolute font-mono tracking-tighter whitespace-nowrap leading-none transition-all duration-75"
             :class="[
                 word.fontSize,
-                word.type === 'hero' ? 'font-black text-white/90 z-10 drop-shadow-[0_0_15px_rgba(59,130,246,0.6)]' : 'font-bold text-gray-500'
+                word.type === 'hero' ? 'font-black text-white z-10 drop-shadow-[0_0_20px_rgba(255,255,255,0.4)]' : 'font-bold text-gray-500'
             ]"
             :style="{
                 left: word.x + 'px',
                 top: word.y + 'px',
-                transform: `rotate(${word.rotation}deg) scale(${word.type === 'hero' ? 1.05 : 1})`
+                transform: `rotate(${word.rotation}deg) scale(${word.type === 'hero' ? 1.1 : 1})`
             }"
         >
             {{ word.text }}
