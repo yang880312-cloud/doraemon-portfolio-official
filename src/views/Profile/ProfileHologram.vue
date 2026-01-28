@@ -107,7 +107,9 @@ onMounted(() => {
   <!-- Adjusted height and added pb-20 to prevent overlap with the bottom NavigationDock -->
   <!-- Main Wrapper -->
   <!-- RWD Fix: Allow scrolling on mobile, fixed on desktop -->
-  <div class="fixed inset-0 bg-[#020205] text-white font-sans flex items-start justify-center md:items-center pb-20 md:pb-0 overflow-y-auto md:overflow-hidden">
+  <!-- Main Wrapper -->
+  <!-- RWD Fix: Allow scrolling on mobile (block layout), fixed on desktop (flex center) -->
+  <div class="fixed inset-0 bg-[#020205] text-white font-sans block md:flex md:items-center md:justify-center pb-20 md:pb-0 overflow-y-auto md:overflow-hidden">
 
     <!-- Background Layer -->
     <div class="fixed inset-0 z-0 pointer-events-none">
@@ -120,7 +122,7 @@ onMounted(() => {
 
     <!-- MAIN CONTAINER: The Command Center -->
     <!-- RWD Fix: Auto height on mobile, fixed 85vh on desktop -->
-    <div class="relative z-10 w-full max-w-6xl h-auto md:h-[80vh] flex flex-col md:grid md:grid-cols-[280px_1fr] gap-12 md:gap-6 px-6 pt-24 md:p-0 md:mt-0 pb-32 md:pb-0">
+    <div class="relative z-10 w-full max-w-6xl mx-auto h-auto md:h-[80vh] flex flex-col md:grid md:grid-cols-[280px_1fr] gap-12 md:gap-6 px-6 pt-32 md:p-0 md:mt-0 pb-32 md:pb-0">
 
         <!-- LEFT RAIL: Navigation & Status -->
         <!-- Mobile Order: 1 (Top) -->
