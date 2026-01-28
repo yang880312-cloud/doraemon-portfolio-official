@@ -107,7 +107,7 @@ onMounted(() => {
   <!-- Adjusted height and added pb-20 to prevent overlap with the bottom NavigationDock -->
   <!-- Main Wrapper -->
   <!-- RWD Fix: Allow scrolling on mobile, fixed on desktop -->
-  <div class="fixed inset-0 bg-[#020205] text-white font-sans flex items-center justify-center pb-20 md:pb-0 overflow-y-auto md:overflow-hidden">
+  <div class="fixed inset-0 bg-[#020205] text-white font-sans flex items-start justify-center md:items-center pb-20 md:pb-0 overflow-y-auto md:overflow-hidden">
 
     <!-- Background Layer -->
     <div class="fixed inset-0 z-0 pointer-events-none">
