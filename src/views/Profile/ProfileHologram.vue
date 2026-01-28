@@ -1,5 +1,5 @@
 <script setup>
-import { ref, computed, onMounted } from 'vue'
+import { ref, computed, onMounted, nextTick } from 'vue'
 import { useDataStore } from '@/stores/dataStore'
 
 const store = useDataStore()
@@ -85,9 +85,12 @@ function setIndex(index) {
     currentIndex.value = index
 
     // Mobile RWD: Scroll to top of dashboard when clicking timeline
-    if (window.innerWidth < 768 && dashboardRef.value) {
-        dashboardRef.value.scrollIntoView({ behavior: 'smooth', block: 'start' })
-    }
+    // Wait for DOM to update (avoid scroll glitches)
+    nextTick(() => {
+        if (window.innerWidth < 768 && dashboardRef.value) {
+            dashboardRef.value.scrollIntoView({ behavior: 'smooth', block: 'start' })
+        }
+    })
 }
 
 function openHire() {
@@ -195,7 +198,7 @@ onMounted(() => {
         </div>
 
         <!-- RIGHT MAIN DASHBOARD: The Active Card -->
-        <div ref="dashboardRef" class="order-1 md:order-2 flex flex-col h-auto md:h-full bg-gray-900/80 backdrop-blur-xl rounded-2xl border border-gray-700 overflow-hidden shadow-2xl relative transition-all duration-500 hover:border-gray-600 hover:shadow-[0_0_30px_rgba(0,0,0,0.5)] group/dashboard">
+        <div ref="dashboardRef" class="scroll-mt-32 order-1 md:order-2 flex flex-col h-auto md:h-full bg-gray-900/80 backdrop-blur-xl rounded-2xl border border-gray-700 overflow-hidden shadow-2xl relative transition-all duration-500 hover:border-gray-600 hover:shadow-[0_0_30px_rgba(0,0,0,0.5)] group/dashboard">
              <!-- Header Bar of Dashboard -->
              <div class="h-12 border-b border-gray-800 flex items-center px-6 justify-between bg-black/20 shrink-0">
                  <div class="flex items-center gap-3">
@@ -212,7 +215,7 @@ onMounted(() => {
              <div class="flex-1 flex flex-col md:flex-row relative md:overflow-hidden">
 
                  <!-- Visual Column (Image + Overlay) -->
-                 <div class="w-full md:w-5/12 h-64 md:h-full relative group/image overflow-hidden shrink-0">
+                 <div class="w-full md:w-5/12 aspect-video md:h-full relative group/image overflow-hidden shrink-0">
                      <img :src="experiences[currentIndex]?.image" class="w-full h-full object-cover opacity-60 transition-all duration-700 group-hover/image:scale-110 group-hover/image:opacity-80" />
                      <div class="absolute inset-0 bg-gradient-to-t from-gray-900 via-gray-900/50 to-transparent"></div>
                      <!-- Scanline Effect -->
