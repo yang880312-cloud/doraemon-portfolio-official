@@ -4,8 +4,10 @@ import { ref, onMounted, onUnmounted } from 'vue'
 const x = ref(0)
 const y = ref(0)
 const isVisible = ref(false)
+const isMobile = ref(false)
 
 const updateCursor = (e) => {
+  if (isMobile.value) return
   x.value = e.clientX
   y.value = e.clientY
   isVisible.value = true
@@ -16,9 +18,14 @@ const hideCursor = () => {
 }
 
 onMounted(() => {
-  window.addEventListener('mousemove', updateCursor)
-  window.addEventListener('mouseleave', hideCursor)
-  document.body.style.cursor = 'none' // Hide default cursor
+  isMobile.value = window.innerWidth < 768
+
+  if (!isMobile.value) {
+    window.addEventListener('mousemove', updateCursor)
+    window.addEventListener('mouseleave', hideCursor)
+    // Only hide default cursor on Desktop
+    document.body.style.cursor = 'none'
+  }
 })
 
 onUnmounted(() => {
@@ -30,6 +37,7 @@ onUnmounted(() => {
 
 <template>
   <div
+    v-if="!isMobile"
     class="fixed pointer-events-none z-[9999] transition-opacity duration-200 ease-out"
     :class="{ 'opacity-0': !isVisible, 'opacity-100': isVisible }"
     :style="{

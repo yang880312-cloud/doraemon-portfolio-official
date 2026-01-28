@@ -1,59 +1,79 @@
 <script setup>
-import { onMounted, ref } from 'vue'
+import { ref, onMounted } from 'vue'
 import gsap from 'gsap'
 
 const emit = defineEmits(['finished'])
-const el = ref(null)
-const bellRef = ref(null)
+const progress = ref(0)
+const logs = ref([])
+
+const logMessages = [
+  'INITIALIZING SYSTEM...',
+  'CONNECTING TO 22ND CENTURY...',
+  'LOADING GADGETS...',
+  'CALIBRATING ANYWHERE DOOR...',
+  'SYNCING TIMELINES...',
+  'ACCESS GRANTED.'
+]
 
 onMounted(() => {
+  // Simulate loading progress
   const tl = gsap.timeline({
-    onComplete: () => emit('finished')
+    onComplete: () => {
+      // Fade out
+      gsap.to('.loader-container', {
+        opacity: 0,
+        duration: 0.8,
+        onComplete: () => emit('finished')
+      })
+    }
   })
 
-  // Bell shake
-  tl.to(bellRef.value, {
-    rotation: 15,
-    duration: 0.1,
-    yoyo: true,
-    repeat: 5,
-    ease: 'power1.inOut'
+  // Bell Bounce
+  tl.fromTo('.bell-icon', { scale: 0 }, { scale: 1, duration: 0.5, ease: 'back.out(1.7)' })
+
+  // Progress Bar Animation
+  tl.to(progress, {
+    value: 100,
+    duration: 2.5,
+    ease: 'power2.inOut',
+    onUpdate: () => {
+        const index = Math.floor((progress.value / 100) * (logMessages.length - 1))
+        if (!logs.value.includes(logMessages[index])) {
+            logs.value.push(logMessages[index])
+        }
+    }
   })
-  
-  // Scale up to fill screen (transition out)
-  tl.to(bellRef.value, {
-    scale: 50,
-    opacity: 0,
-    duration: 0.8,
-    ease: 'power4.in',
-    delay: 0.2
-  })
-  
-  // Fade out container
-  tl.to(el.value, {
-    opacity: 0,
-    duration: 0.5,
-    display: 'none'
-  }, '-=0.5')
 })
 </script>
 
 <template>
-  <div ref="el" class="fixed inset-0 z-[100] flex items-center justify-center bg-[#050505]">
-    <div ref="bellRef" class="relative w-32 h-32">
-      <!-- Simple CSS Bell -->
-      <div class="absolute inset-x-0 mx-auto top-0 w-24 h-24 bg-[#F1C40F] rounded-full border-4 border-black shadow-[inset_-10px_-10px_20px_rgba(0,0,0,0.2)]">
-        <!-- Horizontal line -->
-        <div class="absolute top-[30%] w-full h-8 border-y-2 border-black/80 bg-transparent rounded-[50%]"></div>
-        <!-- Hole -->
-        <div class="absolute bottom-[20%] left-1/2 -translate-x-1/2 w-6 h-6 bg-black rounded-full"></div>
-      </div>
-      <!-- Glow -->
-      <div class="absolute inset-0 bg-[#F1C40F] blur-xl opacity-20 animate-pulse"></div>
+  <div
+    class="fixed inset-0 bg-[#050505] z-[99999] flex flex-col items-center justify-center loader-container cursor-wait"
+  >
+    <!-- Logo / Bell -->
+    <div class="bell-icon w-20 h-20 rounded-full border-4 border-[#FBB03B] bg-[#fcd34d] shadow-[0_0_30px_#FBB03B] mb-8 animate-bounce relative">
+        <div class="absolute top-[40%] left-0 w-full h-[2px] bg-[#d97706]"></div>
+        <div class="absolute bottom-[20%] left-1/2 -translate-x-1/2 w-3 h-3 bg-black rounded-full/50"></div>
     </div>
-    
-    <div class="absolute bottom-20 text-blue-500 font-mono text-sm tracking-[0.5em] animate-pulse">
-      INITIALIZING...
+
+    <!-- Progress Bar -->
+    <div class="w-64 h-2 bg-gray-800 rounded-full overflow-hidden relative">
+      <div
+        class="h-full bg-gradient-to-r from-blue-500 to-cyan-400"
+        :style="{ width: `${progress}%` }"
+      ></div>
+    </div>
+
+    <!-- Percentage -->
+    <div class="font-mono text-blue-400 mt-4 text-xl font-bold">
+      {{ Math.floor(progress) }}%
+    </div>
+
+    <!-- Terminal Logs -->
+    <div class="mt-8 font-mono text-xs text-gray-500 h-6 overflow-hidden text-center">
+        <div v-for="log in logs.slice(-1)" :key="log" class="animate-pulse">
+            > {{ log }}
+        </div>
     </div>
   </div>
 </template>

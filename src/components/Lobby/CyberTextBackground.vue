@@ -108,9 +108,15 @@ function init() {
 function createParticles() {
   particles = []
 
+  const isMobile = width.value < 768
+
   // 1. Texture Layer (Dense Grid)
-  const cols = Math.floor(width.value / 60) // Density
-  const rows = Math.floor(height.value / 30)
+  // Reduce density on mobile (larger spacing)
+  const density = isMobile ? 120 : 60
+  const cols = Math.floor(width.value / density)
+
+  const hDensity = isMobile ? 60 : 30
+  const rows = Math.floor(height.value / hDensity)
 
   for (let r = 0; r < rows; r++) {
     for (let c = 0; c < cols; c++) {
@@ -119,8 +125,8 @@ function createParticles() {
       const text = fillers[Math.floor(Math.random() * fillers.length)]
       particles.push(new Particle({
         text,
-        x: c * 60 + Math.random() * 20,
-        y: r * 30 + Math.random() * 10,
+        x: c * density + Math.random() * 20,
+        y: r * hDensity + Math.random() * 10,
         fontSize: 10,
         isHero: false
       }))
@@ -146,6 +152,8 @@ function createParticles() {
 function animate() {
   ctx.clearRect(0, 0, width.value, height.value)
 
+  updateAutoDrift()
+
   // Update and draw all particles
   particles.forEach(p => {
     p.update()
@@ -155,10 +163,39 @@ function animate() {
   animationFrame = requestAnimationFrame(animate)
 }
 
+// --- Auto Drift Logic ---
+let isMouseActive = false
+let mouseTimer = null
+
 function handleMouseMove(e) {
+  isMouseActive = true
   const rect = canvasRef.value.getBoundingClientRect()
   mouse.x = e.clientX - rect.left
   mouse.y = e.clientY - rect.top
+
+  // Reset timer
+  clearTimeout(mouseTimer)
+  mouseTimer = setTimeout(() => {
+    isMouseActive = false
+  }, 2000) // Resume drift after 2s of inactivity
+}
+
+function handleTouchStart() {
+  // On mobile touch, we treat it as interaction, but resume drift quickly
+  isMouseActive = true
+  clearTimeout(mouseTimer)
+  mouseTimer = setTimeout(() => {
+    isMouseActive = false
+  }, 1000)
+}
+
+function updateAutoDrift() {
+  if (isMouseActive) return
+
+  const time = Date.now() * 0.0005
+  // Figure-8 pattern
+  mouse.x = (width.value / 2) + (Math.sin(time) * width.value * 0.3)
+  mouse.y = (height.value / 2) + (Math.cos(time * 1.3) * height.value * 0.2)
 }
 
 function handleResize() {
@@ -171,12 +208,14 @@ onMounted(() => {
   animate()
   window.addEventListener('resize', handleResize)
   window.addEventListener('mousemove', handleMouseMove)
+  window.addEventListener('touchstart', handleTouchStart)
 })
 
 onUnmounted(() => {
   cancelAnimationFrame(animationFrame)
   window.removeEventListener('resize', handleResize)
   window.removeEventListener('mousemove', handleMouseMove)
+  window.removeEventListener('touchstart', handleTouchStart)
 })
 </script>
 

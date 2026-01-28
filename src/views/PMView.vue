@@ -100,7 +100,9 @@ function getCardSize(index) {
 
 <style scoped>
 /* Hide default cursor only in this view */
-div {
-  cursor: none;
+@media (min-width: 768px) {
+  div {
+    cursor: none;
+  }
 }
 </style>
