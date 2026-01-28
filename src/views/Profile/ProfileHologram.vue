@@ -78,8 +78,16 @@ const currentTheme = computed(() => {
 })
 
 // --- Actions ---
+const dashboardRef = ref(null)
+
+// --- Actions ---
 function setIndex(index) {
     currentIndex.value = index
+
+    // Mobile RWD: Scroll to top of dashboard when clicking timeline
+    if (window.innerWidth < 768 && dashboardRef.value) {
+        dashboardRef.value.scrollIntoView({ behavior: 'smooth', block: 'start' })
+    }
 }
 
 function openHire() {
@@ -187,7 +195,7 @@ onMounted(() => {
         </div>
 
         <!-- RIGHT MAIN DASHBOARD: The Active Card -->
-        <div class="order-1 md:order-2 flex flex-col h-auto md:h-full bg-gray-900/80 backdrop-blur-xl rounded-2xl border border-gray-700 overflow-hidden shadow-2xl relative transition-all duration-500 hover:border-gray-600 hover:shadow-[0_0_30px_rgba(0,0,0,0.5)] group/dashboard">
+        <div ref="dashboardRef" class="order-1 md:order-2 flex flex-col h-auto md:h-full bg-gray-900/80 backdrop-blur-xl rounded-2xl border border-gray-700 overflow-hidden shadow-2xl relative transition-all duration-500 hover:border-gray-600 hover:shadow-[0_0_30px_rgba(0,0,0,0.5)] group/dashboard">
              <!-- Header Bar of Dashboard -->
              <div class="h-12 border-b border-gray-800 flex items-center px-6 justify-between bg-black/20 shrink-0">
                  <div class="flex items-center gap-3">
