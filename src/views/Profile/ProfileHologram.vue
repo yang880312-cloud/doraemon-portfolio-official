@@ -94,10 +94,12 @@ onMounted(() => {
 <template>
   <!-- Main Wrapper -->
   <!-- Adjusted height and added pb-20 to prevent overlap with the bottom NavigationDock -->
-  <div class="fixed inset-0 bg-[#020205] text-white font-sans overflow-hidden select-none flex items-center justify-center pb-20 md:pb-0">
+  <!-- Main Wrapper -->
+  <!-- RWD Fix: Allow scrolling on mobile, fixed on desktop -->
+  <div class="fixed inset-0 bg-[#020205] text-white font-sans flex items-center justify-center pb-20 md:pb-0 overflow-y-auto md:overflow-hidden">
 
     <!-- Background Layer -->
-    <div class="absolute inset-0 z-0">
+    <div class="fixed inset-0 z-0 pointer-events-none">
         <!-- Dynamic Gradient Backdrop -->
         <div class="absolute inset-0 transition-colors duration-1000 bg-gradient-to-br from-black via-gray-900 to-black"></div>
         <div class="absolute inset-0 opacity-40 transition-all duration-1000 bg-[radial-gradient(circle_at_50%_0%,var(--tw-gradient-stops))] from-transparent via-transparent to-transparent"
@@ -106,8 +108,8 @@ onMounted(() => {
     </div>
 
     <!-- MAIN CONTAINER: The Command Center -->
-    <!-- Aggressively reduced height (75vh) and lifted with margin-bottom to guarantee Dock clearance -->
-    <div class="relative z-10 w-full max-w-6xl h-[75vh] mb-16 flex flex-col md:grid md:grid-cols-[280px_1fr] gap-6 p-4 md:p-0">
+    <!-- RWD Fix: Auto height on mobile, fixed 85vh on desktop -->
+    <div class="relative z-10 w-full max-w-6xl h-auto md:h-[80vh] mb-0 md:mb-0 flex flex-col md:grid md:grid-cols-[280px_1fr] gap-6 p-4 md:p-0 mt-20 md:mt-0">
 
         <!-- LEFT RAIL: Navigation & Status -->
         <div class="flex flex-col gap-4 order-2 md:order-1 h-full min-h-0">
@@ -138,7 +140,7 @@ onMounted(() => {
             </div>
 
             <!-- Timeline Navigation (Vertical Tabs) -->
-            <div class="flex-1 bg-gray-900/60 backdrop-blur-md rounded-xl border border-gray-800 p-4 flex flex-col gap-2 overflow-y-auto shadow-inner custom-scrollbar">
+            <div class="flex-1 bg-gray-900/60 backdrop-blur-md rounded-xl border border-gray-800 p-4 flex flex-col gap-2 overflow-y-auto shadow-inner custom-scrollbar h-64 md:h-auto">
                 <div class="text-xs font-bold text-gray-500 mb-2 px-2 flex justify-between items-center">
                     <span>TIMELINE_LOGS</span>
                     <span class="w-2 h-2 rounded-full bg-gray-600 animate-ping"></span>
@@ -185,7 +187,7 @@ onMounted(() => {
         </div>
 
         <!-- RIGHT MAIN DASHBOARD: The Active Card -->
-        <div class="order-1 md:order-2 flex flex-col h-full bg-gray-900/80 backdrop-blur-xl rounded-2xl border border-gray-700 overflow-hidden shadow-2xl relative transition-all duration-500 hover:border-gray-600 hover:shadow-[0_0_30px_rgba(0,0,0,0.5)] group/dashboard">
+        <div class="order-1 md:order-2 flex flex-col h-auto md:h-full bg-gray-900/80 backdrop-blur-xl rounded-2xl border border-gray-700 overflow-hidden shadow-2xl relative transition-all duration-500 hover:border-gray-600 hover:shadow-[0_0_30px_rgba(0,0,0,0.5)] group/dashboard">
              <!-- Header Bar of Dashboard -->
              <div class="h-12 border-b border-gray-800 flex items-center px-6 justify-between bg-black/20 shrink-0">
                  <div class="flex items-center gap-3">
@@ -199,10 +201,10 @@ onMounted(() => {
              </div>
 
              <!-- Main Content Area -->
-             <div class="flex-1 flex flex-col md:flex-row relative overflow-hidden">
+             <div class="flex-1 flex flex-col md:flex-row relative md:overflow-hidden">
 
                  <!-- Visual Column (Image + Overlay) -->
-                 <div class="w-full md:w-5/12 h-64 md:h-full relative group/image overflow-hidden">
+                 <div class="w-full md:w-5/12 h-64 md:h-full relative group/image overflow-hidden shrink-0">
                      <img :src="experiences[currentIndex]?.image" class="w-full h-full object-cover opacity-60 transition-all duration-700 group-hover/image:scale-110 group-hover/image:opacity-80" />
                      <div class="absolute inset-0 bg-gradient-to-t from-gray-900 via-gray-900/50 to-transparent"></div>
                      <!-- Scanline Effect -->
@@ -220,7 +222,7 @@ onMounted(() => {
                  </div>
 
                  <!-- Data Column (Details) -->
-                 <div class="flex-1 p-8 md:p-10 flex flex-col overflow-y-auto custom-scrollbar">
+                 <div class="flex-1 p-6 md:p-10 flex flex-col md:overflow-y-auto custom-scrollbar">
 
                      <!-- Quick Stats Row -->
                      <div class="flex flex-wrap gap-2 mb-8">

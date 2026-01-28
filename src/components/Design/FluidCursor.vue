@@ -7,6 +7,7 @@ let particles = []
 let animationId = null
 let mouseX = 0
 let mouseY = 0
+const isMobile = ref(false)
 
 // Particle Class
 class Particle {
@@ -69,9 +70,6 @@ function animate() {
     }
   }
 
-  // Connect particles (Constellation effect - Optional, kept subtle)
-  // ... (Omitting to keep it purely "Dusty")
-
   animationId = requestAnimationFrame(animate)
 }
 
@@ -83,7 +81,9 @@ function handleResize() {
 }
 
 onMounted(() => {
-  if (canvasRef.value) {
+  isMobile.value = window.innerWidth < 768
+
+  if (!isMobile.value && canvasRef.value) {
     ctx = canvasRef.value.getContext('2d')
     handleResize()
     window.addEventListener('resize', handleResize)
@@ -95,12 +95,13 @@ onMounted(() => {
 onUnmounted(() => {
   window.removeEventListener('resize', handleResize)
   window.removeEventListener('mousemove', spawnParticles)
-  cancelAnimationFrame(animationId)
+  if (animationId) cancelAnimationFrame(animationId)
 })
 </script>
 
 <template>
   <canvas
+    v-if="!isMobile"
     ref="canvasRef"
     class="fixed inset-0 pointer-events-none z-[9999]"
   ></canvas>

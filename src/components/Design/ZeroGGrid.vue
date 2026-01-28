@@ -67,6 +67,7 @@ function dealCards() {
 }
 
 function handleMouseMove(e, index) {
+  if (window.innerWidth < 768) return // Disable 3D tilt on mobile
   const card = cardRefs.value[index]
   if (!card) return
 
@@ -93,18 +94,20 @@ function handleMouseLeave(index) {
 
 // Map layout keywords to Tailwind col/row spans + Aspect Ratios
 // Defaulting to aspect-square to ensure 1:1 unless specified otherwise
+// Map layout keywords to Tailwind col/row spans + Aspect Ratios
+// Defaulting to aspect-square to ensure 1:1 unless specified otherwise
 function getSpanClass(layout) {
   switch (layout) {
-    case 'wide': return 'col-span-2 row-span-1 aspect-[2/1]'
-    case 'tall': return 'col-span-1 row-span-2 aspect-[1/2]'
-    case 'big': return 'col-span-2 row-span-2 aspect-square'
-    default: return 'col-span-1 row-span-1 aspect-square' // standard 1:1
+    case 'wide': return 'md:col-span-2 md:row-span-1 aspect-[2/1]'
+    case 'tall': return 'md:col-span-1 md:row-span-2 aspect-[1/2]'
+    case 'big': return 'md:col-span-2 md:row-span-2 aspect-square'
+    default: return 'md:col-span-1 md:row-span-1 aspect-square' // standard 1:1
   }
 }
 </script>
 
 <template>
-  <div class="relative w-full h-full overflow-y-auto custom-scrollbar p-8 md:p-16 pb-32">
+  <div class="relative w-full h-full overflow-y-auto custom-scrollbar p-4 md:p-16 pb-32">
 
     <!-- Interaction Layer: The Deck Stack -->
     <!-- Only visible if not dealt yet and we have items -->
@@ -156,7 +159,7 @@ function getSpanClass(layout) {
         @mousemove="(e) => handleMouseMove(e, index)"
         @mouseleave="handleMouseLeave(index)"
         @click="$emit('item-click', item)"
-        class="relative group rounded-3xl cursor-none transition-all duration-300 ease-out preserve-3d"
+        class="relative group rounded-3xl cursor-pointer md:cursor-none transition-all duration-300 ease-out preserve-3d"
         :class="[getSpanClass(item.layout), isDealt ? 'opacity-100' : 'opacity-0']"
       >
         <!-- Aura Glow (Behind) -->
@@ -181,12 +184,13 @@ function getSpanClass(layout) {
             <!-- Full Bleed Image -->
             <img
                 :src="item.image"
-                class="w-full h-full object-cover transform scale-100 group-hover:scale-110 transition-transform duration-700 ease-out grayscale group-hover:grayscale-0"
+                class="w-full h-full object-cover transform scale-100 group-hover:scale-110 transition-transform duration-700 ease-out md:grayscale group-hover:grayscale-0"
                 alt="Project Thumbnail"
             />
 
             <!-- Glass Overlay (Info Reveal) -->
-            <div class="absolute inset-0 bg-gradient-to-t from-black/95 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-6">
+            <!-- RWD: Show overlay ALWAYS on mobile, Hover on desktop -->
+            <div class="absolute inset-0 bg-gradient-to-t from-black/95 via-black/20 to-transparent opacity-100 md:opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-6">
                 <!-- Theme Line -->
                 <div class="w-12 h-0.5 mb-3" :style="{ backgroundColor: item.theme_color || '#fff' }"></div>
 
