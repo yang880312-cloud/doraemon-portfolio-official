@@ -120,7 +120,7 @@ onMounted(() => {
 
     <!-- MAIN CONTAINER: The Command Center -->
     <!-- RWD Fix: Auto height on mobile, fixed 85vh on desktop -->
-    <div class="relative z-10 w-full max-w-6xl h-auto md:h-[80vh] mb-0 md:mb-0 flex flex-col md:grid md:grid-cols-[280px_1fr] gap-10 md:gap-6 p-6 md:p-0 mt-20 md:mt-0 pb-20 md:pb-0">
+    <div class="relative z-10 w-full max-w-6xl h-auto md:h-[80vh] flex flex-col md:grid md:grid-cols-[280px_1fr] gap-12 md:gap-6 px-6 pt-24 md:p-0 md:mt-0 pb-32 md:pb-0">
 
         <!-- LEFT RAIL: Navigation & Status -->
         <!-- Mobile Order: 1 (Top) -->
@@ -152,7 +152,8 @@ onMounted(() => {
             </div>
 
             <!-- Timeline Navigation (Vertical Tabs) -->
-            <div class="flex-1 bg-gray-900/60 backdrop-blur-md rounded-xl border border-gray-800 p-4 flex flex-col gap-2 overflow-y-auto shadow-inner custom-scrollbar h-64 md:h-auto">
+            <!-- Mobile: Full height (h-auto) to screen scroll. Desktop: Flex-1 with internal scroll. -->
+            <div class="flex-none md:flex-1 bg-gray-900/60 backdrop-blur-md rounded-xl border border-gray-800 p-4 flex flex-col gap-2 md:overflow-y-auto shadow-inner custom-scrollbar h-auto md:h-auto">
                 <div class="text-xs font-bold text-gray-500 mb-2 px-2 flex justify-between items-center">
                     <span>TIMELINE_LOGS</span>
                     <span class="w-2 h-2 rounded-full bg-gray-600 animate-ping"></span>
