@@ -120,10 +120,11 @@ onMounted(() => {
 
     <!-- MAIN CONTAINER: The Command Center -->
     <!-- RWD Fix: Auto height on mobile, fixed 85vh on desktop -->
-    <div class="relative z-10 w-full max-w-6xl h-auto md:h-[80vh] mb-0 md:mb-0 flex flex-col md:grid md:grid-cols-[280px_1fr] gap-6 p-4 md:p-0 mt-20 md:mt-0">
+    <div class="relative z-10 w-full max-w-6xl h-auto md:h-[80vh] mb-0 md:mb-0 flex flex-col md:grid md:grid-cols-[280px_1fr] gap-10 md:gap-6 p-6 md:p-0 mt-20 md:mt-0 pb-20 md:pb-0">
 
         <!-- LEFT RAIL: Navigation & Status -->
-        <div class="flex flex-col gap-4 order-2 md:order-1 h-full min-h-0">
+        <!-- Mobile Order: 1 (Top) -->
+        <div class="flex flex-col gap-6 md:gap-4 order-1 md:order-1 h-auto md:h-full min-h-0">
             <!-- Profile Summary Card -->
             <div class="bg-gray-900/60 backdrop-blur-md rounded-xl border border-gray-800 p-6 flex flex-col items-center text-center shadow-lg shrink-0">
                 <div class="w-20 h-20 rounded-full border-2 mb-4 overflow-hidden relative group" :class="currentTheme.border">
@@ -198,7 +199,8 @@ onMounted(() => {
         </div>
 
         <!-- RIGHT MAIN DASHBOARD: The Active Card -->
-        <div ref="dashboardRef" class="scroll-mt-32 order-1 md:order-2 flex flex-col h-auto md:h-full bg-gray-900/80 backdrop-blur-xl rounded-2xl border border-gray-700 overflow-hidden shadow-2xl relative transition-all duration-500 hover:border-gray-600 hover:shadow-[0_0_30px_rgba(0,0,0,0.5)] group/dashboard">
+        <!-- Mobile Order: 2 (Bottom) -->
+        <div ref="dashboardRef" class="scroll-mt-32 order-2 md:order-2 flex flex-col h-auto md:h-full bg-gray-900/80 backdrop-blur-xl rounded-2xl border border-gray-700 overflow-hidden shadow-2xl relative transition-all duration-500 hover:border-gray-600 hover:shadow-[0_0_30px_rgba(0,0,0,0.5)] group/dashboard">
              <!-- Header Bar of Dashboard -->
              <div class="h-12 border-b border-gray-800 flex items-center px-6 justify-between bg-black/20 shrink-0">
                  <div class="flex items-center gap-3">
