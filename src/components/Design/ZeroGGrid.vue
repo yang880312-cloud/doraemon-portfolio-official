@@ -183,13 +183,13 @@ function getSpanClass(layout) {
             <div
                 v-for="(style, i) in deckStyles"
                 :key="`stack-${i}`"
-                class="absolute inset-0 bg-cover bg-center bg-no-repeat rounded-xl border border-white/10 shadow-lg pointer-events-auto"
+                class="absolute inset-0 bg-cover bg-center bg-no-repeat rounded-xl border border-white/40 shadow-[0_4px_10px_rgba(0,0,0,0.5)] pointer-events-auto"
                 :style="{
                     backgroundImage: `url('/src/assets/custom-deck-back.jpg')`,
                     transform: style.transform,
                     zIndex: i,
-                    opacity: 1, // Keep fully opaque for solid stack look
-                    filter: `brightness(${0.4 + (i * 0.025)})` // Darker at bottom
+                    opacity: 1,
+                    filter: `brightness(${0.7 + (i * 0.01)}) sepia(0.2)` // Lighter and distinct
                 }"
             ></div>
 
