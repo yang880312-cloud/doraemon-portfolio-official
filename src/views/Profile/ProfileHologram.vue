@@ -1,9 +1,16 @@
-<script setup>
 import { ref, computed, onMounted, nextTick } from 'vue'
 import { useDataStore } from '@/stores/dataStore'
+import { useHead } from '@vueuse/head'
 
 const store = useDataStore()
 const emit = defineEmits(['back'])
+
+useHead({
+  title: '個人機密檔案 (Profile)',
+  meta: [
+    { name: 'description', content: '查看詳細技能樹、工作經歷與機密任務數據。 (Access Restricted Data)' },
+  ]
+})
 
 // --- Data Setup ---
 // --- Data Setup ---

@@ -1,3 +1,4 @@
+```vue
 <script setup>
 import { RouterView } from 'vue-router'
 import { useDimensionStore } from '@/stores/dimension'
@@ -7,6 +8,7 @@ import CustomCursor from '@/components/Global/CustomCursor.vue'
 import WelcomeLoader from '@/components/Global/WelcomeLoader.vue'
 import { ref } from 'vue'
 import { useAuthStore } from '@/stores/auth'
+import { useHead } from '@vueuse/head'
 
 const loading = ref(true)
 const dimensionStore = useDimensionStore()

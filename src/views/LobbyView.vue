@@ -3,10 +3,18 @@
 import { ref, watch, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { useDimensionStore } from '@/stores/dimension'
+import { useHead } from '@vueuse/head'
 import gsap from 'gsap'
 import AnywhereDoor from '@/components/Lobby/AnywhereDoor.vue'
 import CyberTextBackground from '@/components/Lobby/CyberTextBackground.vue'
 import LobbyCursor from '@/components/Lobby/LobbyCursor.vue'
+
+useHead({
+  title: '傳送門 (Portal)',
+  meta: [
+    { name: 'description', content: '哆啦A夢的百寶袋入口。選擇您的維度：個人檔案、專案管理、設計藝廊。 (The Gateway)' },
+  ]
+})
 
 const router = useRouter()
 const store = useDimensionStore()

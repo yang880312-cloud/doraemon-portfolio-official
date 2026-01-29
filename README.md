@@ -37,6 +37,22 @@ npm run dev
 npm run build
 ```
 
+## 部署 (Deployment)
+
+### Vercel (推薦)
+1. Fork 此專案到 GitHub。
+2. 在 Vercel 新增專案，選擇 GitHub 儲存庫。
+3. Framework Preset 選擇 `Vite`。
+4. 點擊 Deploy。
+
+### Netlify
+1. New site from Git -> GitHub.
+2. Build command: `npm run build`
+3. Publish directory: `dist`
+
+### SEO 設定
+本專案使用 `@vueuse/head` 管理 Meta Tags。若要修改標題與描述，請至 `src/views/` 下的各個頁面檔案中修改 `useHead` 設定。
+
 ### Lint with [ESLint](https://eslint.org/)
 
 ```sh

@@ -1,10 +1,18 @@
 <script setup>
-import { computed, onMounted, ref } from 'vue'
+import { ref, onMounted, computed, nextTick } from 'vue'
 import { useDataStore } from '@/stores/dataStore'
+import { useHead } from '@vueuse/head'
 import WarpTunnelEnvironment from '@/components/Design/WarpTunnelEnvironment.vue'
 import ZeroGGrid from '@/components/Design/ZeroGGrid.vue'
 import DesignProjectModal from '@/components/Design/DesignProjectModal.vue'
 import FluidCursor from '@/components/Design/FluidCursor.vue'
+
+useHead({
+  title: '繪世界藝廊 (Gallery)',
+  meta: [
+    { name: 'description', content: '探索 4D 視覺藝術與創意設計作品。 (Design Gallery)' },
+  ]
+})
 
 const store = useDataStore()
 const selectedProject = ref(null)

@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://doraemon-portfolio-official-lfyf.vercel.app/sitemap.xml

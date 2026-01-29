@@ -1,9 +1,16 @@
-<script setup>
 import { ref, computed, onMounted } from 'vue'
 import BentoCard from '@/components/PM/BentoCard.vue'
 import PMProjectModal from '@/components/PM/PMProjectModal.vue'
 import FlashlightCursor from '@/components/PM/FlashlightCursor.vue'
 import { useDataStore } from '@/stores/dataStore'
+import { useHead } from '@vueuse/head'
+
+useHead({
+  title: '任務控制中心 (Mission Control)',
+  meta: [
+    { name: 'description', content: '哆啦A夢的祕密道具管理系統。查看開發中的專案與技術細節。 (Project Management)' },
+  ]
+})
 
 const isModalOpen = ref(false)
 const selectedProject = ref(null)
