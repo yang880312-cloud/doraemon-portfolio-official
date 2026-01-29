@@ -1,5 +1,5 @@
 <script setup>
-import { ref, nextTick } from 'vue'
+import { ref, nextTick, watch, onMounted } from 'vue'
 import gsap from 'gsap'
 
 const props = defineProps({
@@ -11,6 +11,63 @@ const emit = defineEmits(['item-click', 'deal-start'])
 // 3D Magnetic Tilt Logic
 const cardRefs = ref([])
 const isDealt = ref(false)
+const deckStyles = ref([])
+
+function generateDeckStyles() {
+    // Determine stack height based on items (max 20)
+    const count = Math.min(props.items.length, 25)
+    // Create array of styles.
+    // We want the TOP cards to be near 0,0 and BOTTOM cards to be displaced.
+    // Actually, usually index 0 is bottom in DOM order logic if not using z-index properly.
+    // In my template, z-index is 'i'. So i=0 is bottom. i=count-1 is top.
+
+    // Bottom cards (i=0) should be lower. Top cards (i=max) should be higher?
+    // Wait, physically: Bottom card is on the table. Top card is on stack.
+    // If I use absolute positioning:
+    // i=0 (Bottom): TranslateY = 0? Or TranslateY = Max?
+    // Let's say we look from top.
+    // Top card (Cover) is separate div z-50.
+    // The loop `v-for="(style, i) in deckStyles"` creates the UNDERNEATH cards.
+    // So if I want 20 cards UNDER the top card.
+
+    const styles = []
+    for (let i = 0; i < count; i++) {
+        // i=0 is furthest bottom card.
+        // It should be shifted DOWN (positive Y) and maybe slightly random X/Rotation.
+        // As i increases (closer to top), shift decreases to 0.
+
+        // Reverse logic: i=0 is the card immediately below the Top Card?
+        // Let's assume the loop renders cards *below* the main cover.
+        // So we want them to "stick out".
+
+        // Let's make i=0 the bottom-most card.
+        // It should have largest offset.
+        // i = count-1 is the card just under the cover.
+
+        // Offset Calculation:
+        // Each card adds ~1px thickness (translateY).
+        // Also random rotation to make it messy.
+
+        // Let's try:
+        // i goes from 0 to count-1.
+        // Card i:
+        // Y = (count - i) * 1.5 (pixels down)
+        // Rotation = Random small angle
+
+        const offset = (count - i) * 1.2
+        const rotation = (Math.random() * 4 - 2) // -2 to 2 deg
+        const randomX = (Math.random() * 2 - 1)
+
+        styles.push({
+            transform: `translate(${randomX}px, ${offset}px) rotate(${rotation}deg)`
+        })
+    }
+    deckStyles.value = styles
+}
+
+watch(() => props.items, () => {
+    generateDeckStyles()
+}, { immediate: true })
 
 function dealCards() {
     isDealt.value = true
@@ -115,32 +172,29 @@ function getSpanClass(layout) {
       v-if="!isDealt && items.length > 0"
       class="fixed inset-0 z-50 flex flex-col items-center justify-center pointer-events-none transition-opacity duration-700"
     >
-        <!-- Title in Intro Screen -->
-        <h1 class="mb-12 text-center opacity-0 animate-fade-in-up" style="animation-delay: 0.2s; animation-fill-mode: forwards;">
-            <span class="block text-5xl md:text-7xl font-black tracking-tight text-transparent bg-clip-text bg-gradient-to-b from-[#00A0E9] to-[#0089C9] drop-shadow-[0_0_15px_rgba(0,160,233,0.6)] mb-4" style="font-family: 'Noto Sans TC', sans-serif;">
-                繪世界藝廊
-            </span>
-            <span class="text-white/60 tracking-[0.5em] text-sm font-mono border-t border-white/20 pt-4 block mx-auto w-32">
-                PAINTED WORLD
-            </span>
-        </h1>
-
-        <!-- Deck Container - Moved UP slightly (-mt-20) -->
-        <!-- Added hover scale for interaction feedback -->
-        <div class="relative w-[300px] h-[450px] -mt-20 cursor-pointer group hover:scale-105 transition-transform duration-300 ease-out will-change-transform perspective-1000 pointer-events-auto" @click.stop="dealCards">
+        <!-- Deck Container -->
+        <!-- Removed -mt-20 to fix click area alignment. Increased size slightly. -->
+        <div class="relative w-[320px] h-[480px] cursor-pointer group hover:scale-105 transition-transform duration-300 ease-out will-change-transform perspective-1000 pointer-events-auto" @click.stop="dealCards">
              <!-- CLICK HINT PULSE BEHIND -->
              <div class="absolute inset-0 bg-blue-500/20 rounded-xl blur-2xl animate-pulse-slow"></div>
 
-            <!-- THICKNESS LAYERS (Distinct Cards Stack) -->
-            <!-- Step-down stack for clear 'multiple cards' feel -->
-            <div class="absolute inset-0 bg-cover bg-center bg-no-repeat rounded-xl border border-white/10 shadow-sm transform translate-y-[15px] translate-x-[0px] scale-[0.95] opacity-40 brightness-50" style="background-image: url('/src/assets/custom-deck-back.jpg');"></div>
-            <div class="absolute inset-0 bg-cover bg-center bg-no-repeat rounded-xl border border-white/10 shadow-sm transform translate-y-[12px] translate-x-[0px] scale-[0.96] opacity-50 brightness-50" style="background-image: url('/src/assets/custom-deck-back.jpg');"></div>
-            <div class="absolute inset-0 bg-cover bg-center bg-no-repeat rounded-xl border border-white/10 shadow-sm transform translate-y-[9px] translate-x-[0px] scale-[0.97] opacity-60 brightness-50" style="background-image: url('/src/assets/custom-deck-back.jpg');"></div>
-            <div class="absolute inset-0 bg-cover bg-center bg-no-repeat rounded-xl border border-white/10 shadow-sm transform translate-y-[6px] translate-x-[0px] scale-[0.98] opacity-70 brightness-50" style="background-image: url('/src/assets/custom-deck-back.jpg');"></div>
-            <div class="absolute inset-0 bg-cover bg-center bg-no-repeat rounded-xl border border-white/10 shadow-sm transform translate-y-[3px] translate-x-[0px] scale-[0.99] opacity-80 brightness-50" style="background-image: url('/src/assets/custom-deck-back.jpg');"></div>
+            <!-- DYNAMIC THICKNESS LAYERS -->
+            <!-- Render a card for each item, up to 20, to create realistic pile volume -->
+            <div
+                v-for="(style, i) in deckStyles"
+                :key="`stack-${i}`"
+                class="absolute inset-0 bg-cover bg-center bg-no-repeat rounded-xl border border-white/10 shadow-sm"
+                :style="{
+                    backgroundImage: `url('/src/assets/custom-deck-back.jpg')`,
+                    transform: style.transform,
+                    zIndex: i,
+                    opacity: 1 - (i * 0.02), // Slight fade for bottom ones
+                    filter: `brightness(${0.5 + (i * 0.02)})` // Darker at bottom
+                }"
+            ></div>
 
-            <!-- Top Card (The Active Deck) -->
-            <div class="absolute inset-0 rounded-xl shadow-[0_20px_60px_rgba(0,0,0,0.8)] border border-white/20 bg-[#0a0a0a] z-10 transition-transform duration-300 group-hover:-translate-y-2">
+            <!-- Top Card (The Active Deck Cover) -->
+            <div class="absolute inset-0 rounded-xl shadow-[0_20px_60px_rgba(0,0,0,0.8)] border border-white/20 bg-[#0a0a0a] z-50 transition-transform duration-300 group-hover:-translate-y-2">
                 <img src="/src/assets/custom-deck-back.jpg" alt="Deck" class="w-full h-full object-cover rounded-xl" />
 
                 <!-- Sheen -->
