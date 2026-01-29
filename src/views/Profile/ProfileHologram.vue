@@ -1,3 +1,4 @@
+<script setup>
 import { ref, computed, onMounted, nextTick } from 'vue'
 import { useDataStore } from '@/stores/dataStore'
 import { useHead } from '@vueuse/head'

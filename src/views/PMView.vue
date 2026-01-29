@@ -1,3 +1,4 @@
+<script setup>
 import { ref, computed, onMounted } from 'vue'
 import BentoCard from '@/components/PM/BentoCard.vue'
 import PMProjectModal from '@/components/PM/PMProjectModal.vue'
