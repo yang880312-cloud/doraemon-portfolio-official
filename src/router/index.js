@@ -1,7 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import LobbyView from '@/views/LobbyView.vue'
-import PMView from '@/views/PMView.vue'
-import DesignView from '@/views/DesignView.vue'
 import { useDimensionStore } from '@/stores/dimension'
 import { useAuthStore } from '@/stores/auth'
 
@@ -17,13 +15,13 @@ const router = createRouter({
     {
       path: '/pm',
       name: 'pm',
-      component: PMView,
+      component: () => import('@/views/PMView.vue'),
       meta: { dimension: 'PM' },
     },
     {
       path: '/design',
       name: 'design',
-      component: DesignView,
+      component: () => import('@/views/DesignView.vue'),
       meta: { dimension: 'DESIGN' },
     },
     {

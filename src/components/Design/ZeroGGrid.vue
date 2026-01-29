@@ -184,6 +184,7 @@ function getSpanClass(layout) {
             <!-- Full Bleed Image -->
             <img
                 :src="item.image"
+                loading="lazy"
                 class="w-full h-full object-cover transform scale-100 group-hover:scale-110 transition-transform duration-700 ease-out md:grayscale group-hover:grayscale-0"
                 alt="Project Thumbnail"
             />
