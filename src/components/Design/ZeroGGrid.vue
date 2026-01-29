@@ -54,9 +54,9 @@ function generateDeckStyles() {
         // Y = (count - i) * 1.5 (pixels down)
         // Rotation = Random small angle
 
-        const offset = (count - i) * 1.2
-        const rotation = (Math.random() * 4 - 2) // -2 to 2 deg
-        const randomX = (Math.random() * 2 - 1)
+        const offset = (count - i) * 4.5
+        const rotation = (Math.random() * 6 - 3) // -3 to 3 deg
+        const randomX = (Math.random() * 4 - 2)
 
         styles.push({
             transform: `translate(${randomX}px, ${offset}px) rotate(${rotation}deg)`
@@ -183,13 +183,13 @@ function getSpanClass(layout) {
             <div
                 v-for="(style, i) in deckStyles"
                 :key="`stack-${i}`"
-                class="absolute inset-0 bg-cover bg-center bg-no-repeat rounded-xl border border-white/10 shadow-sm"
+                class="absolute inset-0 bg-cover bg-center bg-no-repeat rounded-xl border border-white/10 shadow-lg pointer-events-auto"
                 :style="{
                     backgroundImage: `url('/src/assets/custom-deck-back.jpg')`,
                     transform: style.transform,
                     zIndex: i,
-                    opacity: 1 - (i * 0.02), // Slight fade for bottom ones
-                    filter: `brightness(${0.5 + (i * 0.02)})` // Darker at bottom
+                    opacity: 1, // Keep fully opaque for solid stack look
+                    filter: `brightness(${0.4 + (i * 0.025)})` // Darker at bottom
                 }"
             ></div>
 
