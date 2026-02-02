@@ -239,7 +239,7 @@ function getSpanClass(layout) {
             <img
                 :src="item.image"
                 loading="lazy"
-                class="w-full h-full object-cover transform scale-100 group-hover:scale-110 transition-transform duration-700 ease-out group-hover:brightness-110 group-hover:contrast-110"
+                class="w-full h-full object-cover transform scale-100 group-hover:scale-110 transition-transform duration-700 ease-out group-hover:brightness-110 group-hover:contrast-125"
                 alt="Project Thumbnail"
             />
 
