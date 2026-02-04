@@ -13,56 +13,62 @@ const height = ref(0)
 
 // Physics Config (Floaty Space Feel)
 const MOUSE_RADIUS = 300
-const MOUSE_FORCE = 1.5 // Gentler push
-const DAMPING = 0.95 // Less friction = more drift
+// Increased Force significantly to ensure interaction is felt even with slow particles
+const MOUSE_FORCE = 3.0
+const DAMPING = 0.98
 
 class Particle {
   constructor({ text, x, y, tier }) {
     this.text = text
     this.x = x
     this.y = y
-    // Zero-G Drift velocity
-    this.vx = (Math.random() - 0.5) * 0.5
-    this.vy = (Math.random() - 0.5) * 0.5
 
     this.tier = tier // 'center', 'big', 'bg'
 
     // Rotation: Random 0-360 degrees for that "Zero-G Space Debris" feel
     this.angle = (Math.random() * Math.PI * 2)
-    this.rotationSpeed = (Math.random() - 0.5) * 0.002 // Slow spin
 
     if (tier === 'center') {
-      this.fontSize = 80 // Fixed large size
+      this.fontSize = 80
       this.font = `900 ${this.fontSize}px "Inter", "Arial Black", sans-serif`
       this.color = '#ffffff'
       this.alpha = 1.0
-      this.angle = 0 // Center is STABLE
+      this.angle = 0
       this.rotationSpeed = 0
       this.vx = 0
       this.vy = 0
+      this.offsetY = -180 // MOVED UP drastically to clear the door
     } else if (tier === 'big') {
       this.fontSize = Math.random() * 40 + 60 // 60-100px
       this.font = `900 ${this.fontSize}px "Inter", sans-serif`
-      this.color = '#f3f4f6' // Almost white
-      this.alpha = 0.8
+      this.color = '#d1d5db' // Gray-300
+      this.alpha = 0.9
+      // Slower drift for big items (Massive feel)
+      this.vx = (Math.random() - 0.5) * 0.15
+      this.vy = (Math.random() - 0.5) * 0.15
+      this.rotationSpeed = (Math.random() - 0.5) * 0.0005
     } else {
-      // Background (Dense)
-      this.fontSize = Math.random() * 8 + 12 // 12-20px
+      // Background (Dense but optimized)
+      this.fontSize = Math.random() * 5 + 10 // 10-15px
       this.font = `400 ${this.fontSize}px "JetBrains Mono", monospace`
-      this.color = '#9ca3af' // Gray-400
-      this.alpha = 0.25 // Requested 0.25
+      this.color = '#6b7280' // Gray-500
+      this.alpha = 0.25
+      // Very slow drift for background (Atmospheric)
+      this.vx = (Math.random() - 0.5) * 0.08
+      this.vy = (Math.random() - 0.5) * 0.08
+      this.rotationSpeed = (Math.random() - 0.5) * 0.001
     }
   }
 
   update() {
     if (this.tier === 'center') {
-        // Center force correction (Always return to middle)
+        // Force Position (Top Center) with strong pull
         this.x += (width.value/2 - this.x) * 0.1
-        this.y += (height.value/2 - this.y) * 0.1
+        this.y += (height.value/2 + this.offsetY - this.y) * 0.1
         return
     }
 
-    // 1. Mouse Interaction
+    // 1. Mouse Interaction (Repulsion)
     const dx = mouse.x - this.x
     const dy = mouse.y - this.y
     const distance = Math.sqrt(dx * dx + dy * dy)
@@ -72,18 +78,22 @@ class Particle {
       const forceDirectionY = dy / distance
       const force = (MOUSE_RADIUS - distance) / MOUSE_RADIUS
 
-      const push = (this.tier === 'big') ? 5 : 20 // Heavy things move less
+      // Repulsion Strength
+      const push = (this.tier === 'big') ? 8 : 15
       this.vx -= forceDirectionX * force * MOUSE_FORCE * push * 0.05
       this.vy -= forceDirectionY * force * MOUSE_FORCE * push * 0.05
     }
 
-    // 2. Zero-G Drift (Wrap around screen)
-    // No spring force to origin! They float freely.
+    // 2. Friction/Damping
+    this.vx *= DAMPING
+    this.vy *= DAMPING
+
+    // 3. Move
     this.x += this.vx
     this.y += this.vy
     this.angle += this.rotationSpeed
 
-    // 3. Screen Wrapping
+    // 4. Wrap
     if (this.x < -100) this.x = width.value + 100
     if (this.x > width.value + 100) this.x = -100
     if (this.y < -100) this.y = height.value + 100
@@ -108,7 +118,8 @@ function init() {
   if (!canvasRef.value) return
   const canvas = canvasRef.value
 
-  const dpr = window.devicePixelRatio || 1
+  // PERFORMANCE FIX: Cap DPR at 2
+  const dpr = Math.min(window.devicePixelRatio || 1, 2)
   width.value = window.innerWidth
   height.value = window.innerHeight
 
@@ -129,8 +140,9 @@ function createParticles() {
   particles = []
   const isMobile = width.value < 768
 
-  // 1. Background Layer (High Density)
-  const countBG = isMobile ? 30 : 150 // Dense!
+  // 1. Background Layer
+  // Optimized count for performance (balance between 150 and 40)
+  const countBG = isMobile ? 40 : 90
   for (let i = 0; i < countBG; i++) {
      const text = backgroundKeywords[Math.floor(Math.random() * backgroundKeywords.length)]
      particles.push(new Particle({
@@ -141,15 +153,18 @@ function createParticles() {
      }))
   }
 
-  // 2. Big Floating Words
-  bigKeywords.forEach(text => {
-      particles.push(new Particle({
+  // 2. Big Floating Words (Increased quantity as requested)
+  // Ensure we cycle through ALL big keywords
+  const countBig = Math.max(bigKeywords.length, isMobile ? 5 : 12)
+  for (let i = 0; i < countBig; i++) {
+     const text = bigKeywords[i % bigKeywords.length]
+     particles.push(new Particle({
         text,
         x: Math.random() * width.value,
         y: Math.random() * height.value,
         tier: 'big'
-      }))
-  })
+     }))
+  }
 
   // 3. The CENTERPIECE
   particles.push(new Particle({
