@@ -43,17 +43,37 @@ watch(
         await new Promise((r) => setTimeout(r, 800))
       }
 
-      // 2. Zoom Effect
-      gsap.to('.lobby-container', {
-        scale: 5,
-        opacity: 0,
-        duration: 1.5,
-        ease: 'power3.in',
+      // 2. Warp Sequence
+      const tl = gsap.timeline({
         onComplete: () => {
-          router.push(req.route)
-          store.setDimension(req.id) // Update store state manually here
+          store.setDimension(req.id)
           store.clearRequest()
-        },
+        }
+      })
+
+      // Phase 1: Accelerate In
+      tl.to('.lobby-container', {
+        scale: 15, // Excessive scale for wrap effect
+        duration: 1.2,
+        ease: 'expo.in',
+        transformOrigin: 'center 60%' // Zoom towards door center
+      })
+
+      // Phase 2: Whiteout Flash at impact
+      .to('.transition-flash', {
+        opacity: 1,
+        duration: 0.1,
+        ease: 'power1.out'
+      }, '-=0.1') // Overlap with end of zoom
+
+      // Phase 3: Route Change & Clear
+      .call(() => {
+        router.push(req.route)
+      })
+      .to('.transition-flash', {
+        opacity: 0,
+        duration: 0.5,
+        delay: 0.2 // Let page load a bit behind white screen
       })
     }
   },
@@ -70,6 +90,9 @@ onMounted(() => {
     <!-- 1. Physics World (Background / Interactive Layer) -->
     <CyberTextBackground />
     <LobbyCursor />
+
+    <!-- Flash Overlay for Transition -->
+    <div class="transition-flash absolute inset-0 bg-white z-50 pointer-events-none opacity-0 mix-blend-hard-light"></div>
 
     <!-- 2. UI Overlay (Title, Door) -->
     <div

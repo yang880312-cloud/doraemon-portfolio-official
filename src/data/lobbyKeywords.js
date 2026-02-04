@@ -1,26 +1,46 @@
-export const skills = [
-    // PM & Strategy
-    'ROADMAP', 'STAKEHOLDER', 'AGILE', 'SCRUM', 'KPI', 'OKR',
-    'USER_STORY', 'PRIORITIZATION', 'MVP', 'PRODUCT_MARKET_FIT',
-    'LEADERSHIP', 'COMMUNICATION',
-
-    // Design & Creative
-    'UI/UX', 'WIREFRAME', 'PROTOTYPE', 'FIGMA', 'ADOBE',
-    'TYPOGRAPHY', 'COLOR_THEORY', 'GOLDEN_RATIO', 'GRID_SYSTEM',
-    'INTERACTION', 'MOTION', 'VISUAL_IDENTITY',
-
-    // Tech Core
-    'VUE.JS', 'FULLSTACK', 'WEBGL', 'DORAEMON'
+// Level 1: THE MESSAGE (Super Big, Center, Highest Brightness)
+export const level1Keywords = [
+    "AI Innovation",
+    "Problem Solver",
+    "Vibe Architect",
+    "Logic & Magic",
 ]
 
-export const fillers = [
-    'SYSTEM_READY', 'INITIALIZING', 'CONNECTING...', 'DATA_STREAM',
-    'ENCRYPTED', 'ACCESS_GRANTED', 'PROTOCOL_V2', 'KERNEL_PANIC',
-    'MEMORY_DUMP', 'STACK_OVERFLOW', 'NULL_POINTER', 'UNDEFINED',
-    'RENDER_LOOP', 'FRAME_BUFFER', 'SHADER_COMPILE', 'TEXTURE_LOAD',
-    'API_FETCH', 'JSON_PARSE', 'ASYNC_AWAIT', 'PROMISE_RESOLVED',
-    '404_NOT_FOUND', '200_OK', '500_ERROR', 'DEBUG_MODE',
-    'CONSOLE_LOG', 'BREAKPOINT', 'WATCHER', 'COMPUTED',
-    'MOUNTED', 'CREATED', 'DESTROYED', 'UPDATED',
-    '01010101', '10101010', '00110011', '11001100'
+// Level 2: Core Competencies (Big, Strong Opacity)
+export const level2Keywords = [
+    "Product Manager", // Added as implied desire
+    "Project Lead",
+    "Art Direction",
+    "UI/UX Design",
+    "Visual Strategy",
 ]
+
+// Level 3: Specialist Skills (Medium, Good Opacity)
+export const level3Keywords = [
+    "AI Workflow",
+    "Growth Marketing",
+    "Efficiency Ops",
+    "Interaction Design",
+    "Cross-functional",
+    "Business Logic",
+]
+
+// Level 4: Background Texture (Small, Lower Opacity, Decoration)
+export const level4Keywords = [
+    "SOP Design",
+    "PRD Writing",
+    "Agile Management",
+    "Vendor Liaison",
+    "Prompt Engineering",
+    "E-commerce Ops",
+    "Digital Asset",
+    "Motion",
+    "Brand Identity",
+    "User Experience",
+    "Scrum",
+    "KPI",
+    "Wireframe",
+    "Prototype"
+]
+
+export const allKeywords = [...level1Keywords, ...level2Keywords, ...level3Keywords, ...level4Keywords]
