@@ -1,46 +1,25 @@
-// Level 1: THE MESSAGE (Super Big, Center, Highest Brightness)
-export const level1Keywords = [
-    "AI Innovation",
+// 1. THE CENTERPIECE (Static Anchor)
+export const centerKeyword = "VIBE ARCHITECT"
+
+// 2. LEVEL 1: Big Floating (The Main Message)
+export const bigKeywords = [
     "Problem Solver",
-    "Vibe Architect",
-    "Logic & Magic",
-]
-
-// Level 2: Core Competencies (Big, Strong Opacity)
-export const level2Keywords = [
-    "Product Manager", // Added as implied desire
-    "Project Lead",
+    "AI Innovation",
     "Art Direction",
-    "UI/UX Design",
-    "Visual Strategy",
+    "Product Lead",
+    "UI/UX Strategy",
+    "Visual Strategy"
 ]
 
-// Level 3: Specialist Skills (Medium, Good Opacity)
-export const level3Keywords = [
-    "AI Workflow",
-    "Growth Marketing",
-    "Efficiency Ops",
-    "Interaction Design",
-    "Cross-functional",
-    "Business Logic",
+// 3. LEVEL 2: Background (High Density, Atmosphere)
+export const backgroundKeywords = [
+    "Growth Marketing", "Efficiency Ops", "Interaction Design",
+    "Cross-functional", "Business Logic", "SOP Design",
+    "PRD Writing", "Agile Management", "Vendor Liaison",
+    "Prompt Engineering", "Digital Asset", "Motion",
+    "Brand Identity", "User Experience", "Scrum",
+    "KPI", "Wireframe", "Prototype", "Logic & Magic",
+    "Project Management", "Data Driven", "System Design"
 ]
 
-// Level 4: Background Texture (Small, Lower Opacity, Decoration)
-export const level4Keywords = [
-    "SOP Design",
-    "PRD Writing",
-    "Agile Management",
-    "Vendor Liaison",
-    "Prompt Engineering",
-    "E-commerce Ops",
-    "Digital Asset",
-    "Motion",
-    "Brand Identity",
-    "User Experience",
-    "Scrum",
-    "KPI",
-    "Wireframe",
-    "Prototype"
-]
-
-export const allKeywords = [...level1Keywords, ...level2Keywords, ...level3Keywords, ...level4Keywords]
+export const allKeywords = [centerKeyword, ...bigKeywords, ...backgroundKeywords]
