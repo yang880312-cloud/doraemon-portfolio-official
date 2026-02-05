@@ -27,7 +27,7 @@ const router = createRouter({
     {
       path: '/profile',
       name: 'profile',
-      component: () => import('../views/ProfileView.vue'),
+      component: () => import('../views/ProfileViewV2.vue'),
       meta: { dimension: 'PROFILE' },
     },
     // Admin Routes
