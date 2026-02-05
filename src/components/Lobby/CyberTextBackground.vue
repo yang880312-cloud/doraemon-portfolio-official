@@ -51,11 +51,11 @@ class Particle {
       this.vy = 0
     } else {
       // FILLER (Tech Code) - The Dense Matrix
-      this.fontSize = Math.random() * 4 + 10 // 10-14px
+      this.fontSize = Math.random() * 4 + 12 // 12-16px (Slightly larger)
       this.font = `400 ${this.fontSize}px "JetBrains Mono", monospace`
-      this.color = '#4b5563' // Gray-600
-      this.alpha = 0.2 // Very subtle
-      this.vx = (Math.random() * 0.2 + 0.05) * (Math.random() > 0.5 ? 1 : -1) // Slow background noise
+      this.color = '#9ca3af' // Gray-400 (Lighter/Brighter)
+      this.alpha = 0.4 // INCREASED from 0.2 to 0.4 as requested
+      this.vx = (Math.random() * 0.2 + 0.05) * (Math.random() > 0.5 ? 1 : -1)
       this.vy = 0
     }
   }
