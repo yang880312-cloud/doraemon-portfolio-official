@@ -37,7 +37,10 @@ class Particle {
       this.rotationSpeed = 0
       this.vx = 0
       this.vy = 0
-      this.offsetY = -180 // MOVED UP drastically to clear the door
+      // Responsive Offset: -320 for Desktop, -220 for Mobile
+      // The Door is approx 400-500px tall, centered. We need to be ABOVE it.
+      const isSmall = window.innerWidth < 1024
+      this.offsetY = isSmall ? -220 : -320
     } else if (tier === 'big') {
       this.fontSize = Math.random() * 40 + 60 // 60-100px
       this.font = `900 ${this.fontSize}px "Inter", sans-serif`
