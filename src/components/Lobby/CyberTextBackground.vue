@@ -1,6 +1,6 @@
 <script setup>
 import { ref, onMounted, onUnmounted } from 'vue'
-import { centerKeyword, bigKeywords, backgroundKeywords } from '@/data/lobbyKeywords'
+import { centerKeyword, bigKeywords, backgroundKeywords, fillerKeywords } from '@/data/lobbyKeywords'
 
 const canvasRef = ref(null)
 let ctx = null
@@ -20,7 +20,7 @@ class Particle {
     this.text = text
     this.x = x
     this.y = y
-    this.tier = tier // 'center', 'big', 'bg'
+    this.tier = tier // 'center', 'big', 'bg', 'filler'
 
     // 1. ANGLE: STRICTLY HORIZONTAL (0)
     this.angle = 0
@@ -32,23 +32,30 @@ class Particle {
       this.alpha = 1.0
       this.vx = 0
       this.vy = 0
-      this.offsetY = -280 // Slightly lower than -320 to connect with door better
+      this.offsetY = -280
     } else if (tier === 'big') {
-      this.fontSize = Math.random() * 30 + 50 // 50-80px (Normalized)
+      this.fontSize = Math.random() * 30 + 50 // 50-80px
       this.font = `900 ${this.fontSize}px "Inter", sans-serif`
       this.color = '#e5e7eb' // Gray-200
       this.alpha = 0.8
       // Horizontal Stream Speed
       this.vx = (Math.random() * 0.5 + 0.2) * (Math.random() > 0.5 ? 1 : -1)
-      this.vy = (Math.random() - 0.5) * 0.05 // Tiny vertical wobble
-    } else {
-      // Background (Stream)
-      this.fontSize = Math.random() * 4 + 12 // 12-16px
-      this.font = `400 ${this.fontSize}px "JetBrains Mono", monospace`
-      this.color = '#6b7280' // Gray-500
-      this.alpha = 0.3
-      // Consistent Slow Drift
+      this.vy = (Math.random() - 0.5) * 0.05
+    } else if (tier === 'bg') {
+      // Context Words
+      this.fontSize = Math.random() * 4 + 14 // 14-18px
+      this.font = `500 ${this.fontSize}px "JetBrains Mono", monospace`
+      this.color = '#9ca3af' // Gray-400
+      this.alpha = 0.35
       this.vx = (Math.random() * 0.3 + 0.1) * (Math.random() > 0.5 ? 1 : -1)
+      this.vy = 0
+    } else {
+      // FILLER (Tech Code) - The Dense Matrix
+      this.fontSize = Math.random() * 4 + 10 // 10-14px
+      this.font = `400 ${this.fontSize}px "JetBrains Mono", monospace`
+      this.color = '#4b5563' // Gray-600
+      this.alpha = 0.2 // Very subtle
+      this.vx = (Math.random() * 0.2 + 0.05) * (Math.random() > 0.5 ? 1 : -1) // Slow background noise
       this.vy = 0
     }
   }
@@ -60,7 +67,7 @@ class Particle {
         return
     }
 
-    // 1. Mouse Interaction (Repulsion covers X and Y for organic feel)
+    // 1. Mouse Interaction
     const dx = mouse.x - this.x
     const dy = mouse.y - this.y
     const distance = Math.sqrt(dx * dx + dy * dy)
@@ -71,18 +78,14 @@ class Particle {
       const force = (MOUSE_RADIUS - distance) / MOUSE_RADIUS
 
       const push = (this.tier === 'big') ? 10 : 20
-      this.vx -= forceDirectionX * force * MOUSE_FORCE * push * 0.01 // Reduced impact on velocity
-
-      // Direct position push for immediate feedback without ruining velocity
+      this.vx -= forceDirectionX * force * MOUSE_FORCE * push * 0.01
       this.x -= forceDirectionX * force * 2
       this.y -= forceDirectionY * force * 2
     }
 
     // 2. Velocity Limit
-    // Keep 'Big' particles moving but not too fast
     if (this.tier === 'big') {
          if (Math.abs(this.vx) > 1.5) this.vx *= 0.95
-         // Return to horizontal lane
          this.vy *= 0.95
     }
 
@@ -90,12 +93,11 @@ class Particle {
     this.x += this.vx
     this.y += this.vy
 
-    // 4. Wrap (Stream feel)
+    // 4. Wrap
     const margin = 200
     if (this.x < -margin) this.x = width.value + margin
     if (this.x > width.value + margin) this.x = -margin
 
-    // Vertical wrap just in case pushed out
     if (this.y < -100) this.y = height.value + 100
     if (this.y > height.value + 100) this.y = -100
   }
@@ -132,9 +134,20 @@ function createParticles() {
   particles = []
   const isMobile = width.value < 768
 
-  // 1. Background Horizontal Lanes
-  // We place them in specific Y-lanes to avoid clutter? No, random Y is fine if density is low.
-  const countBG = isMobile ? 40 : 80
+  // 1. Filler Layer (The Matrix Code) - HIGH DENSITY
+  const countFiller = isMobile ? 60 : 180
+  for (let i = 0; i < countFiller; i++) {
+     const text = fillerKeywords[Math.floor(Math.random() * fillerKeywords.length)]
+     particles.push(new Particle({
+        text,
+        x: Math.random() * width.value,
+        y: Math.random() * height.value,
+        tier: 'filler'
+     }))
+  }
+
+  // 2. Background Context
+  const countBG = isMobile ? 20 : 60
   for (let i = 0; i < countBG; i++) {
      const text = backgroundKeywords[Math.floor(Math.random() * backgroundKeywords.length)]
      particles.push(new Particle({
@@ -145,23 +158,21 @@ function createParticles() {
      }))
   }
 
-  // 2. Big Words
-  // Spread them out vertically to avoid clumping
+  // 3. Big Words (Distributed vertically)
   const countBig = bigKeywords.length
-  // Divide screen into vertical slices for initial placement
-  const slice = height.value / (countBig + 2)
+  const slice = height.value / (countBig + 1)
 
   bigKeywords.forEach((text, i) => {
       particles.push(new Particle({
         text,
         x: Math.random() * width.value,
-        // Distribute Y to ensure visual coverage
-        y: slice * (i + 1) + (Math.random() - 0.5) * 50,
+        // Smart distribution with some jitter
+        y: slice * (i + 0.5) + (Math.random() - 0.5) * 50,
         tier: 'big'
       }))
   })
 
-  // 3. Center
+  // 4. Center
   particles.push(new Particle({
       text: centerKeyword,
       x: width.value / 2,

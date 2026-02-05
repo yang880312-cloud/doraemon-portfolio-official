@@ -2,7 +2,6 @@
 export const centerKeyword = "VIBE ARCHITECT"
 
 // 2. LEVEL 1: Big Floating (The Main Message)
-// Increased list size for variety
 export const bigKeywords = [
     "Problem Solver",
     "AI Innovation",
@@ -15,7 +14,7 @@ export const bigKeywords = [
     "Rapid Prototype"
 ]
 
-// 3. LEVEL 2: Background (High Density, Atmosphere)
+// 3. LEVEL 2: Background (Context)
 export const backgroundKeywords = [
     "Growth Marketing", "Efficiency Ops", "Interaction Design",
     "Cross-functional", "Business Logic", "SOP Design",
@@ -27,4 +26,14 @@ export const backgroundKeywords = [
     "Market Fit", "Leadership", "Roadmap", "Sprint"
 ]
 
-export const allKeywords = [centerKeyword, ...bigKeywords, ...backgroundKeywords]
+// 4. LEVEL 3: Filler (Code/Tech Texture - Small & Dense)
+export const fillerKeywords = [
+    "System", "Render", "Node", "Void", "Null", "Undefined",
+    "Array", "Object", "Function", "Commit", "Push", "Pull",
+    "Merge", "Branch", "Master", "Main", "Beta", "Alpha",
+    "v1.0", "v2.0", "0xFFFF", "return", "await", "async",
+    "import", "export", "class", "const", "let", "var",
+    "<div>", "<span>", "API", "JSON", "HTTP", "WSS"
+]
+
+export const allKeywords = [centerKeyword, ...bigKeywords, ...backgroundKeywords, ...fillerKeywords]
