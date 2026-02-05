@@ -11,67 +11,56 @@ const mouse = { x: -5000, y: -5000 }
 const width = ref(0)
 const height = ref(0)
 
-// Physics Config (Floaty Space Feel)
+// Config
 const MOUSE_RADIUS = 300
-// Increased Force significantly to ensure interaction is felt even with slow particles
-const MOUSE_FORCE = 3.0
-const DAMPING = 0.98
+const MOUSE_FORCE = 2.0
 
 class Particle {
   constructor({ text, x, y, tier }) {
     this.text = text
     this.x = x
     this.y = y
-
     this.tier = tier // 'center', 'big', 'bg'
 
-    // Rotation: Random 0-360 degrees for that "Zero-G Space Debris" feel
-    this.angle = (Math.random() * Math.PI * 2)
+    // 1. ANGLE: STRICTLY HORIZONTAL (0)
+    this.angle = 0
 
     if (tier === 'center') {
       this.fontSize = 80
       this.font = `900 ${this.fontSize}px "Inter", "Arial Black", sans-serif`
       this.color = '#ffffff'
       this.alpha = 1.0
-      this.angle = 0
-      this.rotationSpeed = 0
       this.vx = 0
       this.vy = 0
-      // Responsive Offset: -320 for Desktop, -220 for Mobile
-      // The Door is approx 400-500px tall, centered. We need to be ABOVE it.
-      const isSmall = window.innerWidth < 1024
-      this.offsetY = isSmall ? -220 : -320
+      this.offsetY = -280 // Slightly lower than -320 to connect with door better
     } else if (tier === 'big') {
-      this.fontSize = Math.random() * 40 + 60 // 60-100px
+      this.fontSize = Math.random() * 30 + 50 // 50-80px (Normalized)
       this.font = `900 ${this.fontSize}px "Inter", sans-serif`
-      this.color = '#d1d5db' // Gray-300
-      this.alpha = 0.9
-      // Slower drift for big items (Massive feel)
-      this.vx = (Math.random() - 0.5) * 0.15
-      this.vy = (Math.random() - 0.5) * 0.15
-      this.rotationSpeed = (Math.random() - 0.5) * 0.0005
+      this.color = '#e5e7eb' // Gray-200
+      this.alpha = 0.8
+      // Horizontal Stream Speed
+      this.vx = (Math.random() * 0.5 + 0.2) * (Math.random() > 0.5 ? 1 : -1)
+      this.vy = (Math.random() - 0.5) * 0.05 // Tiny vertical wobble
     } else {
-      // Background (Dense but optimized)
-      this.fontSize = Math.random() * 5 + 10 // 10-15px
+      // Background (Stream)
+      this.fontSize = Math.random() * 4 + 12 // 12-16px
       this.font = `400 ${this.fontSize}px "JetBrains Mono", monospace`
       this.color = '#6b7280' // Gray-500
-      this.alpha = 0.25
-      // Very slow drift for background (Atmospheric)
-      this.vx = (Math.random() - 0.5) * 0.08
-      this.vy = (Math.random() - 0.5) * 0.08
-      this.rotationSpeed = (Math.random() - 0.5) * 0.001
+      this.alpha = 0.3
+      // Consistent Slow Drift
+      this.vx = (Math.random() * 0.3 + 0.1) * (Math.random() > 0.5 ? 1 : -1)
+      this.vy = 0
     }
   }
 
   update() {
     if (this.tier === 'center') {
-        // Force Position (Top Center) with strong pull
         this.x += (width.value/2 - this.x) * 0.1
         this.y += (height.value/2 + this.offsetY - this.y) * 0.1
         return
     }
 
-    // 1. Mouse Interaction (Repulsion)
+    // 1. Mouse Interaction (Repulsion covers X and Y for organic feel)
     const dx = mouse.x - this.x
     const dy = mouse.y - this.y
     const distance = Math.sqrt(dx * dx + dy * dy)
@@ -81,47 +70,47 @@ class Particle {
       const forceDirectionY = dy / distance
       const force = (MOUSE_RADIUS - distance) / MOUSE_RADIUS
 
-      // Repulsion Strength
-      const push = (this.tier === 'big') ? 8 : 15
-      this.vx -= forceDirectionX * force * MOUSE_FORCE * push * 0.05
-      this.vy -= forceDirectionY * force * MOUSE_FORCE * push * 0.05
+      const push = (this.tier === 'big') ? 10 : 20
+      this.vx -= forceDirectionX * force * MOUSE_FORCE * push * 0.01 // Reduced impact on velocity
+
+      // Direct position push for immediate feedback without ruining velocity
+      this.x -= forceDirectionX * force * 2
+      this.y -= forceDirectionY * force * 2
     }
 
-    // 2. Friction/Damping
-    this.vx *= DAMPING
-    this.vy *= DAMPING
+    // 2. Velocity Limit
+    // Keep 'Big' particles moving but not too fast
+    if (this.tier === 'big') {
+         if (Math.abs(this.vx) > 1.5) this.vx *= 0.95
+         // Return to horizontal lane
+         this.vy *= 0.95
+    }
 
     // 3. Move
     this.x += this.vx
     this.y += this.vy
-    this.angle += this.rotationSpeed
 
-    // 4. Wrap
-    if (this.x < -100) this.x = width.value + 100
-    if (this.x > width.value + 100) this.x = -100
+    // 4. Wrap (Stream feel)
+    const margin = 200
+    if (this.x < -margin) this.x = width.value + margin
+    if (this.x > width.value + margin) this.x = -margin
+
+    // Vertical wrap just in case pushed out
     if (this.y < -100) this.y = height.value + 100
     if (this.y > height.value + 100) this.y = -100
   }
 
   draw() {
-    ctx.save()
-    ctx.translate(this.x, this.y)
-    ctx.rotate(this.angle)
-
     ctx.globalAlpha = this.alpha
     ctx.fillStyle = this.color
     ctx.font = this.font
-    ctx.fillText(this.text, 0, 0)
-
-    ctx.restore()
+    ctx.fillText(this.text, this.x, this.y)
   }
 }
 
 function init() {
   if (!canvasRef.value) return
   const canvas = canvasRef.value
-
-  // PERFORMANCE FIX: Cap DPR at 2
   const dpr = Math.min(window.devicePixelRatio || 1, 2)
   width.value = window.innerWidth
   height.value = window.innerHeight
@@ -143,9 +132,9 @@ function createParticles() {
   particles = []
   const isMobile = width.value < 768
 
-  // 1. Background Layer
-  // Optimized count for performance (balance between 150 and 40)
-  const countBG = isMobile ? 40 : 90
+  // 1. Background Horizontal Lanes
+  // We place them in specific Y-lanes to avoid clutter? No, random Y is fine if density is low.
+  const countBG = isMobile ? 40 : 80
   for (let i = 0; i < countBG; i++) {
      const text = backgroundKeywords[Math.floor(Math.random() * backgroundKeywords.length)]
      particles.push(new Particle({
@@ -156,20 +145,23 @@ function createParticles() {
      }))
   }
 
-  // 2. Big Floating Words (Increased quantity as requested)
-  // Ensure we cycle through ALL big keywords
-  const countBig = Math.max(bigKeywords.length, isMobile ? 5 : 12)
-  for (let i = 0; i < countBig; i++) {
-     const text = bigKeywords[i % bigKeywords.length]
-     particles.push(new Particle({
+  // 2. Big Words
+  // Spread them out vertically to avoid clumping
+  const countBig = bigKeywords.length
+  // Divide screen into vertical slices for initial placement
+  const slice = height.value / (countBig + 2)
+
+  bigKeywords.forEach((text, i) => {
+      particles.push(new Particle({
         text,
         x: Math.random() * width.value,
-        y: Math.random() * height.value,
+        // Distribute Y to ensure visual coverage
+        y: slice * (i + 1) + (Math.random() - 0.5) * 50,
         tier: 'big'
-     }))
-  }
+      }))
+  })
 
-  // 3. The CENTERPIECE
+  // 3. Center
   particles.push(new Particle({
       text: centerKeyword,
       x: width.value / 2,
