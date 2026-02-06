@@ -11,9 +11,44 @@ const store = useDataStore()
 const router = useRouter()
 const profile = computed(() => store.getProfile() || {})
 
-// Ensure we have experiences
+// Ensure we have experiences (Mock Data if empty)
 const experiences = computed(() => {
-    return profile.value.experience || []
+    const raw = profile.value.experience || []
+    if (raw.length > 0) return raw
+
+    // Fallback Mock Data (Migrated from Hologram)
+    return [
+      {
+        id: 'hero-3',
+        company: 'The New Horizon',
+        role: 'Future Creator',
+        period: '2026 - Present',
+        description: 'Now seeking to equip human teams with advanced AI weaponry. Ready to deploy into high-intensity development environments.',
+        bullets: ['Seeking Senior/Lead Roles', 'Specialty: AI & Human-Computer Interaction', 'Ready for Immediate Deployment'],
+        image: 'https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&w=800&q=80',
+        techStack: ['AGI', 'Quantum', 'Neural Link']
+      },
+      {
+        id: 'hero-2',
+        company: 'Matsushiba Lab',
+        role: 'Gadget Architect',
+        period: '2023 - 2026',
+        description: 'Built the "Anywhere Door" routing system reducing travel time to zero. Led a team of mini-dora robots.',
+        bullets: ['Senior Frontend Developer', 'Leads Team of 10+', '200% Efficiency Boost'],
+        image: 'https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?auto=format&fit=crop&w=800&q=80',
+        techStack: ['Vue 4', 'Hyper-Loop', 'Mini-Dora Ops']
+      },
+      {
+        id: 'hero-1',
+        company: 'Robot Factory',
+        role: 'Prototype Model Ø',
+        period: '2112 (Origin)',
+        description: 'Manufactured with passion for clean code. Passed QA with S-Rank.',
+        bullets: ['Graduated S-Rank', 'Algorithms & Design', 'Clean Code Advocate'],
+        image: 'https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&w=800&q=80',
+        techStack: ['Assembly', 'Logic Circuits', 'Fusion Reactor']
+      }
+    ]
 })
 
 // Navigation Back
