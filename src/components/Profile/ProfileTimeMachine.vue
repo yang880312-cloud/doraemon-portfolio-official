@@ -23,27 +23,27 @@ const experiences = computed(() => {
         company: 'The New Horizon',
         role: 'Future Creator',
         period: '2026 - Present',
-        description: 'Now seeking to equip human teams with advanced AI weaponry. Ready to deploy into high-intensity development environments.',
+        description: 'Architecting the next generation of AI-driven interfaces. Leading the integration of neural inputs with web standards.',
         bullets: ['Seeking Senior/Lead Roles', 'Specialty: AI & Human-Computer Interaction', 'Ready for Immediate Deployment'],
         image: 'https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&w=800&q=80',
-        techStack: ['AGI', 'Quantum', 'Neural Link']
+        techStack: ['AGI', 'Quantum Web', 'Neural Link', 'Vue 5']
       },
       {
         id: 'hero-2',
         company: 'Matsushiba Lab',
         role: 'Gadget Architect',
         period: '2023 - 2026',
-        description: 'Built the "Anywhere Door" routing system reducing travel time to zero. Led a team of mini-dora robots.',
-        bullets: ['Senior Frontend Developer', 'Leads Team of 10+', '200% Efficiency Boost'],
+        description: 'Developed the "Anywhere Door" routing mechanism, reducing user navigation latency by 100%. Orchestrated a fleet of micro-services.',
+        bullets: ['Senior Frontend Developer', 'Leads Team of 10+', 'Efficiency Boost: 200%'],
         image: 'https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?auto=format&fit=crop&w=800&q=80',
-        techStack: ['Vue 4', 'Hyper-Loop', 'Mini-Dora Ops']
+        techStack: ['Vue 4', 'Hyper-Loop', 'Mini-Dora Ops', 'TS']
       },
       {
         id: 'hero-1',
         company: 'Robot Factory',
         role: 'Prototype Model Ø',
         period: '2112 (Origin)',
-        description: 'Manufactured with passion for clean code. Passed QA with S-Rank.',
+        description: 'Initial assembly and calibration. Passed S-Rank quality assurance tests with zero-defect rating.',
         bullets: ['Graduated S-Rank', 'Algorithms & Design', 'Clean Code Advocate'],
         image: 'https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&w=800&q=80',
         techStack: ['Assembly', 'Logic Circuits', 'Fusion Reactor']
@@ -51,132 +51,196 @@ const experiences = computed(() => {
     ]
 })
 
-// Navigation Back
 function goBack() {
     router.push('/')
 }
 
 onMounted(() => {
-    // Basic Fade In for cards
-    // We use a slight delay to ensure DOM is ready
+    // 1. Reveal Intro Module
+    gsap.from('.intro-module', {
+        y: 50,
+        opacity: 0,
+        duration: 1,
+        delay: 0.5,
+        ease: 'power3.out'
+    })
+
+    // 2. Timeline Trigger
+    // Use a slight delay to allow DOM render
     setTimeout(() => {
         const eras = gsap.utils.toArray('.era-card')
-        eras.forEach((card) => {
+        eras.forEach((card, i) => {
             gsap.from(card, {
                 scrollTrigger: {
                     trigger: card,
-                    start: "top 85%", // Trigger earlier
+                    start: "top 85%",
                     toggleActions: "play none none reverse"
                 },
-                y: 50,
+                x: i % 2 === 0 ? 50 : -50, // Alternate entry
                 opacity: 0,
                 duration: 0.8,
                 ease: "power2.out"
             })
         })
-    }, 100)
+    }, 200)
+
+    // Background parallax
+    gsap.to('.stars-bg', {
+        yPercent: -20,
+        ease: 'none',
+        scrollTrigger: {
+            trigger: '.time-machine',
+            start: 'top top',
+            end: 'bottom bottom',
+            scrub: true
+        }
+    })
 })
 </script>
 
 <template>
-  <div class="time-machine min-h-screen bg-black text-white relative">
+  <div class="time-machine min-h-screen bg-black text-white relative font-sans overflow-x-hidden">
 
-    <!-- 1. Fixed Background (Time Tunnel) -->
+    <!-- 1. Background (Dimmed for Readability) -->
     <div class="fixed inset-0 z-0 bg-[#050505] pointer-events-none">
-        <div class="absolute inset-0 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-blue-900/10 via-black to-black"></div>
-        <!-- Tunnel Grid -->
-        <div class="absolute inset-0 opacity-20" :style="{
-            backgroundImage: 'linear-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px), linear-gradient(90deg, rgba(255, 255, 255, 0.05) 1px, transparent 1px)',
-            backgroundSize: '100px 100px'
+        <div class="stars-bg absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/stardust.png')] opacity-20"></div>
+        <div class="absolute inset-0 bg-gradient-to-b from-black via-transparent to-black opacity-80"></div>
+        <!-- Grid -->
+        <div class="absolute inset-0 opacity-10" :style="{
+            backgroundImage: 'linear-gradient(rgba(59, 130, 246, 0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(59, 130, 246, 0.1) 1px, transparent 1px)',
+            backgroundSize: '40px 40px'
         }"></div>
-        <!-- Stars -->
-         <div class="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/stardust.png')] opacity-30 animate-pulse"></div>
     </div>
 
-    <!-- 2. Sticky Navigation (Top) -->
-    <div class="fixed top-0 left-0 right-0 z-50 p-6 flex justify-between items-center pointer-events-none">
-        <button @click="goBack" class="pointer-events-auto flex items-center gap-2 text-white/50 hover:text-white transition-colors group">
-            <span class="w-8 h-8 rounded-full border border-white/20 flex items-center justify-center group-hover:bg-white/10">←</span>
-            <span class="text-sm tracking-widest font-mono">BACK_TO_LOBBY</span>
+    <!-- 2. Sticky HUD (Top) -->
+    <div class="fixed top-0 left-0 right-0 z-50 px-6 py-4 flex justify-between items-center bg-black/50 backdrop-blur-md border-b border-white/5">
+        <button @click="goBack" class="flex items-center gap-2 text-gray-400 hover:text-white transition-colors group">
+            <span class="w-8 h-8 rounded-full border border-gray-700 flex items-center justify-center group-hover:bg-white/10 group-hover:border-white">←</span>
+            <span class="text-xs font-mono tracking-widest hidden md:inline">RETURN</span>
         </button>
-        <div class="font-mono text-xs text-blue-500 animate-pulse">TIME_MACHINE // ACTIVE</div>
+        <div class="flex items-center gap-4">
+             <div class="hidden md:flex items-center gap-2 text-xs font-mono text-green-400">
+                <span class="w-2 h-2 rounded-full bg-green-500 animate-pulse"></span>
+                SYSTEM: ONLINE
+             </div>
+             <a href="mailto:doraemon@future.com" class="px-4 py-1.5 bg-blue-600 hover:bg-blue-500 text-white text-xs font-bold rounded shadow-lg shadow-blue-900/50 transition-all active:scale-95">
+                CONTACT
+             </a>
+        </div>
     </div>
 
     <!-- 3. Scroll Content -->
-    <div class="relative z-10 px-6 py-32 max-w-5xl mx-auto flex flex-col gap-[30vh]">
+    <div class="relative z-10 w-full max-w-5xl mx-auto px-6 pb-32">
 
-        <!-- Header -->
-        <div class="text-center mb-20 space-y-4">
-            <div class="inline-block px-3 py-1 border border-blue-500/30 rounded-full text-blue-400 text-xs tracking-[0.2em]">IDENTIFIED: {{ profile.name }}</div>
-            <h1 class="text-5xl md:text-7xl font-black tracking-tighter text-transparent bg-clip-text bg-gradient-to-b from-white to-gray-600">
-                CHRONICLE
-            </h1>
-            <p class="text-gray-400 max-w-xl mx-auto font-mono text-sm leading-relaxed">
-                Initializing temporal scan...<br>
-                Retrieving career trajectory and milestone data...
-            </p>
+        <!-- INTRO MODULE (Identity Card) -->
+        <div class="intro-module min-h-[90vh] flex flex-col justify-center items-center text-center pt-20">
+            <!-- Profile Image Ring -->
+            <div class="w-32 h-32 md:w-40 md:h-40 rounded-full border-2 border-blue-500/50 p-1 mb-8 relative">
+                <div class="absolute inset-0 border-2 border-blue-400 rounded-full animate-ping opacity-20"></div>
+                <img :src="profile.image || 'https://api.dicebear.com/7.x/avataaars/svg?seed=Dora'" class="w-full h-full rounded-full object-cover bg-gray-800" />
+            </div>
+
+            <div class="space-y-4 mb-10 max-w-2xl">
+                 <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-500/10 border border-blue-500/30 text-blue-400 text-xs font-mono tracking-wider">
+                    <span class="text-xl">⚡</span> {{ profile.title || 'FULL STACK INNOVATOR' }}
+                 </div>
+                 <h1 class="text-5xl md:text-7xl font-black tracking-tight text-white mb-2">
+                    {{ profile.name || 'CANDIDATE' }}
+                 </h1>
+                 <p class="text-lg md:text-xl text-gray-400 leading-relaxed">
+                    {{ profile.bio || 'Equipping humanity with future-proof digital tools. Specializing in high-performance web applications and sleek user interfaces.' }}
+                 </p>
+            </div>
+
+            <!-- Core Skills Grid -->
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4 w-full max-w-3xl">
+                <div v-for="skill in ['Vue.js Ecosystem', 'Interactive UI', 'System Arch', 'Gadget Ops']" :key="skill"
+                     class="p-4 rounded-xl bg-white/5 border border-white/10 hover:border-blue-500/50 hover:bg-white/10 transition-all cursor-default group">
+                     <h3 class="text-sm font-bold text-gray-300 group-hover:text-blue-300">{{ skill }}</h3>
+                </div>
+            </div>
+
+            <!-- Scroll Hint -->
+            <div class="mt-20 flex flex-col items-center gap-2 opacity-50 animate-bounce">
+                <div class="w-px h-10 bg-gradient-to-b from-transparent to-white"></div>
+                <span class="text-xs font-mono tracking-widest">SCROLL TO SCAN HISTORY</span>
+            </div>
         </div>
 
-        <!-- Eras Loop -->
-        <div v-for="(exp, index) in experiences" :key="index" class="era-section relative grid grid-cols-1 md:grid-cols-[1fr_2px_1fr] gap-8 md:gap-0">
 
-            <!-- Left Side (Year Marker) -->
-            <div class="relative flex flex-col items-end md:pr-12 text-right">
-                <div class="sticky top-1/2 -translate-y-1/2 transition-opacity duration-500">
-                    <h2 class="text-6xl md:text-8xl font-black text-gray-800/50 select-none">
-                        {{ exp.period.split(/[ -]/)[0] }}
-                    </h2>
-                    <div class="text-sm font-mono text-blue-500 mt-2 tracking-widest">{{ exp.period }}</div>
-                </div>
-            </div>
+        <!-- TIMELINE SECTION (Denser) -->
+        <div class="relative mt-20 md:mt-0 space-y-12 md:space-y-0">
 
-            <!-- Center Line -->
-            <div class="hidden md:block w-0.5 bg-gradient-to-b from-blue-500/0 via-blue-500/50 to-blue-500/0 relative">
-                <!-- Node Dot -->
-                <div class="absolute top-0 left-1/2 -translate-x-1/2 w-4 h-4 bg-blue-500 rounded-full shadow-[0_0_20px_rgba(59,130,246,0.5)] z-20 sticky top-1/2"></div>
-            </div>
+            <!-- Central Line (Desktop) -->
+            <div class="hidden md:block absolute left-1/2 top-0 bottom-0 w-px bg-gradient-to-b from-blue-500/0 via-blue-500/20 to-blue-500/0 -translate-x-1/2"></div>
 
-            <!-- Right Side (Card) -->
-            <div class="flex flex-col justify-center py-20 md:pl-12">
-                <div class="era-card bg-gray-900/60 backdrop-blur-xl border border-gray-800 p-8 rounded-2xl shadow-2xl relative group hover:border-blue-500/50 transition-colors">
+            <div v-for="(exp, index) in experiences" :key="index"
+                 class="era-section relative grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-16 items-center py-12">
 
-                    <!-- Glow Line -->
-                    <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-blue-500 to-purple-500 opacity-50 group-hover:opacity-100 transition-opacity"></div>
+                 <!-- Connector Dot -->
+                 <div class="hidden md:block absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-3 h-3 bg-black border-2 border-blue-500 rounded-full z-10 shadow-[0_0_10px_rgba(59,130,246,0.8)]"></div>
 
-                    <!-- Company & Role -->
-                    <div class="mb-6">
-                        <div class="text-xs text-gray-500 uppercase tracking-widest mb-2">{{ exp.role }}</div>
-                        <h3 class="text-3xl font-bold text-white mb-1">{{ exp.company }}</h3>
-                        <div class="flex gap-2 mt-3">
-                            <span v-for="tech in exp.techStack?.slice(0,3)" :key="tech" class="px-2 py-1 bg-white/5 rounded text-[10px] text-gray-400 border border-white/5">{{ tech }}</span>
+                 <!-- Content Block -->
+                 <!-- If Index Even: Text Left, Year Right (Desktop) -->
+                 <!-- If Index Odd: Year Left, Text Right (Desktop) -->
+
+                 <!-- Logic: We just render Card in one col and Year in other, flipping order via CSS classes -->
+
+                 <!-- Year Marker (Desktop Side) -->
+                 <div class="hidden md:flex flex-col justify-center" :class="index % 2 === 0 ? 'items-end text-right md:pr-4' : 'order-last items-start text-left md:pl-4'">
+                     <div class="text-5xl font-black text-white/10 select-none">{{ exp.period.split(/[ -]/)[0] }}</div>
+                     <div class="text-blue-400 font-mono text-sm tracking-wider">{{ exp.period }}</div>
+                 </div>
+
+                 <!-- Card (The Content) -->
+                 <div class="era-card" :class="index % 2 === 0 ? 'md:order-last' : ''">
+                    <div class="relative p-6 md:p-8 rounded-2xl bg-gray-900/60 backdrop-blur-xl border border-white/10 hover:border-blue-500/30 transition-all hover:shadow-[0_0_30px_rgba(0,0,0,0.3)] group overflow-hidden">
+
+                        <!-- Glow -->
+                        <div class="absolute -top-10 -right-10 w-32 h-32 bg-blue-500/20 blur-[50px] group-hover:bg-blue-500/30 transition-all"></div>
+
+                        <!-- Mobile Year -->
+                        <div class="md:hidden text-xs font-mono text-blue-500 mb-2">{{ exp.period }}</div>
+
+                        <!-- Header -->
+                        <div class="flex items-start justify-between mb-4 relative z-10">
+                            <div>
+                                <h3 class="text-2xl font-bold text-white mb-1 group-hover:text-blue-200 transition-colors">{{ exp.company }}</h3>
+                                <div class="text-sm text-gray-400 font-medium">{{ exp.role }}</div>
+                            </div>
+                            <!-- Tech Stack (Right Top) -->
+                             <div class="flex gap-1 flex-wrap justify-end max-w-[120px]">
+                                <span v-for="t in exp.techStack?.slice(0,3)" :key="t" class="px-1.5 py-0.5 rounded bg-white/5 text-[10px] text-gray-500 border border-white/5">
+                                    {{ t }}
+                                </span>
+                            </div>
                         </div>
+
+                        <!-- Body -->
+                        <p class="text-gray-300 text-sm leading-relaxed mb-6 border-l-2 border-white/10 pl-4 group-hover:border-blue-500/50 transition-colors">
+                            {{ exp.description }}
+                        </p>
+
+                        <!-- Key Achievements -->
+                        <div class="space-y-2 relative z-10">
+                            <div v-for="bullet in exp.bullets" :key="bullet" class="flex items-center gap-2 text-xs text-gray-400 group-hover:text-gray-300">
+                                <span class="w-1.5 h-1.5 rounded-full bg-blue-500/50"></span>
+                                {{ bullet }}
+                            </div>
+                        </div>
+
                     </div>
+                 </div>
 
-                    <!-- Description -->
-                    <p class="text-gray-400 leading-relaxed text-sm mb-6 border-l-2 border-gray-700 pl-4">
-                        {{ exp.description }}
-                    </p>
-
-                    <!-- Stats / Bullets -->
-                    <ul class="space-y-2">
-                        <li v-for="bullet in exp.bullets" :key="bullet" class="text-sm text-gray-300 flex items-start gap-2">
-                            <span class="text-blue-500 scale-75 mt-1">▶</span>
-                            {{ bullet }}
-                        </li>
-                    </ul>
-
-                    <!-- Image Overlay (Optional) -->
-                    <div v-if="exp.image" class="absolute -z-10 top-0 right-0 w-32 h-32 opacity-10 bg-no-repeat bg-contain bg-right-top pointer-events-none mix-blend-screen"
-                         :style="{ backgroundImage: `url(${exp.image})` }">
-                    </div>
-                </div>
             </div>
-
         </div>
 
         <!-- Footer -->
-        <div class="h-[20vh] flex items-center justify-center text-gray-600 font-mono text-xs">
-            END OF RECORD
+        <div class="mt-32 text-center text-gray-600 font-mono text-xs">
+            <div class="mb-4">END OF CHRONICLE</div>
+            <button class="px-6 py-2 border border-gray-800 rounded hover:bg-gray-800 transition-colors text-gray-400">
+                DOWNLOAD FULL RESUME.PDF
+            </button>
         </div>
 
     </div>
