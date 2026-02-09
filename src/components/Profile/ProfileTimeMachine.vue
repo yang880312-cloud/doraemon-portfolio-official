@@ -51,17 +51,18 @@ onMounted(async () => {
     const cards = gsap.utils.toArray('.experience-wrapper')
     cards.forEach((cardWrapper, i) => {
         // Animation for Card Entrance
-        gsap.from(cardWrapper.querySelector('.experience-card'), {
+        gsap.from(cardWrapper.querySelector('.experience-card-wrapper'), {
             scrollTrigger: {
                 trigger: cardWrapper,
                 start: "top 85%",
                 toggleActions: "play none none reverse"
             },
-            y: 50,
+            y: 100,
             opacity: 0,
-            scale: 0.95,
-            duration: 0.6,
-            ease: "back.out(1.7)"
+            scale: 0.8,
+            rotationX: 15,
+            duration: 0.8,
+            ease: "back.out(1.2)"
         })
 
         // Logic for Dashboard Linkage (Center of Viewport)
@@ -74,9 +75,39 @@ onMounted(async () => {
         })
     })
 
-    // Background Parallax
+    // 3. Velocity Skew Effect
+    // Create a proxy Trigger just for velocity tracking
+    ScrollTrigger.create({
+        onUpdate: (self) => {
+            const skew = self.getVelocity() / -500; // Adjust sensitivity
+            // Limit skew to avoid extreme distortion
+            const clampedSkew = Math.max(Math.min(skew, 10), -10);
+
+            gsap.to('.skew-content', {
+                skewY: clampedSkew,
+                overwrite: 'auto',
+                duration: 0.1,
+                ease: 'power1.out'
+            });
+        }
+    });
+
+    // 4. Enhanced Deep Parallax
+    // Stars Background (Slow)
     gsap.to('.stars-bg', {
         yPercent: -20,
+        ease: 'none',
+        scrollTrigger: {
+            trigger: '.time-machine',
+            start: 'top top',
+            end: 'bottom bottom',
+            scrub: true
+        }
+    })
+
+    // Grid (Medium)
+    gsap.to('.cyber-grid', {
+        yPercent: -40,
         ease: 'none',
         scrollTrigger: {
             trigger: '.time-machine',
@@ -99,15 +130,21 @@ onMounted(async () => {
 <template>
   <div class="time-machine min-h-screen bg-[#050505] text-white relative font-sans overflow-x-hidden selection:bg-[#42b883] selection:text-black">
 
-    <!-- 1. Background -->
-    <div class="fixed inset-0 z-0 pointer-events-none">
-        <div class="stars-bg absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/stardust.png')] opacity-30"></div>
+    <!-- 1. Background Layers -->
+    <div class="fixed inset-0 z-0 pointer-events-none perspective-bg">
+        <!-- Stars (Far) -->
+        <div class="stars-bg absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/stardust.png')] opacity-30 transform-gpu"></div>
         <div class="absolute inset-0 bg-gradient-to-b from-black via-[#050505] to-black opacity-90"></div>
-        <!-- Cyber Grid -->
-        <div class="absolute inset-0 opacity-[0.03]" :style="{
+
+        <!-- Cyber Grid (Mid) -->
+        <div class="cyber-grid absolute inset-[-50%] w-[200%] h-[200%] opacity-[0.04] transform-gpu" :style="{
             backgroundImage: 'linear-gradient(#42b883 1px, transparent 1px), linear-gradient(90deg, #42b883 1px, transparent 1px)',
-            backgroundSize: '50px 50px'
+            backgroundSize: '60px 60px',
+            transform: 'perspective(500px) rotateX(60deg)'
         }"></div>
+
+        <!-- Vignette -->
+        <div class="absolute inset-0 bg-[radial-gradient(circle_at_center,transparent_0%,black_100%)]"></div>
     </div>
 
     <!-- 2. Sticky HUD (Nav) -->
@@ -119,7 +156,7 @@ onMounted(async () => {
         <div class="flex items-center gap-4">
              <div class="hidden md:flex items-center gap-2 text-xs font-mono text-[#42b883]">
                 <span class="w-2 h-2 rounded-full bg-[#42b883] animate-pulse"></span>
-                SYSTEM: OPTIMIZED
+                SYSTEM: HIGH_PERFORMANCE
              </div>
              <a href="mailto:doraemon@future.com" class="px-4 py-1.5 bg-[#42b883]/10 hover:bg-[#42b883]/20 border border-[#42b883]/50 text-[#42b883] text-xs font-bold rounded shadow-[0_0_15px_rgba(66,184,131,0.2)] transition-all active:scale-95">
                 INIT_CONTACT
@@ -169,8 +206,8 @@ onMounted(async () => {
         <!-- MAIN SPLIT LAYOUT -->
         <div class="grid grid-cols-1 lg:grid-cols-[1.8fr_1fr] gap-12 relative">
 
-            <!-- LEFT: Timeline Log -->
-            <div class="relative">
+            <!-- LEFT: Timeline Log (Wrapped in Skew Container) -->
+            <div class="relative skew-content origin-center will-change-transform">
                 <!-- Continuous Time Track Line -->
                 <div class="absolute left-6 md:left-[27px] top-6 bottom-0 w-px bg-gradient-to-b from-[#42b883]/50 via-[#42b883]/20 to-transparent hidden md:block"></div>
 
@@ -186,6 +223,7 @@ onMounted(async () => {
                          </span>
                     </div>
 
+                    <!-- Note: ExperienceCard now handles its own hover 3D tilt -->
                     <ExperienceCard :experience="exp" :index="index" />
                 </div>
 
@@ -193,18 +231,14 @@ onMounted(async () => {
                  <div class="hidden md:flex absolute left-[22px] bottom-0 w-3 h-3 bg-[#42b883] rounded-full shadow-[0_0_10px_#42b883]"></div>
             </div>
 
-            <!-- RIGHT: Sticky Dashboard -->
-            <div class="hidden lg:block">
+            <!-- RIGHT: Sticky Dashboard (Not skewed, remains stable) -->
+            <div class="hidden lg:block z-20">
                 <div class="sticky top-24">
                      <ProfileDashboard :experience="activeExperience" />
                 </div>
             </div>
 
-            <!-- Mobile Dashboard (Sticky Bottom or Stacked Top?) -->
-            <!-- Let's put a simplified version at bottom for mobile? No, user said card insert or bottom. -->
-            <!-- For now, we rely on the stacked cards being rich enough, maybe just show stats in card for mobile? -->
-            <!-- User requirement: "Mobile: Dashboard shrinks and fixed at bottom OR inserts as card". -->
-            <!-- Let's try inserting it as a sticky bottom bar for mobile -->
+            <!-- Mobile Dashboard -->
             <div class="lg:hidden fixed bottom-0 left-0 right-0 p-4 bg-black/90 backdrop-blur-lg border-t border-[#42b883]/30 z-40">
                  <div class="flex justify-between items-center">
                       <div>
@@ -224,10 +258,7 @@ onMounted(async () => {
 </template>
 
 <style scoped>
-/* Gradient Text Support */
-.text-neon-gradient {
-    background: linear-gradient(to right, #42b883, #3b82f6);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
+.perspective-bg {
+    perspective: 1000px;
 }
 </style>
