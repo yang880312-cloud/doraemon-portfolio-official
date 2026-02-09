@@ -94,7 +94,61 @@ export const useDataStore = defineStore('data', () => {
       console.error('Error fetching profile:', error)
       return
     }
-    if (data) profile.value = data
+    if (data) {
+      // --- Mock Data Injection for System Monitor (Phase 2.5) ---
+      // This ensures the dashboard has data even if the DB is empty or missing fields.
+      const enrichedExperience = (data.experience || []).map((exp, index) => {
+        // Default Mock Metrics based on index (just for variety)
+        const mockGrowth = [
+          { value: 300, label: 'Efficiency', suffix: '%' },
+          { value: 120, label: 'User Growth', suffix: '%' },
+          { value: 50, label: 'Cost Reduction', suffix: '%' },
+          { value: 99.9, label: 'Uptime', suffix: '%' },
+        ][index % 4]
+
+        const mockRadar = [
+          [ // Tech Lead
+            { label: 'Architecture', value: 95 },
+            { label: 'Leadership', value: 85 },
+            { label: 'Coding', value: 90 },
+            { label: 'System Design', value: 88 },
+            { label: 'Communication', value: 80 },
+          ],
+          [ // Senior Dev
+            { label: 'Frontend', value: 95 },
+            { label: 'Backend', value: 85 },
+            { label: 'DevOps', value: 70 },
+            { label: 'Testing', value: 80 },
+            { label: 'Mentoring', value: 60 },
+          ],
+          [ // Junior
+            { label: 'Learning', value: 100 },
+            { label: 'Coding', value: 75 },
+            { label: 'Teamwork', value: 85 },
+            { label: 'Debugging', value: 70 },
+            { label: 'Documentation', value: 60 },
+          ],
+          [ // Intern
+            { label: 'Passion', value: 100 },
+            { label: 'Energy', value: 100 },
+            { label: 'Coding', value: 50 },
+            { label: 'Coffee', value: 20 },
+            { label: 'Git', value: 40 },
+          ],
+        ][index % 4]
+
+        return {
+          ...exp,
+          growth: exp.growth || mockGrowth,
+          radar: exp.radar || mockRadar
+        }
+      })
+
+      profile.value = {
+        ...data,
+        experience: enrichedExperience
+      }
+    }
   }
 
   function getProfile() {
