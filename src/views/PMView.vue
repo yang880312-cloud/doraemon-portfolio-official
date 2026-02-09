@@ -1,6 +1,7 @@
 <script setup>
 import { ref, computed, onMounted } from 'vue'
 import BentoCard from '@/components/PM/BentoCard.vue'
+import ChaosVisualizer from '@/components/PM/ChaosVisualizer.vue'
 import PMProjectModal from '@/components/PM/PMProjectModal.vue'
 import FlashlightCursor from '@/components/PM/FlashlightCursor.vue'
 import { useDataStore } from '@/stores/dataStore'
@@ -66,28 +67,34 @@ function getCardSize(index) {
 </script>
 
 <template>
-  <div class="relative w-full h-full bg-[#f0f8ff] text-[#1e3a8a] p-4 pt-20 md:p-8 md:pt-24 overflow-y-auto cursor-none">
+  <div class="relative w-full h-full bg-[#f0f8ff] text-[#1e3a8a] overflow-y-auto cursor-none">
     <!-- Custom Cursor -->
     <FlashlightCursor />
-    <!-- Header Section -->
-    <header
-      class="max-w-7xl mx-auto mb-10 flex flex-col md:flex-row justify-between items-end border-b-4 border-[#1e3a8a] pb-6"
-    >
-      <div>
-        <h1 class="text-5xl md:text-7xl font-black tracking-tighter mb-2 text-[#1e3a8a] drop-shadow-sm">
-          祕密 <span class="text-[#ef4444]">道具倉庫</span>
-        </h1>
-        <p class="text-[#1e3a8a]/70 font-medium max-w-lg text-lg">
-          用未來邏輯解決現實世界的問題。
-          <br /><span class="text-xs uppercase tracking-widest bg-[#1e3a8a] text-white px-2 py-1 rounded-full mt-2 inline-block">22世紀百貨公司</span>
-        </p>
-      </div>
-      <div class="text-right font-bold font-mono text-sm text-[#ef4444] mt-4 md:mt-0 bg-white px-4 py-2 rounded-xl border-2 border-[#1e3a8a] shadow-[4px_4px_0px_rgba(30,58,138,1)]">
-        系統狀態：線上 <br />
-        道具總數：<span v-if="dataStore.isLoading" class="animate-pulse">掃描中...</span>
-        <span v-else>{{ projects.length }}</span>
-      </div>
-    </header>
+
+    <!-- Hero Visualization -->
+    <ChaosVisualizer />
+
+    <!-- Main Content Container -->
+    <div class="p-4 md:p-8">
+        <!-- Header Section -->
+        <header
+          class="max-w-7xl mx-auto mb-10 flex flex-col md:flex-row justify-between items-end border-b-4 border-[#1e3a8a] pb-6 mt-8"
+        >
+          <div>
+            <h1 class="text-5xl md:text-7xl font-black tracking-tighter mb-2 text-[#1e3a8a] drop-shadow-sm">
+              祕密 <span class="text-[#ef4444]">道具倉庫</span>
+            </h1>
+            <p class="text-[#1e3a8a]/70 font-medium max-w-lg text-lg">
+              用未來邏輯解決現實世界的問題。
+              <br /><span class="text-xs uppercase tracking-widest bg-[#1e3a8a] text-white px-2 py-1 rounded-full mt-2 inline-block">22世紀百貨公司</span>
+            </p>
+          </div>
+          <div class="text-right font-bold font-mono text-sm text-[#ef4444] mt-4 md:mt-0 bg-white px-4 py-2 rounded-xl border-2 border-[#1e3a8a] shadow-[4px_4px_0px_rgba(30,58,138,1)]">
+            系統狀態：線上 <br />
+            道具總數：<span v-if="dataStore.isLoading" class="animate-pulse">掃描中...</span>
+            <span v-else>{{ projects.length }}</span>
+          </div>
+        </header>
 
     <!-- Bento Grid Canvas -->
     <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-6 auto-rows-[250px] mb-20 pb-20">
