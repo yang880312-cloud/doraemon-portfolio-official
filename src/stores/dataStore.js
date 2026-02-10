@@ -31,10 +31,26 @@ export const useDataStore = defineStore('data', () => {
         .order('created_at', { ascending: false })
 
       if (error) throw error
-      projects.value = data || []
+
+      // Fallback Mock Data if DB is empty (Ensure 5 cards exist for Design Demo)
+      if (!data || data.length === 0 || !data.some(p => p.type === 'DESIGN')) {
+        console.warn('No projects found, using Mock Data')
+        const mockProjects = [
+          { id: 101, title: 'NEON GENESIS', type: 'DESIGN', category: 'Visual', image: 'https://images.unsplash.com/photo-1550751827-4bd374c3f58b', description: 'Cyberpunk aesthetic exploration.' },
+          { id: 102, title: 'VOID WALKER', type: 'DESIGN', category: 'UI/UX', image: 'https://images.unsplash.com/photo-1518770660439-4636190af475', description: 'Zero-G interface design.' },
+          { id: 103, title: 'CHROMA TYPE', type: 'DESIGN', category: 'Visual', image: 'https://images.unsplash.com/photo-1550745165-9bc0b252726f', description: 'Typography in motion.' },
+          { id: 104, title: 'FLUID STATE', type: 'DESIGN', category: 'Experiments', image: 'https://images.unsplash.com/photo-1506259091721-347f798196d4', description: 'Liquid simulations.' },
+          { id: 105, title: 'ASTRAL PROJECTION', type: 'DESIGN', category: 'Visual', image: 'https://images.unsplash.com/photo-1534972195531-d756b9bfa9f2', description: '3D rendering showcase.' }
+        ]
+        projects.value = mockProjects
+      } else {
+        projects.value = data
+      }
+
       lastFetch.value = Date.now()
     } catch (err) {
       console.error('Error fetching projects:', err)
+      // On error, also use mock?
     } finally {
       isLoading.value = false
     }
