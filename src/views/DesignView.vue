@@ -4,6 +4,8 @@ import { useRouter } from 'vue-router'
 import { useDataStore } from '@/stores/dataStore'
 import ZeroGGrid from '@/components/Design/ZeroGGrid.vue'
 import DesignProjectModal from '@/components/Design/DesignProjectModal.vue'
+import WarpTunnelEnvironment from '@/components/Design/WarpTunnelEnvironment.vue'
+import FluidCursor from '@/components/Design/FluidCursor.vue'
 
 const router = useRouter()
 const dataStore = useDataStore()
@@ -35,11 +37,17 @@ function switchProject(project) {
 </script>
 
 <template>
-  <!-- Simplified Plan B Layout: Standard Scrolling Page -->
-  <div class="relative min-h-screen w-full bg-[#050505] pb-32">
+  <!-- Simplified Standard Layout with restored Visuals -->
+  <div class="relative min-h-screen w-full bg-[#050505] pb-32 overflow-hidden">
 
-    <!-- Header Area -->
-    <div class="container mx-auto px-4 pt-20 pb-10 text-center relative z-20">
+    <!-- Background: Warp Tunnel (Visual Only, Non-Interactive) -->
+    <WarpTunnelEnvironment />
+
+    <!-- Fluid Cursor (Visual Only) -->
+    <FluidCursor />
+
+    <!-- Header Area (Z-10 to stay above tunnel) -->
+    <div class="container mx-auto px-4 pt-20 pb-10 text-center relative z-10">
         <h1 class="text-6xl md:text-9xl font-black text-transparent bg-clip-text bg-gradient-to-b from-white to-white/20 tracking-tighter mb-4 glitch-text" data-text="DESIGN GALLERY">
             DESIGN GALLERY
         </h1>
@@ -48,7 +56,7 @@ function switchProject(project) {
         </p>
     </div>
 
-    <!-- Main Grid Content -->
+    <!-- Main Grid Content (Z-10) -->
     <div class="relative z-10 container mx-auto px-4">
         <!-- Pass isDealt event from Grid to show header or generic -->
         <ZeroGGrid
@@ -82,7 +90,8 @@ function switchProject(project) {
   left: 0;
   width: 100%;
   height: 100%;
-  background: #050505;
+  background: transparent; /* Changed from #050505 to transparent to blend with tunnel? Or keep black to hide glitches? */
+  /* If background is transparent, glitch duplicates will show on top of tunnel. */
 }
 .glitch-text::before {
   left: 2px;
