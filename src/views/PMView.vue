@@ -107,6 +107,7 @@ function getCardSize(index) {
         @click="openProject(project, index)"
       />
     </div>
+    </div>
 
     <!-- Project Detail Modal -->
     <PMProjectModal :isOpen="isModalOpen" :project="selectedProject" :index="selectedIndex" @close="isModalOpen = false" />
