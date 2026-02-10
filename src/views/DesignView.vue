@@ -112,9 +112,7 @@ function openProject(project) {
 
 .tunnel-grid-wrapper {
   transform-style: preserve-3d;
-  /* Slight tilt to simulate tunnel walls if ZeroGGrid pushes items */
-  /* We can rely on ZeroGGrid's own transforms, or add a container tilt here */
-  transform: rotateX(5deg);
+  /* transform: rotateX(5deg); */ /* Fix interaction bug */
   transition: transform 0.5s ease-out;
 }
 /* Font Import for Heavy Look */

@@ -164,7 +164,7 @@ function getSpanClass(layout) {
 </script>
 
 <template>
-  <div class="relative w-full h-full overflow-y-auto custom-scrollbar p-4 md:p-16 pb-32">
+  <div class="relative w-full p-4 md:p-16 pb-32">
 
     <!-- Interaction Layer: The Deck Stack -->
     <!-- Only visible if not dealt yet and we have items -->
