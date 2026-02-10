@@ -168,10 +168,16 @@ export const useDataStore = defineStore('data', () => {
     profile.value = newProfile
   }
 
+  // --- Computed project types ---
+  // (Adding these back to support DesignView usage)
+  const designProjects = computed(() => projects.value.filter(p => p.type === 'DESIGN' || p.category === 'UI/UX' || p.category === 'Visual'))
+  const pmProjects = computed(() => projects.value.filter(p => p.type === 'PM')) // Optional helper
+
   return {
     projects,
     profile,
     isLoading,
+    designProjects, // Unlocks the gallery
     fetchProjects,
     addProject,
     updateProject,

@@ -48,11 +48,11 @@ function switchProject(project) {
 
     <!-- Header Area (Z-10 to stay above tunnel) -->
     <div class="container mx-auto px-4 pt-20 pb-10 text-center relative z-10">
-        <h1 class="text-6xl md:text-9xl font-black text-transparent bg-clip-text bg-gradient-to-b from-white to-white/20 tracking-tighter mb-4 glitch-text" data-text="DESIGN GALLERY">
-            DESIGN GALLERY
+        <h1 class="text-6xl md:text-9xl font-black text-transparent bg-clip-text bg-gradient-to-b from-white to-white/20 tracking-tighter mb-4 glitch-text" data-text="繪世界藝廊">
+            繪世界藝廊
         </h1>
         <p class="text-blue-400 font-mono tracking-[0.5em] text-sm uppercase opacity-80">
-            Select Work // Visual Experiments
+            PAINTED WORLD
         </p>
     </div>
 
