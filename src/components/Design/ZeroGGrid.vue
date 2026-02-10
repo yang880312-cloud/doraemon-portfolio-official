@@ -210,10 +210,8 @@ function getSpanClass(layout) {
         v-for="(item, index) in items"
         :key="item.id"
         :ref="el => cardRefs[index] = el"
-        @mousemove="(e) => handleMouseMove(e, index)"
-        @mouseleave="handleMouseLeave(index)"
         @click="$emit('item-click', item)"
-        class="relative group rounded-3xl cursor-pointer md:cursor-none transition-all duration-300 ease-out preserve-3d"
+        class="relative group rounded-3xl cursor-pointer md:cursor-none transition-all duration-300 ease-out z-30"
         :class="[getSpanClass(item.layout), isDealt ? 'opacity-100' : 'opacity-0']"
       >
         <!-- Aura Glow (Behind) -->

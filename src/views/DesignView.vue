@@ -111,8 +111,8 @@ function openProject(project) {
 }
 
 .tunnel-grid-wrapper {
-  transform-style: preserve-3d;
-  /* transform: rotateX(5deg); */ /* Fix interaction bug */
+  /* transform-style: preserve-3d; REMOVED */
+  /* transform: rotateX(5deg); REMOVED */
   transition: transform 0.5s ease-out;
 }
 /* Font Import for Heavy Look */
