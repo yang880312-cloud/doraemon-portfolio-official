@@ -1,133 +1,116 @@
 <script setup>
-import { ref, onMounted, computed, nextTick } from 'vue'
+import { ref, computed } from 'vue'
+import { useRouter } from 'vue-router'
 import { useDataStore } from '@/stores/dataStore'
-import { useHead } from '@vueuse/head'
-import WarpTunnelEnvironment from '@/components/Design/WarpTunnelEnvironment.vue'
 import ZeroGGrid from '@/components/Design/ZeroGGrid.vue'
 import DesignProjectModal from '@/components/Design/DesignProjectModal.vue'
-import FluidCursor from '@/components/Design/FluidCursor.vue'
 
-useHead({
-  title: '繪世界藝廊 (Gallery)',
-  meta: [
-    { name: 'description', content: '探索 4D 視覺藝術與創意設計作品。 (Design Gallery)' },
-  ]
-})
+const router = useRouter()
+const dataStore = useDataStore()
 
-const store = useDataStore()
+// Ensure data is loaded
+dataStore.fetchProjects()
+
+// State
+const designProjects = computed(() => dataStore.designProjects)
 const selectedProject = ref(null)
 const isModalOpen = ref(false)
 const isDealt = ref(false)
-
-onMounted(async () => {
-  if (store.projects.length === 0) {
-    await store.fetchProjects()
-  }
-})
-
-const designProjects = computed(() => {
-  return store.projects.filter((p) => p.type === 'DESIGN')
-})
 
 function openProject(project) {
   selectedProject.value = project
   isModalOpen.value = true
 }
 
-// Force Rebuild: 2026-01-23 v3
+function closeProject() {
+  isModalOpen.value = false
+  setTimeout(() => {
+    selectedProject.value = null
+  }, 300)
+}
+
+function switchProject(project) {
+    selectedProject.value = project
+}
 </script>
 
 <template>
-  <div class="relative min-h-screen overflow-y-auto overflow-x-hidden bg-transparent text-white selection:bg-pink-500 selection:text-white custom-scroll">
-    <!-- BACKGROUND: The Time Warp Tunnel -->
-    <WarpTunnelEnvironment />
-    <FluidCursor />
+  <!-- Simplified Plan B Layout: Standard Scrolling Page -->
+  <div class="relative min-h-screen w-full bg-[#050505] pb-32">
 
-    <!-- FOREGROUND: Content Grid -->
-    <div class="relative z-10 container mx-auto px-4 py-20 min-h-screen flex flex-col">
+    <!-- Header Area -->
+    <div class="container mx-auto px-4 pt-20 pb-10 text-center relative z-20">
+        <h1 class="text-6xl md:text-9xl font-black text-transparent bg-clip-text bg-gradient-to-b from-white to-white/20 tracking-tighter mb-4 glitch-text" data-text="DESIGN GALLERY">
+            DESIGN GALLERY
+        </h1>
+        <p class="text-blue-400 font-mono tracking-[0.5em] text-sm uppercase opacity-80">
+            Select Work // Visual Experiments
+        </p>
+    </div>
 
-      <!-- Header Area: Paint World Gallery Style -->
-      <!-- Only fade in when dealt to avoid visual clutter during deal intro -->
-      <transition enter-active-class="transition duration-1000 ease-out" enter-from-class="opacity-0 translate-y-10" enter-to-class="opacity-100 translate-y-0">
-        <header v-show="isDealt" class="mb-12 md:mb-24 text-center relative z-20 transform-style-3d">
-            <!-- Main Title -->
-            <h1 class="relative inline-block hover:scale-105 transition-transform duration-300">
-            <span class="block text-5xl md:text-9xl font-black tracking-tight mb-2 secret-gadget-title">
-                繪世界藝廊
-            </span>
-            <!-- Subtitle Badge -->
-            <span class="code-badge absolute -bottom-6 -right-4 md:-bottom-8 md:-right-8 bg-[#0247A2] text-white text-sm md:text-lg font-bold px-4 md:px-6 py-1 md:py-2 rounded-full border-[3px] border-white shadow-[4px_4px_0px_rgba(0,0,0,0.3)] rotate-[-8deg] tracking-widest z-10 w-max">
-                PAINTED WORLD
-            </span>
-            </h1>
-
-            <!-- Description -->
-            <p class="mt-8 md:mt-10 text-[#009EFF] font-bold tracking-widest text-xs md:text-base bg-white/95 inline-block px-6 md:px-8 py-2 md:py-3 rounded-full shadow-[0_0_20px_rgba(0,158,255,0.4)]">
-            用未來邏輯解決現實世界的問題
-            </p>
-        </header>
-      </transition>
-
-      <!-- Zero-G Gallery Grid with Tunnel Perspective -->
-      <div class="tunnel-grid-wrapper">
-         <ZeroGGrid
+    <!-- Main Grid Content -->
+    <div class="relative z-10 container mx-auto px-4">
+        <!-- Pass isDealt event from Grid to show header or generic -->
+        <ZeroGGrid
             :items="designProjects"
             @item-click="openProject"
             @deal-start="isDealt = true"
-         />
-      </div>
-
+        />
     </div>
 
-    <!-- Modals -->
+    <!-- Project Modal -->
     <DesignProjectModal
       :isOpen="isModalOpen"
       :project="selectedProject"
       :siblings="designProjects"
-      @close="isModalOpen = false"
-      @switch="openProject"
+      @close="closeProject"
+      @switch="switchProject"
     />
   </div>
 </template>
 
 <style scoped>
-/* Scrollbar Hiding for immersive feel */
-::-webkit-scrollbar {
-  width: 8px;
-  background: transparent;
+/* Basic Glitch Effect for Title */
+.glitch-text {
+  position: relative;
 }
-::-webkit-scrollbar-thumb {
-  background: rgba(255, 255, 255, 0.2);
-  border-radius: 4px;
+.glitch-text::before,
+.glitch-text::after {
+  content: attr(data-text);
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: #050505;
 }
-
-.perspective-container {
-  perspective: 1000px;
-  perspective-origin: center center;
+.glitch-text::before {
+  left: 2px;
+  text-shadow: -1px 0 #00ffff;
+  clip-path: inset(20% 0 30% 0);
+  animation: glitch-anim-1 2s infinite linear alternate-reverse;
 }
-
-.transform-style-3d {
-  transform-style: preserve-3d;
-}
-
-.tunnel-grid-wrapper {
-  /* transform-style: preserve-3d; REMOVED */
-  /* transform: rotateX(5deg); REMOVED */
-  transition: transform 0.5s ease-out;
-}
-/* Font Import for Heavy Look */
-@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@900&display=swap');
-
-.secret-gadget-title {
-  font-family: 'Noto Sans TC', sans-serif;
-  color: #009EFF; /* Doraemon Blue */
-  -webkit-text-stroke: 5px white;
-  paint-order: stroke fill;
-  text-shadow: 6px 6px 0px #0247A2; /* Hard Shadow */
-  line-height: 1.1;
+.glitch-text::after {
+  left: -2px;
+  text-shadow: 1px 0 #ff00ff;
+  clip-path: inset(40% 0 60% 0);
+  animation: glitch-anim-2 2s infinite linear alternate-reverse;
 }
 
-.code-badge {
-  font-family: 'Noto Sans TC', sans-serif;
+@keyframes glitch-anim-1 {
+  0% { clip-path: inset(20% 0 30% 0); }
+  20% { clip-path: inset(60% 0 10% 0); }
+  40% { clip-path: inset(40% 0 50% 0); }
+  60% { clip-path: inset(80% 0 5% 0); }
+  80% { clip-path: inset(10% 0 70% 0); }
+  100% { clip-path: inset(30% 0 20% 0); }
+}
+@keyframes glitch-anim-2 {
+  0% { clip-path: inset(10% 0 60% 0); }
+  20% { clip-path: inset(30% 0 20% 0); }
+  40% { clip-path: inset(70% 0 40% 0); }
+  60% { clip-path: inset(20% 0 50% 0); }
+  80% { clip-path: inset(50% 0 10% 0); }
+  100% { clip-path: inset(0% 0 90% 0); }
 }
 </style>
